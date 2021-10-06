@@ -13,6 +13,19 @@ endif()
 find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 add_executable(CryptoVault
     src/main.cpp
+
+    src/AccountCreation/AccountCreation.cpp
+    src/AccountCreation/AccountCreation.h
+    src/AccountCreation/ui_accountCreation.h
+    src/AccountCreation/accountCreation.ui
+    src/AccountCreation/InitialScreenLogo.qrc
+
+    src/CredentialMenu/CredentialMenu.cpp
+    src/CredentialMenu/CredentialMenu.h
+    src/CredentialMenu/ui_CredentialMenu.h
+    src/CredentialMenu/CredentialMenu.ui
+    src/CredentialMenu/files.qrc
+
 )
 IF(APPLE)
     target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
