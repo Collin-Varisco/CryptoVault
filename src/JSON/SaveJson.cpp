@@ -11,6 +11,7 @@
 #include <QDir>
 #include <vector>
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Crypto/Crypto.h"
 
 // Basic Constructor
 SaveJson::SaveJson(){

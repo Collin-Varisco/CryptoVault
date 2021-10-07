@@ -1,5 +1,10 @@
 #include "AccountCreation.h"
 #include "../CredentialMenu/CredentialMenu.h"
+#include "../CrossPlatform/CrossPlatform.h"
+#include "../JSON/SaveJson.h"
+#include "../Crypto/Crypto.h"
+#include "../Global/ChangeGlobals.h"
+#include "../Global/Global.h"
 
 AccountCreation::AccountCreation(QFrame *parent)
     : QMainWindow(parent)
@@ -16,10 +21,40 @@ AccountCreation::AccountCreation(QFrame *parent)
 }
 
 void AccountCreation::verify(){
-        QWidget *mainMenu;
-        CredentialMenu menu;
-        mainMenu = new CredentialMenu();
-        this->setCentralWidget(mainMenu);
-        mainMenu->setFixedSize(1000, 750);
-        this->adjustSize();
+        CrossPlatform x;
+        QString username = ui.UsernameInput->text();
+        QString key_1 = ui.EncryptionKeyInput->text();
+        QString key_2 = ui.EncryptionKeyInput_2->text();
+
+        bool error = false;
+        QString blank("");
+        if(username == blank){
+            ui.usernameError->setVisible(true);
+            error = true;
+        } else if(key_1 != key_2){
+            ui.passwordError->setVisible(true);
+            error = true;
+        } else if(key_1 == blank || key_2 == blank){
+            error = true;
+        }
+
+        if(!error){
+            Crypto crypt;
+            ChangeGlobals change;
+            QString combo = username + key_1;
+
+            change.changeKey(x.xString(crypt.hash256(username)));
+            change.changeIV(x.xString(crypt.hash256(key_1)));
+
+            SaveJson sj;
+            sj.createJSON();
+            sj.setMasterPassword(x.xString(crypt.hash256(combo)));
+
+            QWidget *mainMenu;
+            CredentialMenu menu;
+            mainMenu = new CredentialMenu();
+            this->setCentralWidget(mainMenu);
+            mainMenu->setFixedSize(1000, 750);
+            this->adjustSize();
+        }
 }

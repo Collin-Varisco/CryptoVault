@@ -37,6 +37,18 @@ add_executable(CryptoVault
     src/Login/ui_login.h
     src/Login/login.ui
 
+
+    src/CrossPlatform/CrossPlatform.cpp
+    src/CrossPlatform/CrossPlatform.h
+
+    src/Global/ChangeGlobals.h
+    src/Global/Global.h
+
+    src/Crypto/Crypto.cpp
+    src/Crypto/Crypto.h
+
+    src/JSON/SaveJson.cpp
+    src/JSON/SaveJson.h
 )
 
 INCLUDE_DIRECTORIES(libs)
