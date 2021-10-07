@@ -14,6 +14,12 @@ find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 add_executable(CryptoVault
     src/main.cpp
 
+    src/Initial_Start_Menu/startScreen.cpp
+    src/Initial_Start_Menu/startScreen.h
+    src/Initial_Start_Menu/ui_startScreen.h
+    src/Initial_Start_Menu/startScreen.ui
+    src/Initial_Start_Menu/initial.qrc
+
     src/AccountCreation/AccountCreation.cpp
     src/AccountCreation/AccountCreation.h
     src/AccountCreation/ui_accountCreation.h
@@ -36,4 +42,3 @@ ENDIF()
 IF(WIN32)
     target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
-

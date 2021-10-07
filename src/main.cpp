@@ -1,11 +1,11 @@
 #include <QtGui>
 #include <QFrame>
-#include "AccountCreation/AccountCreation.h"
+#include "Initial_Start_Menu/startScreen.h"
 #include <QApplication>
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);
-    AccountCreation accountCreation;
-    accountCreation.show();
+    startScreen s_screen;
+    s_screen.show();
     app.exec();
 }
