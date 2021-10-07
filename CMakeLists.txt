@@ -38,12 +38,16 @@ add_executable(CryptoVault
     src/Login/login.ui
 
 )
+
+INCLUDE_DIRECTORIES(libs)
+add_subdirectory(libs/Qt-Secret)
+
 IF(APPLE)
-    target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(CryptoVault Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
 IF(UNIX AND NOT APPLE)
-    target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(CryptoVault Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
 IF(WIN32)
-    target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(CryptoVault Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
