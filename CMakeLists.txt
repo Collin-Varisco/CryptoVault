@@ -32,6 +32,11 @@ add_executable(CryptoVault
     src/CredentialMenu/CredentialMenu.ui
     src/CredentialMenu/files.qrc
 
+    src/Login/login.cpp
+    src/Login/login.h
+    src/Login/ui_login.h
+    src/Login/login.ui
+
 )
 IF(APPLE)
     target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
