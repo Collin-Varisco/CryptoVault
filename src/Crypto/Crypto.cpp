@@ -1,5 +1,6 @@
 #include "Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Global/Global.h"
 #include <iostream>
 
 /* encryptString(const QString &information)
@@ -11,8 +12,8 @@ std::string Crypto::encryptString(QString information)
 {
     // AES Encryption Key
     QAESEncryption encryption(QAESEncryption::AES_256, QAESEncryption::CBC);
-    QString key("your-string-key");
-    QString iv("your-IV-vector");
+    QString key(QString::fromStdString(global.global_key));
+    QString iv(QString::fromStdString(global.global_iv));
     QByteArray hashKey = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Sha256);
     QByteArray hashIV = QCryptographicHash::hash(iv.toUtf8(), QCryptographicHash::Md5);
 
@@ -32,8 +33,8 @@ std::string Crypto::decryptValue(QString info)
 {
     // AES Encryption Key
     QAESEncryption encryption(QAESEncryption::AES_256, QAESEncryption::CBC);
-    QString key("your-string-key");
-    QString iv("your-IV-vector");
+    QString key(QString::fromStdString(global.global_key));
+    QString iv(QString::fromStdString(global.global_iv));
     QByteArray temp = QByteArray::fromBase64(info.toUtf8());
 
     QByteArray hashKey = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Sha256);
