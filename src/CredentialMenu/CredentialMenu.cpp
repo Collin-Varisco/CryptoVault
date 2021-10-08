@@ -1,4 +1,8 @@
 #include "CredentialMenu.h"
+#include <nlohmann/json.hpp>
+#include "../JSON/SaveJson.h"
+#include "../Crypto/Crypto.h"
+#include "../CrossPlatform/CrossPlatform.h"
 #include <vector>
 #include <string>
 #include <fstream>
@@ -15,6 +19,9 @@ CredentialMenu::CredentialMenu(QFrame *parent)
 
     connect(ui.AddButton, SIGNAL(clicked()), this, SLOT(openAddCredentialPrompt()));
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
+    connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
+    loadCredentials();
+
 }
 
 void CredentialMenu::openAddCredentialPrompt(){
@@ -34,3 +41,50 @@ void CredentialMenu::closeAddCredentialPrompt(){
 		ui.AddCredentialFrame->setVisible(false);
 }
 
+
+void CredentialMenu::addCredential(){
+    // Code to add credential to JSON
+    if(!editing){
+	    CrossPlatform x;
+	    Crypto cr;
+	    SaveJson sj;
+	    QString service =  ui.AddService->text();
+	    QString username = ui.AddUsername->text();
+	    QString password = ui.AddPassword->text();
+	    sj.addCredentials(service, username, password);
+            closeAddCredentialPrompt();
+	    loadCredentials();
+    }
+    else {
+		// editCredential();
+    }
+}
+
+
+void CredentialMenu::loadCredentials(){
+    ui.CredentialTable->clear();
+    ui.CredentialTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Service"));
+    ui.CredentialTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Username/Email"));
+    ui.CredentialTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Password"));
+    Crypto crypt;
+    using namespace nlohmann;
+    std::ifstream jFile("./credentials.json");
+    json j = json::parse(jFile);
+
+    int size = j["Credentials"][0]["Entries"].size();
+    for(int i = 0; i < size; i++){
+        services.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
+        passwords.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
+        usernames.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
+    }
+
+    ui.CredentialTable->setRowCount(services.size());
+    for(int row=0; row < services.size(); row++){
+        QTableWidgetItem *serviceItem = new QTableWidgetItem(QString::fromStdString(services.at(row)));
+        ui.CredentialTable->setItem(row, 0, serviceItem);
+        QTableWidgetItem *userItem = new QTableWidgetItem(QString::fromStdString(usernames.at(row)));
+        ui.CredentialTable->setItem(row, 1, userItem);
+        QTableWidgetItem *passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(row)));
+        ui.CredentialTable->setItem(row, 2, passItem);
+    }
+}

@@ -4,6 +4,11 @@
 #include <QString>
 #include "login.h"
 #include "../CredentialMenu/CredentialMenu.h"
+#include "../Crypto/Crypto.h"
+#include "../CrossPlatform/CrossPlatform.h"
+#include "../Global/ChangeGlobals.h"
+#include "../Global/Global.h"
+#include "../JSON/SaveJson.h"
 
 login::login(QFrame *parent)
     : QMainWindow(parent)
@@ -17,8 +22,24 @@ login::login(QFrame *parent)
 void login::attemptLogin(){
         QWidget *mainMenu;
         CredentialMenu menu;
-        mainMenu = new CredentialMenu();
-        this->setCentralWidget(mainMenu);
-        mainMenu->setFixedSize(1000, 600);
-        this->adjustSize();
+	Crypto crypt;
+	CrossPlatform x;
+	SaveJson sj;
+	ChangeGlobals change;
+
+	QString username = ui.UsernameInput->text();
+	QString pass = ui.EncryptionKeyInput->text();
+	QString combo = username + pass;
+	std::string entered = x.xString(crypt.hash256(combo));
+	std::string passHash = sj.loadMasterPassword();
+
+	if(entered == passHash){
+		change.changeKey(x.xString(crypt.hash256(username)));
+		change.changeIV(x.xString(crypt.hash256(pass)));
+
+		mainMenu = new CredentialMenu();
+		this->setCentralWidget(mainMenu);
+		mainMenu->setFixedSize(1000, 750);
+		this->adjustSize();
+	}
 }
