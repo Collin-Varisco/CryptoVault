@@ -10,11 +10,7 @@
 CredentialMenu::CredentialMenu(QFrame *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
-    ui.CredentialTable->setColumnWidth(0, 260);
-    ui.CredentialTable->setColumnWidth(1, 260);
-    ui.CredentialTable->setColumnWidth(2, 260);
-	ui.CredentialTable->setColumnWidth(3, 39);
+    ui.setupUi(this); 
     ui.AddCredentialFrame->setVisible(false);
 
     connect(ui.AddButton, SIGNAL(clicked()), this, SLOT(openAddCredentialPrompt()));
@@ -53,6 +49,7 @@ void CredentialMenu::addCredential(){
 	    QString password = ui.AddPassword->text();
 	    sj.addCredentials(service, username, password);
             closeAddCredentialPrompt();
+	    ui.CredentialTable->clear();
 	    loadCredentials();
     }
     else {
@@ -63,9 +60,11 @@ void CredentialMenu::addCredential(){
 
 void CredentialMenu::loadCredentials(){
     ui.CredentialTable->clear();
-    ui.CredentialTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Service"));
-    ui.CredentialTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Username/Email"));
-    ui.CredentialTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Password"));
+    ui.CredentialTable->setColumnCount(3);
+    ui.CredentialTable->verticalHeader()->setVisible(false);
+    QStringList headers;
+    headers << "Service" << "Username/Email" << "Password";
+    ui.CredentialTable->setHorizontalHeaderLabels(headers);
     Crypto crypt;
     using namespace nlohmann;
     std::ifstream jFile("./credentials.json");
@@ -87,4 +86,8 @@ void CredentialMenu::loadCredentials(){
         QTableWidgetItem *passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(row)));
         ui.CredentialTable->setItem(row, 2, passItem);
     }
+   
+    ui.CredentialTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui.CredentialTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui.CredentialTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 }
