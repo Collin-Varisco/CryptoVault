@@ -17,7 +17,11 @@ class CredentialMenu : public QMainWindow
 		std::vector<std::string> services;
 		std::vector<std::string> passwords;
 		std::vector<std::string> usernames;
+		bool editing = false;
+		void loadCredentials();
 	public slots:
 		void openAddCredentialPrompt();
 		void closeAddCredentialPrompt();
+		void addCredential();
+
 };

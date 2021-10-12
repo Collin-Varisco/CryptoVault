@@ -1,0 +1,34 @@
+{
+	"BUILD_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/Qt-Secret-GUI_autogen",
+	"CMAKE_BINARY_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI",
+	"CMAKE_SOURCE_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret",
+	"INCLUDE_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/Qt-Secret-GUI_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/DigitalSignaturePage.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/EncryptDecryptPage.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/KeysGeneratePage.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/qtquickcontrols2.conf",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/main.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/modules/RowElement.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/modules/DoubleStateMenu.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/modules/LabledText.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/modules/LoadPopup.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/modules/RsaGenModule.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/modules/ActionButton.qml",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/images/cpy.png",
+		"/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/images/clear.png"
+	],
+	"LOCK_FILE" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/CMakeFiles/Qt-Secret-GUI_autogen.dir/AutoRcc_qml_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "qml" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_qml.cpp",
+	"RCC_EXECUTABLE" : "/usr/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/CMakeFiles/Qt-Secret-GUI_autogen.dir/AutoRcc_qml_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/crisco/cryptobox/libs/Qt-Secret/Qt-Secret-GUI/qml.qrc",
+	"VERBOSITY" : 0
+}
