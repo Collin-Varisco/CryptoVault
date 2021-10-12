@@ -39,7 +39,7 @@ void login::attemptLogin(){
 
 		mainMenu = new CredentialMenu();
 		this->setCentralWidget(mainMenu);
-		mainMenu->setFixedSize(1000, 610);
+		mainMenu->setFixedSize(1005, 610);
 		this->adjustSize();
 	}
 }

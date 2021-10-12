@@ -51,10 +51,9 @@ void AccountCreation::verify(){
             sj.setMasterPassword(x.xString(crypt.hash256(combo)));
 
             QWidget *mainMenu;
-            CredentialMenu menu;
             mainMenu = new CredentialMenu();
+	    this->setFixedSize(1000, 610);
+            mainMenu->setFixedSize(1005, 610);
             this->setCentralWidget(mainMenu);
-            mainMenu->setFixedSize(1000, 750);
-            this->adjustSize();
         }
 }

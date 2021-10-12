@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'CredentialMenuopdlXV.ui'
+** Form generated from reading UI file 'CredentialMenulkGcTf.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef CREDENTIALMENUOPDLXV_H
-#define CREDENTIALMENUOPDLXV_H
+#ifndef CREDENTIALMENULKGCTF_H
+#define CREDENTIALMENULKGCTF_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
@@ -28,7 +28,7 @@ public:
     QFrame *frame;
     QPushButton *VaultButton;
     QPushButton *SettingsButton;
-    QPushButton *ExportButton;
+    QPushButton *ImportExportOptionsButton;
     QTableWidget *CredentialTable;
     QLineEdit *SearchBar;
     QFrame *frame_2;
@@ -52,6 +52,10 @@ public:
     QLineEdit *AddPassword;
     QPushButton *AddCredentialButton;
     QPushButton *pushButton;
+    QFrame *ImportExportFrame;
+    QPushButton *ImportButton;
+    QPushButton *ExportSelectedButton;
+    QPushButton *ExportAllButton;
 
     void setupUi(QWidget *Form)
     {
@@ -64,6 +68,7 @@ public:
         sizePolicy.setHeightForWidth(Form->sizePolicy().hasHeightForWidth());
         Form->setSizePolicy(sizePolicy);
         Form->setStyleSheet(QString::fromUtf8("background: #152028;\n"
+"\n"
 ""));
         frame = new QFrame(Form);
         frame->setObjectName(QString::fromUtf8("frame"));
@@ -82,23 +87,45 @@ public:
         VaultButton->setIconSize(QSize(50, 50));
         SettingsButton = new QPushButton(frame);
         SettingsButton->setObjectName(QString::fromUtf8("SettingsButton"));
-        SettingsButton->setGeometry(QRect(11, 350, 51, 70));
-        SettingsButton->setStyleSheet(QString::fromUtf8("background: #1F2933;\n"
-"border: none;"));
+        SettingsButton->setGeometry(QRect(0, 360, 71, 70));
+        SettingsButton->setStyleSheet(QString::fromUtf8("\n"
+"QPushButton#SettingsButton {\n"
+"	background: #1F2933;\n"
+"	border: none;\n"
+"}\n"
+"QPushButton#SettingsButton:hover {\n"
+"	background:  #152028;;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton#SettingsButton:pressed {\n"
+"	border: none;\n"
+"	background: white;\n"
+"}"));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/Images/SideBar/settings.png"), QSize(), QIcon::Normal, QIcon::Off);
         SettingsButton->setIcon(icon1);
         SettingsButton->setIconSize(QSize(58, 58));
-        ExportButton = new QPushButton(frame);
-        ExportButton->setObjectName(QString::fromUtf8("ExportButton"));
-        ExportButton->setGeometry(QRect(0, 290, 81, 70));
-        ExportButton->setStyleSheet(QString::fromUtf8("background: #1F2933;\n"
-"border: none;\n"
-""));
+        ImportExportOptionsButton = new QPushButton(frame);
+        ImportExportOptionsButton->setObjectName(QString::fromUtf8("ImportExportOptionsButton"));
+        ImportExportOptionsButton->setGeometry(QRect(0, 290, 81, 70));
+        ImportExportOptionsButton->setStyleSheet(QString::fromUtf8("QPushButton#ImportExportOptionsButton {\n"
+"	background: #1F2933;\n"
+"	border: none;\n"
+"}\n"
+"QPushButton#ImportExportOptionsButton:hover {\n"
+"	background:  #152028;;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton#ImportExportOptionsButton:pressed {\n"
+"	border: none;\n"
+"	background: white;\n"
+"}"));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8(":/Images/SideBar/export.png"), QSize(), QIcon::Normal, QIcon::Off);
-        ExportButton->setIcon(icon2);
-        ExportButton->setIconSize(QSize(40, 40));
+        ImportExportOptionsButton->setIcon(icon2);
+        ImportExportOptionsButton->setIconSize(QSize(40, 40));
         CredentialTable = new QTableWidget(Form);
         CredentialTable->setObjectName(QString::fromUtf8("CredentialTable"));
         CredentialTable->setGeometry(QRect(90, 70, 834, 511));
@@ -155,7 +182,7 @@ public:
         label_2->setFont(font1);
         label_3 = new QLabel(frame_2);
         label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setGeometry(QRect(4, 170, 61, 16));
+        label_3->setGeometry(QRect(3, 170, 71, 20));
         label_3->setFont(font1);
         RemoveButton = new QPushButton(frame_2);
         RemoveButton->setObjectName(QString::fromUtf8("RemoveButton"));
@@ -189,7 +216,7 @@ public:
         label_6->setFont(font1);
         label_7 = new QLabel(frame_2);
         label_7->setObjectName(QString::fromUtf8("label_7"));
-        label_7->setGeometry(QRect(5, 366, 61, 20));
+        label_7->setGeometry(QRect(3, 366, 71, 20));
         label_7->setFont(font1);
         label_8 = new QLabel(Form);
         label_8->setObjectName(QString::fromUtf8("label_8"));
@@ -240,12 +267,38 @@ public:
         pushButton = new QPushButton(frame_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(90, 310, 81, 34));
+        ImportExportFrame = new QFrame(Form);
+        ImportExportFrame->setObjectName(QString::fromUtf8("ImportExportFrame"));
+        ImportExportFrame->setGeometry(QRect(70, 270, 161, 142));
+        ImportExportFrame->setStyleSheet(QString::fromUtf8("border: 1px solid Black;\n"
+"background: #152028;"));
+        ImportExportFrame->setFrameShape(QFrame::StyledPanel);
+        ImportExportFrame->setFrameShadow(QFrame::Raised);
+        ImportButton = new QPushButton(ImportExportFrame);
+        ImportButton->setObjectName(QString::fromUtf8("ImportButton"));
+        ImportButton->setGeometry(QRect(10, 10, 141, 34));
+        ImportButton->setStyleSheet(QString::fromUtf8("background: #1F2933;\n"
+"border: 2px solid #323F4B;\n"
+"color: white;"));
+        ExportSelectedButton = new QPushButton(ImportExportFrame);
+        ExportSelectedButton->setObjectName(QString::fromUtf8("ExportSelectedButton"));
+        ExportSelectedButton->setGeometry(QRect(10, 54, 141, 34));
+        ExportSelectedButton->setStyleSheet(QString::fromUtf8("background: #1F2933;\n"
+"border: 2px solid #323F4B;\n"
+"color: white;"));
+        ExportAllButton = new QPushButton(ImportExportFrame);
+        ExportAllButton->setObjectName(QString::fromUtf8("ExportAllButton"));
+        ExportAllButton->setGeometry(QRect(10, 98, 141, 34));
+        ExportAllButton->setStyleSheet(QString::fromUtf8("background: #1F2933;\n"
+"border: 2px solid #323F4B;\n"
+"color: white;"));
         label_8->raise();
         frame->raise();
         CredentialTable->raise();
         SearchBar->raise();
         frame_2->raise();
         AddCredentialFrame->raise();
+        ImportExportFrame->raise();
 
         retranslateUi(Form);
 
@@ -257,7 +310,7 @@ public:
         Form->setWindowTitle(QCoreApplication::translate("Form", "Form", nullptr));
         VaultButton->setText(QString());
         SettingsButton->setText(QString());
-        ExportButton->setText(QString());
+        ImportExportOptionsButton->setText(QString());
         SearchBar->setText(QString());
         SearchBar->setPlaceholderText(QCoreApplication::translate("Form", "Search...", nullptr));
         CopyButton->setText(QString());
@@ -281,6 +334,9 @@ public:
         AddPassword->setPlaceholderText(QCoreApplication::translate("Form", "Password", nullptr));
         AddCredentialButton->setText(QCoreApplication::translate("Form", "Add", nullptr));
         pushButton->setText(QCoreApplication::translate("Form", "Cancel", nullptr));
+        ImportButton->setText(QCoreApplication::translate("Form", "Import Credentials", nullptr));
+        ExportSelectedButton->setText(QCoreApplication::translate("Form", "Export Selected", nullptr));
+        ExportAllButton->setText(QCoreApplication::translate("Form", "Export All", nullptr));
     } // retranslateUi
 
 };
@@ -291,4 +347,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // CREDENTIALMENUOPDLXV_H
+#endif // CREDENTIALMENULKGCTF_H

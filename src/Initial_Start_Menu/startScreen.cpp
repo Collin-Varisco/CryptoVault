@@ -19,8 +19,10 @@ startScreen::startScreen(QFrame *parent)
 void startScreen::createAccount(){
 	QWidget *createAccount;
 	createAccount = new AccountCreation();
-        AccountCreation AC;
-	this->setCentralWidget(createAccount);
+        AccountCreation *AC = new AccountCreation();
+	this->close();
+	AC->show();
+	//this->setCentralWidget(createAccount);
 }
 
 // [TODO]

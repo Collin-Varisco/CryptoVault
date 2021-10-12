@@ -12,6 +12,8 @@ class CredentialMenu : public QMainWindow
 	Q_OBJECT
 	public:
 		CredentialMenu(QFrame *parent = 0);
+		bool eventFilter(QObject *obj, QEvent *event);
+		bool inImportExportFrame = false;
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;

@@ -10,8 +10,11 @@
 CredentialMenu::CredentialMenu(QFrame *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this); 
+    ui.setupUi(this);
+    ui.ImportExportOptionsButton->installEventFilter(this);
+    ui.ImportExportFrame->installEventFilter(this);
     ui.AddCredentialFrame->setVisible(false);
+    ui.ImportExportFrame->setVisible(false);
 
     connect(ui.AddButton, SIGNAL(clicked()), this, SLOT(openAddCredentialPrompt()));
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
@@ -86,8 +89,40 @@ void CredentialMenu::loadCredentials(){
         QTableWidgetItem *passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(row)));
         ui.CredentialTable->setItem(row, 2, passItem);
     }
-   
+
     ui.CredentialTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui.CredentialTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui.CredentialTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+}
+
+bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
+{
+	if(obj == (QObject*)ui.ImportExportOptionsButton) {
+		if(event->type() == QEvent::HoverEnter)
+		{
+		    ui.ImportExportFrame->setVisible(true);
+		}
+		if(event->type() == QEvent::HoverLeave && !inImportExportFrame)
+		{
+		    ui.ImportExportFrame->setVisible(false);
+		}
+		else {
+			return QWidget::eventFilter(obj, event);
+		}
+	}
+	if(obj == (QObject*)ui.ImportExportFrame) {
+		if(event->type() == QEvent::Enter)
+		{
+		    inImportExportFrame = true;
+		    ui.ImportExportFrame->setVisible(true);
+		}
+		if(event->type() == QEvent::Leave)
+		{
+		    inImportExportFrame = false;
+		    ui.ImportExportFrame->setVisible(false);
+		}
+		else {
+	        	return QWidget::eventFilter(obj, event);
+		}
+	}
 }
