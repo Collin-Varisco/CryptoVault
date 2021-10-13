@@ -4,6 +4,9 @@
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
 #include <vector>
+#include <QHBoxLayout>
+#include <QCheckBox>
+
 #include <string>
 #include <fstream>
 #include <QClipboard>
@@ -63,17 +66,51 @@ void CredentialMenu::addCredential(){
 
 void CredentialMenu::loadCredentials(){
     ui.CredentialTable->clear();
-    ui.CredentialTable->setColumnCount(3);
+	ui.CredentialTable->setColumnCount(4);
+	ui.CredentialTable->setRowCount(1);
     ui.CredentialTable->verticalHeader()->setVisible(false);
-    QStringList headers;
-    headers << "Service" << "Username/Email" << "Password";
-    ui.CredentialTable->setHorizontalHeaderLabels(headers);
+	ui.CredentialTable->setSelectionMode(QAbstractItemView::SingleSelection);
+	ui.CredentialTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+	QString service("Service");
+	QString username("Username/Email");
+	QString password("Password");
+	QString selection("Export");
+	QTableWidgetItem* serviceHeader = new QTableWidgetItem(service);
+	serviceHeader->setForeground(Qt::black);
+	QTableWidgetItem* usernameHeader = new QTableWidgetItem(username);
+	usernameHeader->setForeground(Qt::black);
+	QTableWidgetItem* passwordHeader = new QTableWidgetItem(password);
+	passwordHeader->setForeground(Qt::black);
+	QTableWidgetItem* exportHeader = new QTableWidgetItem(selection);
+	exportHeader->setForeground(Qt::black);
+	ui.CredentialTable->setHorizontalHeaderItem(0, serviceHeader);
+	ui.CredentialTable->setHorizontalHeaderItem(1, usernameHeader);
+	ui.CredentialTable->setHorizontalHeaderItem(2, passwordHeader);
+	ui.CredentialTable->setHorizontalHeaderItem(3, exportHeader);
+	int width;
+	for (int s = 0; s < ui.CredentialTable->horizontalHeader()->count(); ++s) {
+		//ui.CredentialTable->horizontalHeader()->setSectionResizeMode(s, QHeaderView::Stretch);
+		if (s < 3) {	
+			width = ui.CredentialTable->width() * 0.30;
+			ui.CredentialTable->horizontalHeader()->resizeSection(s, width);
+		}
+		else {
+			ui.CredentialTable->horizontalHeader()->setStretchLastSection(true);
+		}
+	}
+
+
+
     Crypto crypt;
     using namespace nlohmann;
     std::ifstream jFile("./credentials.json");
     json j = json::parse(jFile);
-
+	
     int size = j["Credentials"][0]["Entries"].size();
+	services.clear();
+	passwords.clear();
+	usernames.clear();
     for(int i = 0; i < size; i++){
         services.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
         passwords.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
@@ -84,15 +121,24 @@ void CredentialMenu::loadCredentials(){
     for(int row=0; row < services.size(); row++){
         QTableWidgetItem *serviceItem = new QTableWidgetItem(QString::fromStdString(services.at(row)));
         ui.CredentialTable->setItem(row, 0, serviceItem);
+
         QTableWidgetItem *userItem = new QTableWidgetItem(QString::fromStdString(usernames.at(row)));
         ui.CredentialTable->setItem(row, 1, userItem);
+
         QTableWidgetItem *passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(row)));
         ui.CredentialTable->setItem(row, 2, passItem);
-    }
 
-    ui.CredentialTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui.CredentialTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui.CredentialTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+		QWidget* checkItem = new QWidget();
+		QCheckBox *checkBox = new QCheckBox();
+		QHBoxLayout *layout = new QHBoxLayout(checkItem);
+		layout->addWidget(checkBox);
+		layout->setAlignment(Qt::AlignCenter);
+		layout->setContentsMargins(0, 0, 0, 0);
+		checkItem->setLayout(layout);
+		ui.CredentialTable->setCellWidget(row, 3, checkItem);
+    }
+	
+
 }
 
 bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
