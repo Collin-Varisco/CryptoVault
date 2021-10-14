@@ -5,6 +5,8 @@
 #include "../Crypto/Crypto.h"
 #include "../Global/ChangeGlobals.h"
 #include "../Global/Global.h"
+#include <QGuiApplication>
+#include <QScreen>
 
 AccountCreation::AccountCreation(QFrame *parent)
     : QMainWindow(parent)
@@ -52,8 +54,12 @@ void AccountCreation::verify(){
 
             QWidget *mainMenu;
             mainMenu = new CredentialMenu();
-	    this->setFixedSize(1000, 610);
-            mainMenu->setFixedSize(1005, 610);
+	    QScreen *screen = QGuiApplication::primaryScreen();
+	    QRect geometry = screen->geometry();
+ 	    int width = geometry.width() * 0.7;
+	    int height = width * 0.68;
+	    this->setFixedSize(width, height);
+            mainMenu->setFixedSize(width, height);
             this->setCentralWidget(mainMenu);
         }
 }
