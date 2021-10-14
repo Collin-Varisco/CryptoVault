@@ -61,7 +61,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QStringLiteral("Form"));
-        Form->resize(1000, 610);
+        //Form->resize(1000, 610);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -129,7 +129,6 @@ public:
         CredentialTable = new QTableWidget(Form);
         CredentialTable->setObjectName(QStringLiteral("CredentialTable"));
         CredentialTable->setGeometry(QRect(90, 70, 834, 511));
-        CredentialTable->setMaximumSize(QSize(834, 511));
         QFont font;
         font.setFamily(QStringLiteral("Arial"));
         CredentialTable->setFont(font);
@@ -277,7 +276,7 @@ public:
 "background: #1F2933;"));
         AddCredentialButton = new QPushButton(frame_3);
         AddCredentialButton->setObjectName(QStringLiteral("AddCredentialButton"));
-        AddCredentialButton->setGeometry(QRect(80, 270, 101, 34));
+        //AddCredentialButton->setGeometry(QRect(80, 270, 101, 34));
         AddCredentialButton->setStyleSheet(QLatin1String("background: #152028;\n"
 ""));
         pushButton = new QPushButton(frame_3);

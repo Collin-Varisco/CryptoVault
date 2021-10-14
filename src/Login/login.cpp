@@ -9,6 +9,8 @@
 #include "../Global/ChangeGlobals.h"
 #include "../Global/Global.h"
 #include "../JSON/SaveJson.h"
+#include <QGuiApplication>
+#include <QScreen>
 
 login::login(QFrame *parent)
     : QMainWindow(parent)
@@ -39,7 +41,12 @@ void login::attemptLogin(){
 
 		mainMenu = new CredentialMenu();
 		this->setCentralWidget(mainMenu);
-		mainMenu->setFixedSize(1005, 610);
-		this->adjustSize();
+		QScreen *screen = QGuiApplication::primaryScreen();
+		QRect geometry = screen->geometry();
+		// Make 70% of full screen, then change to 16:9 aspect ratio.
+		int width = geometry.width() * 0.7;
+		int height = width * 0.68;
+		mainMenu->setFixedSize(width, height);
+		this->resize(width, height);
 	}
 }
