@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'accountCreationwGVEYB.ui'
+** Form generated from reading UI file 'accountCreationBxsPSO.ui'
 **
-** Created by: Qt User Interface Compiler version 5.13.2
+** Created by: Qt User Interface Compiler version 5.12.11
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef ACCOUNTCREATIONWGVEYB_H
-#define ACCOUNTCREATIONWGVEYB_H
+#ifndef ACCOUNTCREATIONBXSPSO_H
+#define ACCOUNTCREATIONBXSPSO_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -36,7 +36,7 @@ public:
     void setupUi(QWidget *Form)
     {
         if (Form->objectName().isEmpty())
-            Form->setObjectName(QString::fromUtf8("CryptoVault"));
+            Form->setObjectName(QString::fromUtf8("Form"));
         Form->resize(491, 636);
         Form->setStyleSheet(QString::fromUtf8("background: #152028;"));
         label = new QLabel(Form);
@@ -92,8 +92,9 @@ public:
         LoginLabel_2->setObjectName(QString::fromUtf8("LoginLabel_2"));
         LoginLabel_2->setGeometry(QRect(80, 115, 181, 31));
         QFont font;
-        font.setFamily(QString::fromUtf8("Montserrat"));
+        font.setFamily(QString::fromUtf8("Montserrat,sans-serif"));
         font.setBold(true);
+        font.setWeight(75);
         LoginLabel_2->setFont(font);
         LoginLabel_2->setStyleSheet(QString::fromUtf8("font-family: 'Montserrat', sans-serif;\n"
 "	height: 1000vh;\n"
@@ -119,17 +120,17 @@ public:
 
     void retranslateUi(QWidget *Form)
     {
-        Form->setWindowTitle(QCoreApplication::translate("Form", "Form", nullptr));
-        label->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" color:#efefef;\">Password will be encrypted and can not be recovered if you forget it.</span></p><p align=\"center\"><span style=\" color:#efefef;\">Write your password down and store it in a secure place if necessary.</span></p></body></html>", nullptr));
-        usernameError->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\">Invalid Username</p></body></html>", nullptr));
-        passwordError->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\">Passwords Must Match</p></body></html>", nullptr));
-        AddLabel_2->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-style:italic; color:#efefef;\">CryptoVault</span></p></body></html>", nullptr));
-        createButton->setText(QCoreApplication::translate("Form", "Create", nullptr));
-        UsernameInput->setPlaceholderText(QCoreApplication::translate("Form", "Username", nullptr));
-        EncryptionKeyInput->setPlaceholderText(QCoreApplication::translate("Form", "Password", nullptr));
-        LoginLabel_2->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; color:#efefef;\">Create Account</span></p></body></html>", nullptr));
+        Form->setWindowTitle(QApplication::translate("Form", "Form", nullptr));
+        label->setText(QApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:6pt; color:#efefef;\">Password will be encrypted and can not be recovered if you forget it.</span></p><p align=\"center\"><span style=\" font-size:6pt; color:#efefef;\">Write your password down and store it in a secure place if necessary.</span></p></body></html>", nullptr));
+        usernameError->setText(QApplication::translate("Form", "<html><head/><body><p align=\"center\">Invalid Username</p></body></html>", nullptr));
+        passwordError->setText(QApplication::translate("Form", "<html><head/><body><p align=\"center\">Passwords Must Match</p></body></html>", nullptr));
+        AddLabel_2->setText(QApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-style:italic; color:#efefef;\">CryptoVault</span></p></body></html>", nullptr));
+        createButton->setText(QApplication::translate("Form", "Create", nullptr));
+        UsernameInput->setPlaceholderText(QApplication::translate("Form", "Username", nullptr));
+        EncryptionKeyInput->setPlaceholderText(QApplication::translate("Form", "Password", nullptr));
+        LoginLabel_2->setText(QApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:6pt; color:#efefef;\">Create Account</span></p></body></html>", nullptr));
         EncryptionKeyInput_2->setText(QString());
-        EncryptionKeyInput_2->setPlaceholderText(QCoreApplication::translate("Form", "Confirm password", nullptr));
+        EncryptionKeyInput_2->setPlaceholderText(QApplication::translate("Form", "Confirm password", nullptr));
     } // retranslateUi
 
 };
@@ -140,4 +141,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // ACCOUNTCREATIONWGVEYB_H
+#endif // ACCOUNTCREATIONBXSPSO_H

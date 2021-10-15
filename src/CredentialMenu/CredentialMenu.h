@@ -14,6 +14,10 @@ class CredentialMenu : public QMainWindow
 		CredentialMenu(QFrame *parent = 0);
 		bool eventFilter(QObject *obj, QEvent *event);
 		bool inImportExportFrame = false;
+		void formatFrame(QFrame *obj);
+		void formatTable(QTableWidget *table);
+		void formatButtonWithinFrame(QPushButton *button, int originalFrameWidth, int originalFrameLength, QFrame *frame);
+		void formatLineEditWithinFrame(QLineEdit *line, int originalFrameWidth, int originalFrameLength, QFrame *frame);
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
