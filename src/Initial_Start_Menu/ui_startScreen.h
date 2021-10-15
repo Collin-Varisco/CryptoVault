@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'startScreenbyXibZ.ui'
+** Form generated from reading UI file 'startScreenQLSmwZ.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.2
+** Created by: Qt User Interface Compiler version 5.12.11
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef STARTSCREENBYXIBZ_H
-#define STARTSCREENBYXIBZ_H
+#ifndef STARTSCREENQLSMWZ_H
+#define STARTSCREENQLSMWZ_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -43,6 +43,9 @@ public:
         pushButton_2 = new QPushButton(frame);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(230, 430, 140, 50));
+        QFont font;
+        font.setPointSize(6);
+        pushButton_2->setFont(font);
         pushButton_2->setStyleSheet(QString::fromUtf8("background: #152028;\n"
 "color: #efefef;\n"
 "border: #1F2933;\n"
@@ -50,6 +53,7 @@ public:
         pushButton = new QPushButton(frame);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(70, 430, 140, 50));
+        pushButton->setFont(font);
         pushButton->setStyleSheet(QString::fromUtf8("background: #152028;\n"
 "color: #efefef;\n"
 "border: #1F2933;\n"
@@ -76,11 +80,11 @@ public:
 
     void retranslateUi(QWidget *Form)
     {
-        Form->setWindowTitle(QCoreApplication::translate("Form", "Form", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("Form", "Import Credentials File", nullptr));
-        pushButton->setText(QCoreApplication::translate("Form", "Create New Account", nullptr));
-        label->setText(QCoreApplication::translate("Form", "<html><head/><body><p><img src=\":/Images/shield.png\"/></p></body></html>", nullptr));
-        LoginLabel->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:28pt; font-style:italic; color:#efefef;\">CryptoVault</span></p></body></html>", nullptr));
+        Form->setWindowTitle(QApplication::translate("Form", "Form", nullptr));
+        pushButton_2->setText(QApplication::translate("Form", "Import Credentials File", nullptr));
+        pushButton->setText(QApplication::translate("Form", "Create New Account", nullptr));
+        label->setText(QApplication::translate("Form", "<html><head/><body><p><img src=\":/Images/shield.png\"/></p></body></html>", nullptr));
+        LoginLabel->setText(QApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:28pt; font-style:italic; color:#efefef;\">CryptoVault</span></p></body></html>", nullptr));
     } // retranslateUi
 
 };
@@ -91,4 +95,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // STARTSCREENBYXIBZ_H
+#endif // STARTSCREENQLSMWZ_H
