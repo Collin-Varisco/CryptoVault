@@ -22,8 +22,8 @@ login::login(QFrame *parent)
 
 
 void login::attemptLogin(){
-        QWidget *mainMenu;
-        CredentialMenu menu;
+    QWidget *mainMenu;
+    CredentialMenu menu;
 	Crypto crypt;
 	CrossPlatform x;
 	SaveJson sj;

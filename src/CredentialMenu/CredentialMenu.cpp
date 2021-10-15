@@ -9,7 +9,8 @@
 #include <QCheckBox>
 #include <QDebug>
 #include <iostream>
-
+#include <QEvent>
+#include <QKeyEvent>
 #include <string>
 #include <fstream>
 #include <QClipboard>
@@ -89,7 +90,6 @@ void CredentialMenu::openSettings() {
 	settings->show();
 
 }
-
 
 void CredentialMenu::formatButtonWithinFrame(QPushButton *button, int originalWidth, int originalLength, QFrame *frame){
 	int buttonWidth = button->width();
@@ -200,7 +200,7 @@ void CredentialMenu::openAddCredentialPrompt(){
 }
 
 void CredentialMenu::closeAddCredentialPrompt(){
-		ui.AddCredentialFrame->setVisible(false);
+	ui.AddCredentialFrame->setVisible(false);
 }
 
 
@@ -260,8 +260,6 @@ void CredentialMenu::loadCredentials(){
 		}
 	}
 
-
-
     Crypto crypt;
     using namespace nlohmann;
     std::ifstream jFile("./credentials.json");
@@ -297,8 +295,6 @@ void CredentialMenu::loadCredentials(){
 		checkItem->setLayout(layout);
 		ui.CredentialTable->setCellWidget(row, 3, checkItem);
     }
-	
-
 }
 
 bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
@@ -331,4 +327,6 @@ bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
 	        	return QWidget::eventFilter(obj, event);
 		}
 	}
+
+	// Begin search bar listener
 }
