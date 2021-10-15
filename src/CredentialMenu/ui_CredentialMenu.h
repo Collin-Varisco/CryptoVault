@@ -61,12 +61,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QStringLiteral("Form"));
-        //Form->resize(1000, 610);
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(Form->sizePolicy().hasHeightForWidth());
-        Form->setSizePolicy(sizePolicy);
+        Form->resize(1000, 610);
         Form->setStyleSheet(QLatin1String("background: #152028;\n"
 "\n"
 ""));

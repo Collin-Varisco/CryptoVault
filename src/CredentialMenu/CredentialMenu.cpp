@@ -3,6 +3,7 @@
 #include "../JSON/SaveJson.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Settings/Settings.h"
 #include <vector>
 #include <QHBoxLayout>
 #include <QCheckBox>
@@ -75,8 +76,17 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.AddButton, SIGNAL(clicked()), this, SLOT(openAddCredentialPrompt()));
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
     connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
+    connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
     loadCredentials();
 
+
+}
+
+void CredentialMenu::openSettings() {
+	QWidget* settings;
+	settings = new Settings();
+	this->close();
+	settings->show();
 
 }
 
