@@ -9,7 +9,7 @@
   checked before pressing the modify button to install the package(s) that were missing.
 - If you didn't have Visual Studio before, then you will be brought to the same installer when installing \
   it for the first time.
-- [Download Qt5](https://www.qt.io/download-qt-installer)
+- [Download and install Qt5](https://www.qt.io/download-qt-installer)
 - Type in Windows 10 search bar: Edit the system environment variables
 - Click on the result
 - Click on the Environment Variables button
@@ -18,15 +18,18 @@
 - Set the variable value to the Qt installation path Example.) C:\Qt\Qt5.XX.X
 - Click the Ok button on the new variable prompt to add the variable
 - Click the Ok button on the Environment Variables window you were on before to save it.
-- Open the repository folder "FastPass" that you downloaded in visual studio
-- Right click on CMakeLists.txt in the Solution Explorer
-- Click the "Configure FastPass" option
+- Open the repository folder "ul-cryptovault" that you downloaded in visual studio
+- It should automatically configure the cmake files. \
 - Click the dropdown button next to the right of the green arrow build button. \
   It will say "Select Startup Item" when you hover over it with your mouse.
-- In the dropdown menu, select the FastPast.exe option as your startup item.
-- Build and run the application by clicking that green arrow build button that now shows "FastPass.exe." on it.
-- The executable file will be located in C:\path\to\FastPass\out\build\x64-Debug\ \
+- In the dropdown menu, select the CryptoVault.exe option as your startup item.
+- Build the executable by clicking that green arrow build button that now shows "CryptoVault.exe." on it.
+- The executable file will be located in C:\path\to\UL-CryptoVault\out\build\x64-Debug\ \
   The "x64-debug" part of that path is assuming you build this on 64bit Windows. It may be something else. \
+- [TODO] Currently The executable won't execute because the libraries aren't linking. Fix coming soon, but in the meantime \
+  copy the two missing dll files the development directory over to executable directory, C:\path\to\UL-CryptoVault\out\build\x64-Debug\ \
+  You will then be able to compile and run the application from visual studio.
+  
 
 
 # **Unix**
@@ -37,5 +40,5 @@
 ```$ mkdir build && cd build``` \
 ```$ cmake ..``` \
 ```$ make``` \
-```$ ./CryptoVault``` \
+```$ ./CryptoVault``` 
 
