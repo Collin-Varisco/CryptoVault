@@ -20,7 +20,7 @@
 - Next, select the "Path" variable and then click the edit button.
 - Click the add button to add two new fields \
   1.) C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\x#.##.####\bin\Hostx##\x## \
-      The "#" will differ depending on your version and what type of system you are building on.
+      The "#" will differ depending on your version and what type of system you are building on. \
   2.) C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin \
 - Click the Ok button on the Environment Variables windows you were on to save it.
 - Open the repository folder "ul-cryptovault" that you downloaded in visual studio
