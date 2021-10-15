@@ -17,18 +17,23 @@
 - Set the variable name to: CMAKE_PREFIX_PATH
 - Set the variable value to the Qt installation path Example.) C:\Qt\Qt5.XX.X
 - Click the Ok button on the new variable prompt to add the variable
-- Click the Ok button on the Environment Variables window you were on before to save it.
+- Next, select the "Path" variable and then click the edit button.
+- Click the add button to add two new fields \
+  1.) C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\x#.##.####\bin\Hostx##\x## \
+      The "#" will differ depending on your version and what type of system you are building on. \
+  2.) C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin \
+- Click the Ok button on the Environment Variables windows you were on to save it.
 - Open the repository folder "ul-cryptovault" that you downloaded in visual studio
-- It should automatically configure the cmake files. \
+- It should automatically configure the cmake files. 
+- If it doesn't, you can trigger it by selecting the configuration dropdown menu and selecting a build, "x##-Debug" and it should start \
+  creating CMake files. \
 - Click the dropdown button next to the right of the green arrow build button. \
   It will say "Select Startup Item" when you hover over it with your mouse.
 - In the dropdown menu, select the CryptoVault.exe option as your startup item.
 - Build the executable by clicking that green arrow build button that now shows "CryptoVault.exe." on it.
-- The executable file will be located in C:\path\to\UL-CryptoVault\out\build\x64-Debug\ \
-  The "x64-debug" part of that path is assuming you build this on 64bit Windows. It may be something else. \
-- [TODO] Currently The executable won't execute because the libraries aren't linking. Fix coming soon, but in the meantime \
-  copy the two missing dll files the development directory over to executable directory, C:\path\to\UL-CryptoVault\out\build\x64-Debug\ \
-  You will then be able to compile and run the application from visual studio.
+- The executable will build, but won't run on the first build because the libraries aren't linking. To fix this problem, \
+  copy the two missing dll files the /path/to/ul-cryptovault/development directory over to executable directory, C:\path\to\UL-CryptoVault\out\build\x64-Debug\ \
+  Once this is done, you will be able to compile and run the application from visual studio.
   
 
 
