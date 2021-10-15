@@ -6,13 +6,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
+set(BUILD_SHARED_LIBS ON)
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
 add_executable(CryptoVault
     src/main.cpp
+
+    src/Initial_Start_Menu/startScreen.cpp
+    src/Initial_Start_Menu/startScreen.h
+    src/Initial_Start_Menu/ui_startScreen.h
+    src/Initial_Start_Menu/startScreen.ui
+    src/Initial_Start_Menu/initial.qrc
 
     src/AccountCreation/AccountCreation.cpp
     src/AccountCreation/AccountCreation.h
@@ -26,14 +32,39 @@ add_executable(CryptoVault
     src/CredentialMenu/CredentialMenu.ui
     src/CredentialMenu/files.qrc
 
+    src/Login/login.cpp
+    src/Login/login.h
+    src/Login/ui_login.h
+    src/Login/login.ui
+
+
+    src/CrossPlatform/CrossPlatform.cpp
+    src/CrossPlatform/CrossPlatform.h
+
+    src/Global/ChangeGlobals.h
+    src/Global/Global.h
+
+    src/Crypto/Crypto.cpp
+    src/Crypto/Crypto.h
+
+    src/JSON/SaveJson.cpp
+    src/JSON/SaveJson.h
+
+    src/Settings/Settings.cpp
+    src/Settings/ui_Settings.h
+    src/Settings/Settings.ui
+    src/Settings/Settings.h
 )
+
+INCLUDE_DIRECTORIES(libs)
+add_subdirectory(libs/Qt-Secret)
+
 IF(APPLE)
-    target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(CryptoVault Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
 IF(UNIX AND NOT APPLE)
-    target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(CryptoVault Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
 IF(WIN32)
-    target_link_libraries(CryptoVault Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(CryptoVault PUBLIC Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
-
