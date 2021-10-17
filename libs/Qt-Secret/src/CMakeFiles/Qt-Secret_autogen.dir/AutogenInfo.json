@@ -1,0 +1,91 @@
+{
+	"BUILD_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-Secret_autogen",
+	"CMAKE_BINARY_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/src",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/src",
+	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
+	"CMAKE_LIST_FILES" : [ "/home/crisco/cryptobox/libs/Qt-Secret/src/CMakeLists.txt" ],
+	"CMAKE_SOURCE_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-AES/qaesencryption.h",
+			"Mu",
+			"3Q7KYC43GU/moc_qaesencryption.cpp",
+			null
+		],
+		[
+			"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-RSA/qrsaencryption.h",
+			"Mu",
+			"UYDUGLDR7Q/moc_qrsaencryption.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-Secret_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-Secret_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_NO_DEBUG", "Qt_SECRET_LIBRARY", "RELEASE_BUILD" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/crisco/cryptobox/libs/Qt-Secret/src",
+		"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-AES",
+		"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-AES/aesni",
+		"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-RSA",
+		"/home/crisco/cryptobox/libs/Qt-Secret/src/mini-gmp/src",
+		"/usr/include/qt",
+		"/usr/include/qt/QtCore",
+		"/usr/lib/qt/mkspecs/linux-g++",
+		"/usr/include/c++/11.1.0",
+		"/usr/include/c++/11.1.0/x86_64-pc-linux-gnu",
+		"/usr/include/c++/11.1.0/backward",
+		"/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include",
+		"/usr/local/include",
+		"/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed",
+		"/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-dM",
+		"-E",
+		"-c",
+		"/usr/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-Secret_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 8,
+	"PARSE_CACHE_FILE" : "/home/crisco/cryptobox/libs/Qt-Secret/src/CMakeFiles/Qt-Secret_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/bin/moc",
+	"QT_UIC_EXECUTABLE" : "",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/home/crisco/cryptobox/libs/Qt-Secret/src/CMakeFiles/Qt-Secret_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-AES/qaesencryption.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/crisco/cryptobox/libs/Qt-Secret/src/Qt-RSA/qrsaencryption.cpp",
+			"Mu",
+			null
+		]
+	],
+	"VERBOSITY" : 0
+}

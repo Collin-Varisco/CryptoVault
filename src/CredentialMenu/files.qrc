@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>Images/SideBar/vault.png</file>
+    <file>Images/SideBar/settings.png</file>
+    <file>Images/SideBar/export.png</file>
+    <file>Images/SideBar/about.png</file>
+    <file>Images/CredentialMenu/copy.png</file>
+    <file>Images/CredentialMenu/add.png</file>
+    <file>Images/CredentialMenu/remove.png</file>
+    <file>Images/CredentialMenu/edit.png</file>
+</qresource>
+</RCC>
+
