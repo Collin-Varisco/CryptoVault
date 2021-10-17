@@ -1,7 +1,10 @@
 #include "startScreen.h"
 #include "../AccountCreation/AccountCreation.h"
+#include "../CrossPlatform/CrossPlatform.h"
 #include <QString>
+#include <QDebug>
 #include <QFileDialog>
+#include "../Login/login.h"
 
 startScreen::startScreen(QFrame *parent)
     : QMainWindow(parent)
@@ -28,12 +31,7 @@ void startScreen::createAccount(){
 // [TODO]
 /* recoverAccount()
  * Opens file dialog that allows user to select an existing credential file to recover their account
- *
- * Uses cross platform class importRecoveryCredentials(QString filePath, QString workingDirectory)
- * to copy the credential file to the working directory.
- * Pass the path to the file that is initialized from the QFileDialog.
- * Pass the executable working directory path as the second variable.
- * Once it has been copied initialize the login screen so the user can log in to their existing account.
+ * copies file over to the working directory of the application.
 */
 void startScreen::recoverAccount(){
 

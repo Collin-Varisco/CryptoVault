@@ -22,8 +22,8 @@ login::login(QFrame *parent)
 
 
 void login::attemptLogin(){
-        QWidget *mainMenu;
-        CredentialMenu menu;
+    QWidget *mainMenu;
+    CredentialMenu menu;
 	Crypto crypt;
 	CrossPlatform x;
 	SaveJson sj;
@@ -40,13 +40,13 @@ void login::attemptLogin(){
 		change.changeIV(x.xString(crypt.hash256(pass)));
 
 		mainMenu = new CredentialMenu();
-		this->setCentralWidget(mainMenu);
 		QScreen *screen = QGuiApplication::primaryScreen();
 		QRect geometry = screen->geometry();
 		// Make 70% of full screen, then change to 16:9 aspect ratio.
 		int width = geometry.width() * 0.7;
 		int height = width * 0.68;
+		this->close();
 		mainMenu->setFixedSize(width, height);
-		this->resize(width, height);
+		mainMenu->show();
 	}
 }

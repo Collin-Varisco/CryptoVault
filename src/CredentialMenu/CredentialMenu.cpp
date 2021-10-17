@@ -3,12 +3,14 @@
 #include "../JSON/SaveJson.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Settings/Settings.h"
 #include <vector>
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QDebug>
 #include <iostream>
-
+#include <QEvent>
+#include <QKeyEvent>
 #include <string>
 #include <fstream>
 #include <QClipboard>
@@ -18,6 +20,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+	ui.SearchBar->installEventFilter(this);
     ui.ImportExportOptionsButton->installEventFilter(this);
     ui.ImportExportFrame->installEventFilter(this);
     ui.AddCredentialFrame->setVisible(false);
@@ -65,7 +68,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
 
     // Vault Label
     ui.label_8->setGeometry(0, 0, this->width(), this->height()*0.11639);
-	
+
     // Search Bar
     ui.SearchBar->setGeometry(this->width()*0.0895, this->height()*0.04918, this->width()*0.2199, this->height()*0.0459);
 
@@ -75,11 +78,19 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.AddButton, SIGNAL(clicked()), this, SLOT(openAddCredentialPrompt()));
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
     connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
+    connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
     loadCredentials();
 
 
 }
 
+void CredentialMenu::openSettings() {
+	QWidget* settings;
+	settings = new Settings();
+	this->close();
+	settings->show();
+
+}
 
 void CredentialMenu::formatButtonWithinFrame(QPushButton *button, int originalWidth, int originalLength, QFrame *frame){
 	int buttonWidth = button->width();
@@ -87,7 +98,7 @@ void CredentialMenu::formatButtonWithinFrame(QPushButton *button, int originalWi
 	int buttonX = button->x();
 	int buttonY = button->y();
 	int frameWidth = originalWidth;
-	int frameHeight = originalLength;	
+	int frameHeight = originalLength;
 
 	double xRatio = (double)buttonX / (double)frameWidth;
 	int finalX = frame->width() * xRatio;
@@ -100,7 +111,7 @@ void CredentialMenu::formatButtonWithinFrame(QPushButton *button, int originalWi
 
 	double heightRatio = (double)buttonHeight / (double)frameHeight;
 	int finalHeight = frame->height() * heightRatio;
-	
+
 	button->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
@@ -111,7 +122,7 @@ void CredentialMenu::formatLineEditWithinFrame(QLineEdit *button, int originalWi
 	int buttonX = button->x();
 	int buttonY = button->y();
 	int frameWidth = originalWidth;
-	int frameHeight = originalLength;	
+	int frameHeight = originalLength;
 
 	double xRatio = (double)buttonX / (double)frameWidth;
 	int finalX = frame->width() * xRatio;
@@ -124,7 +135,7 @@ void CredentialMenu::formatLineEditWithinFrame(QLineEdit *button, int originalWi
 
 	double heightRatio = (double)buttonHeight / (double)frameHeight;
 	int finalHeight = frame->height() * heightRatio;
-	
+
 	button->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
@@ -148,7 +159,7 @@ void CredentialMenu::formatFrame(QFrame *obj){
 
 	double heightRatio = (double)objHeight / (double)originalHeight;
 	int finalHeight = window_Height * heightRatio;
-	
+
 	obj->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
@@ -172,7 +183,7 @@ void CredentialMenu::formatTable(QTableWidget *obj){
 
 	double heightRatio = (double)objHeight / (double)originalHeight;
 	int finalHeight = window_Height * heightRatio;
-	
+
 	obj->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
@@ -190,7 +201,7 @@ void CredentialMenu::openAddCredentialPrompt(){
 }
 
 void CredentialMenu::closeAddCredentialPrompt(){
-		ui.AddCredentialFrame->setVisible(false);
+	ui.AddCredentialFrame->setVisible(false);
 }
 
 
@@ -241,7 +252,7 @@ void CredentialMenu::loadCredentials(){
 	int width;
 	for (int s = 0; s < ui.CredentialTable->horizontalHeader()->count(); ++s) {
 		//ui.CredentialTable->horizontalHeader()->setSectionResizeMode(s, QHeaderView::Stretch);
-		if (s < 3) {	
+		if (s < 3) {
 			width = ui.CredentialTable->width() * 0.30;
 			ui.CredentialTable->horizontalHeader()->resizeSection(s, width);
 		}
@@ -250,13 +261,11 @@ void CredentialMenu::loadCredentials(){
 		}
 	}
 
-
-
     Crypto crypt;
     using namespace nlohmann;
     std::ifstream jFile("./credentials.json");
     json j = json::parse(jFile);
-	
+
     int size = j["Credentials"][0]["Entries"].size();
 	services.clear();
 	passwords.clear();
@@ -287,8 +296,6 @@ void CredentialMenu::loadCredentials(){
 		checkItem->setLayout(layout);
 		ui.CredentialTable->setCellWidget(row, 3, checkItem);
     }
-	
-
 }
 
 bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
@@ -320,5 +327,56 @@ bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
 		else {
 	        	return QWidget::eventFilter(obj, event);
 		}
+	}
+
+	// search bar listener
+	CrossPlatform cross;
+	if (event->type() == QEvent::KeyPress) {
+		QKeyEvent* enteredKey = static_cast<QKeyEvent*>(event);
+		QString key = enteredKey->text();
+		QString newEditedText;
+		if (key == "\b") {
+			std::string lineText(cross.xString(ui.SearchBar->text()));
+			lineText.pop_back();
+			newEditedText = QString::fromStdString(lineText);
+		}
+		else {
+			newEditedText = ui.SearchBar->text() + key;
+		}
+		ui.SearchBar->setText(newEditedText);
+		search(cross.xString(newEditedText.toUtf8().constData()));
+		return true;
+	}
+	else {
+		return QObject::eventFilter(obj, event);
+	}
+}
+
+std::string CredentialMenu::toLowerCase(std::string words) {
+	std::string str = words;
+	std::transform(str.begin(), str.end(), str.begin(),
+		[](unsigned char c) {
+			return std::tolower(c);
+		});
+	return str;
+}
+
+void CredentialMenu::search(std::string searchTerm) {
+	std::vector<int> resultIndexes;
+	std::string searchWord = toLowerCase(searchTerm);
+	for (int i = 0; i < services.size(); i++) {
+		if (toLowerCase(services.at(i)).find(searchWord) != std::string::npos) {
+			resultIndexes.push_back(i);
+		}
+	}
+	ui.CredentialTable->clear();
+	ui.CredentialTable->setRowCount(resultIndexes.size());
+	for (int i = 0; i < resultIndexes.size(); i++) {
+		QTableWidgetItem* serviceItem = new QTableWidgetItem(QString::fromStdString(services.at(resultIndexes.at(i))));
+		ui.CredentialTable->setItem(i, 0, serviceItem);
+		QTableWidgetItem* userItem = new QTableWidgetItem(QString::fromStdString(usernames.at(resultIndexes.at(i))));
+		ui.CredentialTable->setItem(i, 1, userItem);
+		QTableWidgetItem* passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(resultIndexes.at(i))));
+		ui.CredentialTable->setItem(i, 2, passItem);
 	}
 }

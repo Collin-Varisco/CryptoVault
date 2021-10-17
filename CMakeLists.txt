@@ -49,6 +49,11 @@ add_executable(CryptoVault
 
     src/JSON/SaveJson.cpp
     src/JSON/SaveJson.h
+
+    src/Settings/Settings.cpp
+    src/Settings/ui_Settings.h
+    src/Settings/Settings.ui
+    src/Settings/Settings.h
 )
 
 INCLUDE_DIRECTORIES(libs)
