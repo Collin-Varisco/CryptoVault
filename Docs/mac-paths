@@ -1,2 +1,0 @@
-export Qt5_DIR=/usr/local/Qt-5.15.3/lib/cmake/Qt5
-export QT_DIR=/usr/local/Qt-5.15.3/lib/cmake/Qt5
