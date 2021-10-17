@@ -18,6 +18,8 @@ class CredentialMenu : public QMainWindow
 		void formatTable(QTableWidget *table);
 		void formatButtonWithinFrame(QPushButton *button, int originalFrameWidth, int originalFrameLength, QFrame *frame);
 		void formatLineEditWithinFrame(QLineEdit *line, int originalFrameWidth, int originalFrameLength, QFrame *frame);
+		void search(std::string searchTerm);
+		std::string toLowerCase(std::string words);
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
