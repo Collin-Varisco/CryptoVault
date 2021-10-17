@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/Qt-SecretTest_RSA.dir/Qt-SecretTest_RSA_autogen/mocs_compilation.cpp.o CMakeFiles/Qt-SecretTest_RSA.dir/main.cpp.o -o Qt-SecretTest_RSA  ../src/libQt-Secret.a /usr/lib/libQt5Core.so.5.15.2 ../src/mini-gmp/src/libQtBigint.a 

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libQt-Secret.a CMakeFiles/Qt-Secret.dir/Qt-Secret_autogen/mocs_compilation.cpp.o CMakeFiles/Qt-Secret.dir/Qt-AES/qaesencryption.cpp.o CMakeFiles/Qt-Secret.dir/Qt-RSA/qrsaencryption.cpp.o
-/usr/bin/ranlib libQt-Secret.a
