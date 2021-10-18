@@ -54,12 +54,7 @@ void AccountCreation::verify(){
 
             QWidget *mainMenu;
             mainMenu = new CredentialMenu();
-	    QScreen *screen = QGuiApplication::primaryScreen();
-	    QRect geometry = screen->geometry();
- 	    int width = geometry.width() * 0.7;
-	    int height = width * 0.68;
-	    this->setFixedSize(width, height);
-            mainMenu->setFixedSize(width, height);
-            this->setCentralWidget(mainMenu);
+	    this->close();
+	    mainMenu->show();
         }
 }
