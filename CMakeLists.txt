@@ -57,7 +57,7 @@ if(WIN32)
 		src/Settings/Settings.h
 	)
 endif()
-if(UNIX)
+if(UNIX AND NOT APPLE)
 	add_executable(CryptoVault
 		src/main.cpp
 

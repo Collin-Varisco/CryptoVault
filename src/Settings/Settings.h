@@ -23,5 +23,7 @@ class Settings : public QMainWindow
 		std::vector<std::string> passwords;
 		std::vector<std::string> usernames;
 		bool editing = false;
+	public slots:
+		void vault();
 
 };

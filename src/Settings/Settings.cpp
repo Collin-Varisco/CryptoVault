@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "../CredentialMenu/CredentialMenu.h"
 #include <nlohmann/json.hpp>
 #include "../JSON/SaveJson.h"
 #include "../Crypto/Crypto.h"
@@ -41,17 +42,18 @@ Settings::Settings(QFrame *parent)
     int frameY = this->height() * 0.2295;
     int frameWidth = this->width() * 0.2597;
     int frameHeight = this->height() * 0.6081;
-	
+
     // Vault Label
     ui.label_8->setGeometry(0, 0, this->width(), this->height()*0.11639);
-	
+
 
 
     // </endFormatting>
 
-
+    connect(ui.VaultButton, SIGNAL(clicked()), this, SLOT(vault()));
 
 }
+
 
 
 void Settings::formatButtonWithinFrame(QPushButton *button, int originalWidth, int originalLength, QFrame *frame){
@@ -60,7 +62,7 @@ void Settings::formatButtonWithinFrame(QPushButton *button, int originalWidth, i
 	int buttonX = button->x();
 	int buttonY = button->y();
 	int frameWidth = originalWidth;
-	int frameHeight = originalLength;	
+	int frameHeight = originalLength;
 
 	double xRatio = (double)buttonX / (double)frameWidth;
 	int finalX = frame->width() * xRatio;
@@ -73,7 +75,7 @@ void Settings::formatButtonWithinFrame(QPushButton *button, int originalWidth, i
 
 	double heightRatio = (double)buttonHeight / (double)frameHeight;
 	int finalHeight = frame->height() * heightRatio;
-	
+
 	button->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
@@ -84,7 +86,7 @@ void Settings::formatLineEditWithinFrame(QLineEdit *button, int originalWidth, i
 	int buttonX = button->x();
 	int buttonY = button->y();
 	int frameWidth = originalWidth;
-	int frameHeight = originalLength;	
+	int frameHeight = originalLength;
 
 	double xRatio = (double)buttonX / (double)frameWidth;
 	int finalX = frame->width() * xRatio;
@@ -97,7 +99,7 @@ void Settings::formatLineEditWithinFrame(QLineEdit *button, int originalWidth, i
 
 	double heightRatio = (double)buttonHeight / (double)frameHeight;
 	int finalHeight = frame->height() * heightRatio;
-	
+
 	button->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
@@ -121,11 +123,17 @@ void Settings::formatFrame(QFrame *obj){
 
 	double heightRatio = (double)objHeight / (double)originalHeight;
 	int finalHeight = window_Height * heightRatio;
-	
+
 	obj->setGeometry(finalX, finalY, finalWidth, finalHeight);
 }
 
-	
+void Settings::vault(){
+	QWidget *vault;
+	vault = new CredentialMenu();
+	this->close();
+	vault->show();
+}
+
 
 
 bool Settings::eventFilter(QObject *obj, QEvent *event)
