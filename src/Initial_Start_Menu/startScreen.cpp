@@ -28,11 +28,32 @@ void startScreen::createAccount(){
 	//this->setCentralWidget(createAccount);
 }
 
-// [TODO]
 /* recoverAccount()
  * Opens file dialog that allows user to select an existing credential file to recover their account
  * copies file over to the working directory of the application.
 */
 void startScreen::recoverAccount(){
+	CrossPlatform x;
+	QString workingDirectory = qApp->applicationDirPath();
+	QString filePath = QFileDialog::getOpenFileName(this, "Open Account JSON", workingDirectory, "JSON File (*.json)");
+	std::string copy;
+	std::string cmd;
+	#ifdef __linux__ || defined TARGET_OS_MAC
+	copy = "cp ";
+	cmd = copy + x.xString(filePath) + " " + x.xString(workingDirectory);
+	#elif defined _WIN32 || defined _WIN64
+	copy = "copy ";
+	cmd = copy + x.xString(filePath) + " " + x.xString(workingDirectory);
+	std::replace(cmd.begin(), cmd.end(), '/', '\\');
+	#else
+	#error "unknown platform"
+	#endif
 
+	const char* c;
+	c = cmd.c_str();
+	system(c);
+	QWidget* log;
+	log = new login();
+	this->close();
+	log->show();
 }
