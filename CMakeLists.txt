@@ -11,51 +11,98 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
-add_executable(CryptoVault
-    src/main.cpp
+if(WIN32)
+	add_executable(CryptoVault WIN32
+		src/main.cpp
 
-    src/Initial_Start_Menu/startScreen.cpp
-    src/Initial_Start_Menu/startScreen.h
-    src/Initial_Start_Menu/ui_startScreen.h
-    src/Initial_Start_Menu/startScreen.ui
-    src/Initial_Start_Menu/initial.qrc
+		src/Initial_Start_Menu/startScreen.cpp
+		src/Initial_Start_Menu/startScreen.h
+		src/Initial_Start_Menu/ui_startScreen.h
+		src/Initial_Start_Menu/startScreen.ui
+		src/Initial_Start_Menu/initial.qrc
 
-    src/AccountCreation/AccountCreation.cpp
-    src/AccountCreation/AccountCreation.h
-    src/AccountCreation/ui_accountCreation.h
-    src/AccountCreation/accountCreation.ui
-    src/AccountCreation/InitialScreenLogo.qrc
+		src/AccountCreation/AccountCreation.cpp
+		src/AccountCreation/AccountCreation.h
+		src/AccountCreation/ui_accountCreation.h
+		src/AccountCreation/accountCreation.ui
+		src/AccountCreation/InitialScreenLogo.qrc
 
-    src/CredentialMenu/CredentialMenu.cpp
-    src/CredentialMenu/CredentialMenu.h
-    src/CredentialMenu/ui_CredentialMenu.h
-    src/CredentialMenu/CredentialMenu.ui
-    src/CredentialMenu/files.qrc
+		src/CredentialMenu/CredentialMenu.cpp
+		src/CredentialMenu/CredentialMenu.h
+		src/CredentialMenu/ui_CredentialMenu.h
+		src/CredentialMenu/CredentialMenu.ui
+		src/CredentialMenu/files.qrc
 
-    src/Login/login.cpp
-    src/Login/login.h
-    src/Login/ui_login.h
-    src/Login/login.ui
+		src/Login/login.cpp
+		src/Login/login.h
+		src/Login/ui_login.h
+		src/Login/login.ui
 
 
-    src/CrossPlatform/CrossPlatform.cpp
-    src/CrossPlatform/CrossPlatform.h
+		src/CrossPlatform/CrossPlatform.cpp
+		src/CrossPlatform/CrossPlatform.h
 
-    src/Global/ChangeGlobals.h
-    src/Global/Global.h
+		src/Global/ChangeGlobals.h
+		src/Global/Global.h
 
-    src/Crypto/Crypto.cpp
-    src/Crypto/Crypto.h
+		src/Crypto/Crypto.cpp
+		src/Crypto/Crypto.h
 
-    src/JSON/SaveJson.cpp
-    src/JSON/SaveJson.h
+		src/JSON/SaveJson.cpp
+		src/JSON/SaveJson.h
 
-    src/Settings/Settings.cpp
-    src/Settings/ui_Settings.h
-    src/Settings/Settings.ui
-    src/Settings/Settings.h
-)
+		src/Settings/Settings.cpp
+		src/Settings/ui_Settings.h
+		src/Settings/Settings.ui
+		src/Settings/Settings.h
+	)
+endif()
+if(UNIX AND NOT APPLE)
+	add_executable(CryptoVault
+		src/main.cpp
 
+		src/Initial_Start_Menu/startScreen.cpp
+		src/Initial_Start_Menu/startScreen.h
+		src/Initial_Start_Menu/ui_startScreen.h
+		src/Initial_Start_Menu/startScreen.ui
+		src/Initial_Start_Menu/initial.qrc
+
+		src/AccountCreation/AccountCreation.cpp
+		src/AccountCreation/AccountCreation.h
+		src/AccountCreation/ui_accountCreation.h
+		src/AccountCreation/accountCreation.ui
+		src/AccountCreation/InitialScreenLogo.qrc
+
+		src/CredentialMenu/CredentialMenu.cpp
+		src/CredentialMenu/CredentialMenu.h
+		src/CredentialMenu/ui_CredentialMenu.h
+		src/CredentialMenu/CredentialMenu.ui
+		src/CredentialMenu/files.qrc
+
+		src/Login/login.cpp
+		src/Login/login.h
+		src/Login/ui_login.h
+		src/Login/login.ui
+
+
+		src/CrossPlatform/CrossPlatform.cpp
+		src/CrossPlatform/CrossPlatform.h
+
+		src/Global/ChangeGlobals.h
+		src/Global/Global.h
+
+		src/Crypto/Crypto.cpp
+		src/Crypto/Crypto.h
+
+		src/JSON/SaveJson.cpp
+		src/JSON/SaveJson.h
+
+		src/Settings/Settings.cpp
+		src/Settings/ui_Settings.h
+		src/Settings/Settings.ui
+		src/Settings/Settings.h
+	)
+endif()
 INCLUDE_DIRECTORIES(libs)
 add_subdirectory(libs/Qt-Secret)
 
@@ -66,5 +113,7 @@ IF(UNIX AND NOT APPLE)
     target_link_libraries(CryptoVault Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
 IF(WIN32)
+    set(Qt-Secret-Lib "" CACHE FILEPATH "development/QtBigint.dll")
+    set(Qt-Secret-Lib2 "" CACHE FILEPATH "development/Qt-Secret.dll")
     target_link_libraries(CryptoVault PUBLIC Qt-Secret Qt5::Widgets Qt5::Core Qt5::Gui)
 ENDIF()
