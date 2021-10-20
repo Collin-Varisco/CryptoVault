@@ -1,5 +1,5 @@
-## **BUILD**
-### **Windows**
+# **Build Instructions**
+## **Windows**
 - You need CMake installed with Visual Studio
 - If you don't already have it type in the windows search bar: "visual studio installer" \
   and click on the result.
@@ -37,7 +37,14 @@
   
 
 
-# **Unix**
+## **Linux Distributions**
+### **Debain Linux Distributions**
+'''
+/bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/debian_linux_install.sh)"
+'''
+### **Arch Linux**
+- Script Coming Soon.
+### Other Unix Devices
 - Download and install Qt5 from your package manager or from the [website](https://www.qt.io/download-qt-installer) 
 - Download and install CMake & Make from your package manager. \
 - You may need to change the path CMAKE_PREFIX_PATH to the location of where Qt is installed.
