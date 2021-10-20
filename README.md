@@ -39,9 +39,16 @@
 
 ## **Linux Distributions**
 ### **Debain Linux Distributions**
-'''
+Run this command in a terminal on a Debian linux distribution to automatically \
+clone the repository, install the dependencies, and build CryptoVault. \
+```
 /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/debian_linux_install.sh)"
-'''
+```
+You can run the program by changing to the build directory of that was created with the script and running the executable. \
+```
+cd ul-cryptovault/build && ./CryptoVault
+```
+ 
 ### **Arch Linux**
 - Script Coming Soon.
 ### Other Unix Devices
