@@ -39,21 +39,27 @@
 
 ## **Linux Distributions**
 ### **Debian Linux Distributions**
-Run this command in a terminal on a Debian linux distribution to automatically \
-clone the repository, install the dependencies, and build CryptoVault. \
+Run this command in a terminal on a Debian linux distribution to automatically clone the repository, install the dependencies, and build CryptoVault. 
 ```
 /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/debian_linux_install.sh)"
 ```
-You can run the program by changing to the build directory of that was created with the script and running the executable. \
+You can run the program by changing to the build directory of that was created with the script and running the executable. 
 ```
 cd ul-cryptovault/build && ./CryptoVault
 ```
- 
+You can make changes to the software and build it by running the following commands
+```
+$ cd ul-cryptovault
+$ mkdir build
+$ cd build 
+$ cmake ..
+$ make
+```
 ### **Arch Linux**
 - Script Coming Soon.
 ### Other Unix Devices
 - Download and install Qt5 from your package manager or from the [website](https://www.qt.io/download-qt-installer) 
-- Download and install CMake & Make from your package manager. \
+- Download and install CMake & Make from your package manager. 
 - You may need to change the path CMAKE_PREFIX_PATH to the location of where Qt is installed.
 ```$ git clone https://gitlab.com/Collin-Varisco-UL/cryptobox.git
    $ cd ul-cryptovault
