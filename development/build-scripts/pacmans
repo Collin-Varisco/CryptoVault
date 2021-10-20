@@ -1,0 +1,45 @@
+#!/bin/bash
+if [ -f /etc/lsb-release ]; then
+	yes | sudo apt-get install cmake
+	yes | sudo apt-get install qtdeclarative5-dev
+	yes | sudo apt-get install qtbase5-dev
+	yes | sudo apt-get install qt5-default
+fi
+if [ -f "/etc/arch-release" ]; then
+	yes | sudo pacman -S extra/qt5-base
+	yes | sudo pacman -S core/gcc-libs
+	yes | sudo pacman -S core/glibc
+	yes | sudo pacman -S core/glibc
+	yes | sudo pacman -S extra/libglvnd
+	yes | sudo pacman -S extra/libpng
+	yes | sudo pacman -S core/zlib
+	yes | sudo pacman -S extra/harfbuzz
+	yes | sudo pacman -S extra/md4c
+	yes | sudo pacman -S core/systemd-libs
+	yes | sudo pacman -S extra/double-conversion
+	yes | sudo pacman -S core/icu
+	yes | sudo pacman -S core/pcre2
+	yes | sudo pacman -S core/zstd
+	yes | sudo pacman -S core/glib2
+	yes | sudo pacman -S extra/freetype2
+	yes | sudo pacman -S extra/graphite
+	yes | sudo pacman -S core/xz
+	yes | sudo pacman -S core/lz4
+	yes | sudo pacman -S core/libcap
+	yes | sudo pacman -S core/libgcrypt
+	yes | sudo pacman -S core/icu
+	yes | sudo pacman -S core/pcre
+	yes | sudo pacman -S extra/libx11
+	yes | sudo pacman -S core/bzip2
+	yes | sudo pacman -S core/brotli
+	yes | sudo pacman -S core/libgpg-error
+	yes | sudo pacman -S extra/libxcb
+	yes | sudo pacman -S core/brotli
+	yes | sudo pacman -S extra/libxau
+	yes | sudo pacman -S extra/libxdmcp
+fi
+mkdir build
+cd build
+cmake ../../..
+make
+./CryptoVault
