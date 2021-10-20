@@ -38,7 +38,7 @@
 
 
 ## **Linux Distributions**
-### **Debain Linux Distributions**
+### **Debian Linux Distributions**
 Run this command in a terminal on a Debian linux distribution to automatically \
 clone the repository, install the dependencies, and build CryptoVault. \
 ```
