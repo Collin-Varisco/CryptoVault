@@ -38,7 +38,7 @@
 ## **Build on Linux**
 1. Run this command in a terminal to install the build dependencies for your Linux distribution.
 ```
-$ /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/blob/main/development/build-scripts/linux-deps.sh)"
+$ /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/linux-deps.sh)"
 ```
 2. Clone The Repository
 ```
