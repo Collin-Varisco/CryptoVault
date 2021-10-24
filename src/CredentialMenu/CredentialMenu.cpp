@@ -79,9 +79,8 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
     connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
     connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
+	connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
     loadCredentials();
-
-
 }
 
 void CredentialMenu::openSettings() {
@@ -379,4 +378,13 @@ void CredentialMenu::search(std::string searchTerm) {
 		QTableWidgetItem* passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(resultIndexes.at(i))));
 		ui.CredentialTable->setItem(i, 2, passItem);
 	}
+}
+
+void CredentialMenu::copySelectedCell(){
+	QTableWidgetItem *selected = ui.CredentialTable->selectedItems().first();
+	int row = ui.CredentialTable->row(selected);
+	int column = ui.CredentialTable->column(selected);
+	QString itemText = ui.CredentialTable->item(row, column)->text();
+	QClipboard *clipboard = QGuiApplication::clipboard();
+	clipboard->setText(itemText);
 }
