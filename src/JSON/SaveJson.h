@@ -15,4 +15,5 @@ class SaveJson
         bool checkForFile();
         void setMasterPassword(std::string encrypted_master_pass);
         std::string loadMasterPassword();
+        void removeCredential(QString service, QString username, QString pass);
 };

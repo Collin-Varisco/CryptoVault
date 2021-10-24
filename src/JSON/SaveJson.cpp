@@ -98,3 +98,32 @@ void SaveJson::addCredentials(QString service, QString username, QString passwor
     std::ofstream o("credentials.json");
     o << std::setw(4) << j << std::endl;
 }
+
+/* removeCredential(QString service, QString username, QString pass)
+ * Searches the JSON to find a credential JSON object that exactly matches the three parameters and
+ * removes that JSON object.
+*/
+void SaveJson::removeCredential(QString service, QString username, QString pass){
+	using namespace nlohmann;
+	std::ifstream jFile("credentials.json");
+	json j = json::parse(jFile);
+	Crypto crypt;
+	// Encrypt again to compare to JSON values
+	std::string crypt_service = crypt.encryptString(service);
+	std::string crypt_username = crypt.encryptString(username);
+	std::string crypt_password = crypt.encryptString(pass);
+
+	int total_Entries = j["Credentials"][0]["Entries"].size();
+	int entryNumber;
+	for(int i = 0; i < total_Entries; i++){
+
+		if(crypt_service == j["Credentials"][0]["Entries"][i]["service"] && crypt_username == j["Credentials"][0]["Entries"][i]["username"]  && crypt_password == j["Credentials"][0]["Entries"][i]["password"])
+		{
+			entryNumber = i;
+			break;
+		}
+	}
+	j["Credentials"][0]["Entries"].erase(entryNumber);
+	std::ofstream o("credentials.json");
+	o << std::setw(4) << j << std::endl;
+}

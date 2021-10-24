@@ -80,6 +80,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
     connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
 	connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
+	connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
     loadCredentials();
 }
 
@@ -387,4 +388,17 @@ void CredentialMenu::copySelectedCell(){
 	QString itemText = ui.CredentialTable->item(row, column)->text();
 	QClipboard *clipboard = QGuiApplication::clipboard();
 	clipboard->setText(itemText);
+}
+
+void CredentialMenu::removeSelectedCredential(){
+	QTableWidgetItem *selected = ui.CredentialTable->selectedItems().first();
+	int row = ui.CredentialTable->row(selected);
+	CrossPlatform x;
+
+	QString service =   ui.CredentialTable->item(row, 0)->text();
+	QString username =  ui.CredentialTable->item(row, 1)->text();
+	QString pass =      ui.CredentialTable->item(row, 2)->text();
+	SaveJson sj;
+	sj.removeCredential(service, username, pass);
+	loadCredentials();
 }
