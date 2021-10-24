@@ -33,5 +33,6 @@ class CredentialMenu : public QMainWindow
 		void addCredential();
 		void openSettings();
 		void copySelectedCell();
+		void removeSelectedCredential();
 
 };
