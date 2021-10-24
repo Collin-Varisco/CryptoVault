@@ -32,5 +32,6 @@ class CredentialMenu : public QMainWindow
 		void closeAddCredentialPrompt();
 		void addCredential();
 		void openSettings();
+		void copySelectedCell();
 
 };

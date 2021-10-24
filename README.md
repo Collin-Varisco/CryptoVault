@@ -1,5 +1,5 @@
-## **BUILD**
-### **Windows**
+# **Build Instructions**
+## **Windows**
 - You need CMake installed with Visual Studio
 - If you don't already have it type in the windows search bar: "visual studio installer" \
   and click on the result.
@@ -30,22 +30,29 @@
 - Click the dropdown button next to the right of the green arrow build button. \
   It will say "Select Startup Item" when you hover over it with your mouse.
 - In the dropdown menu, select the CryptoVault.exe option as your startup item.
-- Build the executable by clicking that green arrow build button that now shows "CryptoVault.exe." on it.
-- The executable will build, but won't run on the first build because the libraries aren't linking. To fix this problem, \
-  copy the two missing dll files from the /path/to/ul-cryptovault/development/windows directory over to executable directory, C:\path\to\UL-CryptoVault\out\build\x64-Debug\ \
-  Once this is done, you will be able to compile and run the application from visual studio.
+- Build the executable by clicking that green arrow build button that should display "CryptoVault.exe."
+- It should compile and run and your development environment will be setup to make changes and build again.
   
 
 
-# **Unix**
-- Download and install Qt5 from your package manager or from the [website](https://www.qt.io/download-qt-installer) 
-- Download and install CMake & Make from your package manager. \
-- You may need to change the path CMAKE_PREFIX_PATH to the location of where Qt is installed.
-```$ git clone https://gitlab.com/Collin-Varisco-UL/cryptobox.git
-   $ cd ul-cryptovault
-   $ mkdir build && cd build
-   $ cmake ..
-   $ make
-   $ ./CryptoVault
-``` 
+## **Build on Linux**
+1. Run this command in a terminal to install the build dependencies for your Linux distribution.
+```
+$ /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/linux-deps.sh)"
+```
+2. Clone The Repository
+```
+$ git clone https://gitlab.com/Collin-Varisco-UL/ul-cryptovault.git
+```
+3. Build
+```
+$ cd ul-cryptovault
+$ mkdir build && cd build 
+$ cmake ..
+$ make
+```
+4. Run CryptoVault Executable in ul-cryptovault/build directory
+```
+$ ./CryptoVault
+```
 
