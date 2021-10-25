@@ -55,6 +55,11 @@ if(WIN32)
 		src/Settings/ui_Settings.h
 		src/Settings/Settings.ui
 		src/Settings/Settings.h
+		
+		src/ExportCredentialsLoginChange/ExportLoginChange.cpp
+		src/ExportCredentialsLoginChange/ExportLoginChange.h
+		src/ExportCredentialsLoginChange/ui_ExportCredentialsLoginChange.h
+		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
 	)
 endif()
 if(UNIX AND NOT APPLE)
@@ -101,6 +106,11 @@ if(UNIX AND NOT APPLE)
 		src/Settings/ui_Settings.h
 		src/Settings/Settings.ui
 		src/Settings/Settings.h
+		
+		src/ExportCredentialsLoginChange/ExportLoginChange.cpp
+		src/ExportCredentialsLoginChange/ExportLoginChange.h
+		src/ExportCredentialsLoginChange/ui_ExportCredentialsLoginChange.h
+		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
 	)
 endif()
 INCLUDE_DIRECTORIES(libs)

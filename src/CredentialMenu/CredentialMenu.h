@@ -20,6 +20,11 @@ class CredentialMenu : public QMainWindow
 		void formatLineEditWithinFrame(QLineEdit *line, int originalFrameWidth, int originalFrameLength, QFrame *frame);
 		void search(std::string searchTerm);
 		std::string toLowerCase(std::string words);
+		void continueExport();
+		QString export_selected_dir;
+		QList<QString> exportServices;
+		QList<QString> exportUsernames;
+		QList<QString> exportPasswords;
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
@@ -34,5 +39,8 @@ class CredentialMenu : public QMainWindow
 		void openSettings();
 		void copySelectedCell();
 		void removeSelectedCredential();
+		void exportSelectedCredentials();
+		void loginChangeData(QString hashedPass);
+
 
 };

@@ -8,6 +8,8 @@ class Global
         public:
             std::string global_key;
             std::string global_iv;
+            std::string changed_global_key;
+            std::string changed_global_iv;
         public: 
             Global() = default;
             Global(const Global&) = delete;
