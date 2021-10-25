@@ -11,6 +11,7 @@ class SaveJson
     public:
         SaveJson();
         void addCredentials(QString service, QString username, QString password);
+        void addExportedCredentials(QList<QString> service, QList<QString> username, QList<QString> password, std::string export_path);
         void createJSON();
         bool checkForFile();
         void setMasterPassword(std::string encrypted_master_pass);

@@ -43,15 +43,15 @@ void AccountCreation::verify(){
         if(!error){
             Crypto crypt;
             ChangeGlobals change;
-            QString combo = username + key_1;
+            QString combo = crypt.hash256(username + key_1);
 
             change.changeKey(x.xString(crypt.hash256(username)), false);
-            QString saltedPass = crypt.hash256(username) + crypt.hash256(key_1);
-            change.changeIV(x.xString(crypt.hash256(saltedPass)), false);
+            QString saltedHashPass = crypt.hash256(crypt.hash256(username) + crypt.hash256(key_1));
+            change.changeIV(x.xString(crypt.hash256(combo)), false);
 
             SaveJson sj;
             sj.createJSON();
-            sj.setMasterPassword(x.xString(crypt.hash256(combo)));
+            sj.setMasterPassword(x.xString(saltedHashPass));
 
             QWidget *mainMenu;
             mainMenu = new CredentialMenu();

@@ -11,11 +11,11 @@ class ExportLoginChange : public QMainWindow
 	Q_OBJECT
 	public:
 		ExportLoginChange(QFrame *parent = 0);
-		void sendFinished();
+		void sendFinished(QString hashedPass);
 	private:
 		Ui::LoginChangeForm ui;
     public slots:
         void changeLogin();
 	signals:
-		void sendFinishedSignal(const bool& fin);
+		void sendFinishedSignal(QString hashedPass);
 };

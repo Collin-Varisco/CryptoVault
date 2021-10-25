@@ -28,15 +28,17 @@ void ExportLoginChange::changeLogin(){
 
     QString username = ui.UsernameInput->text();
     QString pass = ui.EncryptionKeyInput->text();
-    QString combo = crypt.hash256(username) + crypt.hash256(pass);
-    std::string entered = x.xString(crypt.hash256(combo));
+    QString combo = crypt.hash256(username + pass);
     change.changeKey(x.xString(crypt.hash256(username)), true);
-    change.changeIV(entered, true);
-    sendFinished();
+
+    QString saltedHashPass = crypt.hash256(crypt.hash256(username) + crypt.hash256(pass));
+
+    change.changeIV(x.xString(crypt.hash256(combo)), true);
+    sendFinished(saltedHashPass);
     this->close();
 }
 
-void ExportLoginChange::sendFinished(){
-    emit sendFinishedSignal(true);
+void ExportLoginChange::sendFinished(QString hashedPass){
+    emit sendFinishedSignal(hashedPass);
 }
 

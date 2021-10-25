@@ -31,14 +31,13 @@ void login::attemptLogin(){
 
 	QString username = ui.UsernameInput->text();
 	QString pass = ui.EncryptionKeyInput->text();
-	QString combo = username + pass;
-	std::string entered = x.xString(crypt.hash256(combo));
+	QString combo = crypt.hash256(username + pass);
+	std::string entered = x.xString(crypt.hash256(crypt.hash256(username) + crypt.hash256(pass)));
 	std::string passHash = sj.loadMasterPassword();
 
 	if(entered == passHash){
 		change.changeKey(x.xString(crypt.hash256(username)), false);
-		QString saltedPass = crypt.hash256(username) + crypt.hash256(pass);
-        change.changeIV(x.xString(crypt.hash256(saltedPass)), false);
+        change.changeIV(x.xString(crypt.hash256(combo)), false);
 
 		mainMenu = new CredentialMenu();
 		QScreen *screen = QGuiApplication::primaryScreen();
