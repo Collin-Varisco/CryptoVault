@@ -1,6 +1,11 @@
 #include "CredentialMenu.h"
 #include <nlohmann/json.hpp>
+#include <QFileDialog>
+#include <QDir>
+#include "../ExportCredentialsLoginChange/ExportLoginChange.h"
 #include "../JSON/SaveJson.h"
+#include "../Global/ChangeGlobals.h"
+#include "../Global/Global.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
 #include "../Settings/Settings.h"
@@ -81,6 +86,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
 	connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
 	connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
+	connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
     loadCredentials();
 }
 
@@ -297,6 +303,36 @@ void CredentialMenu::loadCredentials(){
 		ui.CredentialTable->setCellWidget(row, 3, checkItem);
     }
 }
+
+void CredentialMenu::exportSelectedCredentials(){
+
+	// QFolderDialog asking where to save the file to
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose Directory For Exported Credentials File"),
+                                             QDir::currentPath(),
+                                             QFileDialog::ShowDirsOnly
+                                             | QFileDialog::DontResolveSymlinks);
+	for(int row = 0; row < services.size(); row++){
+		QWidget *checkWidget = (QWidget *)ui.CredentialTable->cellWidget(row, 3);
+		QCheckBox *box = (QCheckBox *)checkWidget->children().at(1);
+		if(box->isChecked()){
+			exportServices.append(ui.CredentialTable->itemAt(row, 0)->text());
+			exportUsernames.append(ui.CredentialTable->itemAt(row, 1)->text());
+			exportPasswords.append(ui.CredentialTable->itemAt(row, 2)->text());
+		}
+	}
+
+	// Spawn prompt asking for different login credentials to access the selected credentials file that will be exported.
+	QWidget *logChange = new ExportLoginChange();
+	QObject::connect(logChange, SIGNAL(sendFinishedSignal(bool)), this, SLOT(loginChangeData(bool)));
+	logChange->show();
+}
+
+void CredentialMenu::loginChangeData(bool finished){
+	qDebug() << finished;
+}
+
+
+
 
 bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
 {

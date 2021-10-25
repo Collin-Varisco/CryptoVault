@@ -20,11 +20,15 @@ class CredentialMenu : public QMainWindow
 		void formatLineEditWithinFrame(QLineEdit *line, int originalFrameWidth, int originalFrameLength, QFrame *frame);
 		void search(std::string searchTerm);
 		std::string toLowerCase(std::string words);
+		void continueExport();
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
 		std::vector<std::string> passwords;
 		std::vector<std::string> usernames;
+		QStringList exportServices;
+		QStringList exportUsernames;
+		QStringList exportPasswords;
 		bool editing = false;
 		void loadCredentials();
 	public slots:
@@ -34,5 +38,8 @@ class CredentialMenu : public QMainWindow
 		void openSettings();
 		void copySelectedCell();
 		void removeSelectedCredential();
+		void exportSelectedCredentials();
+		void loginChangeData(bool finished);
+
 
 };

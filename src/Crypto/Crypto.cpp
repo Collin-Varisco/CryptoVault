@@ -8,7 +8,7 @@
  * const QString &information - plain text that will be encrypted
  *
 */
-std::string Crypto::encryptString(QString information)
+std::string Crypto::encryptString(QString information, bool loginChanged)
 {
     // AES Encryption Key
     QAESEncryption encryption(QAESEncryption::AES_256, QAESEncryption::CBC);

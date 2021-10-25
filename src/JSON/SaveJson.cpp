@@ -93,7 +93,7 @@ void SaveJson::addCredentials(QString service, QString username, QString passwor
     std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
     json newCredentials;
-    newCredentials = {{"service", crypt.encryptString(service)}, {"username", crypt.encryptString(username)}, {"password", crypt.encryptString(password)}};
+    newCredentials = {{"service", crypt.encryptString(service, false)}, {"username", crypt.encryptString(username, false)}, {"password", crypt.encryptString(password, false)}};
     j["Credentials"][0]["Entries"].push_back(newCredentials);
     std::ofstream o("credentials.json");
     o << std::setw(4) << j << std::endl;
@@ -109,9 +109,9 @@ void SaveJson::removeCredential(QString service, QString username, QString pass)
 	json j = json::parse(jFile);
 	Crypto crypt;
 	// Encrypt again to compare to JSON values
-	std::string crypt_service = crypt.encryptString(service);
-	std::string crypt_username = crypt.encryptString(username);
-	std::string crypt_password = crypt.encryptString(pass);
+	std::string crypt_service = crypt.encryptString(service, false);
+	std::string crypt_username = crypt.encryptString(username, false);
+	std::string crypt_password = crypt.encryptString(pass, false);
 
 	int total_Entries = j["Credentials"][0]["Entries"].size();
 	int entryNumber;

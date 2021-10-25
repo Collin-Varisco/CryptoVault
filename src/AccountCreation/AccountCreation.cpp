@@ -45,8 +45,9 @@ void AccountCreation::verify(){
             ChangeGlobals change;
             QString combo = username + key_1;
 
-            change.changeKey(x.xString(crypt.hash256(username)));
-            change.changeIV(x.xString(crypt.hash256(key_1)));
+            change.changeKey(x.xString(crypt.hash256(username)), false);
+            QString saltedPass = crypt.hash256(username) + crypt.hash256(key_1);
+            change.changeIV(x.xString(crypt.hash256(saltedPass)), false);
 
             SaveJson sj;
             sj.createJSON();

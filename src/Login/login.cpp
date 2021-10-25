@@ -36,8 +36,9 @@ void login::attemptLogin(){
 	std::string passHash = sj.loadMasterPassword();
 
 	if(entered == passHash){
-		change.changeKey(x.xString(crypt.hash256(username)));
-		change.changeIV(x.xString(crypt.hash256(pass)));
+		change.changeKey(x.xString(crypt.hash256(username)), false);
+		QString saltedPass = crypt.hash256(username) + crypt.hash256(pass);
+        change.changeIV(x.xString(crypt.hash256(saltedPass)), false);
 
 		mainMenu = new CredentialMenu();
 		QScreen *screen = QGuiApplication::primaryScreen();
