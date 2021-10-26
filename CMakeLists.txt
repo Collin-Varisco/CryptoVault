@@ -60,6 +60,11 @@ if(WIN32)
 		src/ExportCredentialsLoginChange/ExportLoginChange.h
 		src/ExportCredentialsLoginChange/ui_ExportCredentialsLoginChange.h
 		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
+
+		src/PassGenerator/PasswordGenerator.cpp
+		src/PassGenerator/PasswordGenerator.h
+		src/PassGenerator/ui_PassGen.h
+		src/PassGenerator/PassGen.ui
 	)
 endif()
 if(UNIX)
@@ -111,6 +116,11 @@ if(UNIX)
 		src/ExportCredentialsLoginChange/ExportLoginChange.h
 		src/ExportCredentialsLoginChange/ui_ExportCredentialsLoginChange.h
 		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
+
+		src/PassGenerator/PasswordGenerator.cpp
+		src/PassGenerator/PasswordGenerator.h
+		src/PassGenerator/ui_PassGen.h
+		src/PassGenerator/PassGen.ui
 	)
 endif()
 INCLUDE_DIRECTORIES(libs)

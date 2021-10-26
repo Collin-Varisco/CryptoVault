@@ -9,7 +9,7 @@
 #include <QCheckBox>
 #include <QDebug>
 #include <iostream>
-
+#include "../PassGenerator/PasswordGenerator.h"
 #include <string>
 #include <fstream>
 #include <QClipboard>
@@ -51,7 +51,14 @@ Settings::Settings(QFrame *parent)
     // </endFormatting>
 
     connect(ui.VaultButton, SIGNAL(clicked()), this, SLOT(vault()));
+    connect(ui.GeneratorButton, SIGNAL(clicked()), this, SLOT(openGenerator()));
 
+}
+
+void Settings::openGenerator(){
+	QWidget *set = new PasswordGenerator();
+	this->close();
+	set->show();
 }
 
 

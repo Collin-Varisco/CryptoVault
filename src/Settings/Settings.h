@@ -25,5 +25,6 @@ class Settings : public QMainWindow
 		bool editing = false;
 	public slots:
 		void vault();
+		void openGenerator();
 
 };
