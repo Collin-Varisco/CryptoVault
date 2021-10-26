@@ -41,6 +41,7 @@ class CredentialMenu : public QMainWindow
 		void removeSelectedCredential();
 		void exportSelectedCredentials();
 		void loginChangeData(QString hashedPass);
+		void exportAllCredentials();
 
 
 };

@@ -25,7 +25,9 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-	ui.SearchBar->installEventFilter(this);
+    ui.SearchBar->installEventFilter(this);
+    ui.CredentialTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui.CredentialTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui.ImportExportOptionsButton->installEventFilter(this);
     ui.ImportExportFrame->installEventFilter(this);
     ui.AddCredentialFrame->setVisible(false);
@@ -84,9 +86,10 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
     connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
     connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
-	connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
-	connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
-	connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
+    connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
+    connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
+    connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
+    connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
     loadCredentials();
 }
 
@@ -319,6 +322,33 @@ void CredentialMenu::loadCredentials(){
 		checkItem->setLayout(layout);
 		ui.CredentialTable->setCellWidget(row, 3, checkItem);
     }
+}
+
+void CredentialMenu::exportAllCredentials(){	
+	QString export_all_dir = QFileDialog::getExistingDirectory(this, tr("Choose Directory For Exported Credentials File"), QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	CrossPlatform x;
+	QString workingPath = qApp->applicationDirPath() + "/credentials.json";
+	std::string copy;
+	std::string cmd;
+	#if defined __linux__  
+	copy = "cp ";
+	cmd = copy + x.xString(workingPath) + " " + x.xString(export_all_dir);
+	#elif defined TARGET_OS_MAC
+	copy = "cp ";
+	cmd = copy + x.xString(workingPath) + " " + x.xString(export_all_dir);	
+	#elif defined _WIN32 || defined _WIN64
+	copy = "copy ";
+	cmd = copy + x.xString(workingPath) + " " + x.xString(export_all_dir);
+	std::replace(cmd.begin(), cmd.end(), '/', '\\');
+	#else
+	#error "unknown platform"
+	#endif
+
+	const char* c;
+	c = cmd.c_str();
+	system(c);
+	
+	
 }
 
 void CredentialMenu::exportSelectedCredentials(){
