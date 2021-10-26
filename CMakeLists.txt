@@ -62,7 +62,7 @@ if(WIN32)
 		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
 	)
 endif()
-if(UNIX AND NOT APPLE)
+if(UNIX)
 	add_executable(CryptoVault
 		src/main.cpp
 

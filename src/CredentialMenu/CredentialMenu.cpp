@@ -244,13 +244,30 @@ void CredentialMenu::loadCredentials(){
 	QString password("Password");
 	QString selection("Export");
 	QTableWidgetItem* serviceHeader = new QTableWidgetItem(service);
-	serviceHeader->setForeground(Qt::black);
+	
 	QTableWidgetItem* usernameHeader = new QTableWidgetItem(username);
 	usernameHeader->setForeground(Qt::black);
 	QTableWidgetItem* passwordHeader = new QTableWidgetItem(password);
 	passwordHeader->setForeground(Qt::black);
 	QTableWidgetItem* exportHeader = new QTableWidgetItem(selection);
+	#ifdef __linux__
+	exportHeader->setForeground(Qt::white);
+	usernameHeader->setForeground(Qt::white);
+	passwordHeader->setForeground(Qt::white);
+	serviceHeader->setForeground(Qt::white);
+	#elif defined TARGET_OS_MAC
+	exportHeader->setForeground(Qt::white);
+	usernameHeader->setForeground(Qt::white);
+	passwordHeader->setForeground(Qt::white);
+	serviceHeader->setForeground(Qt::white);
+	#elif defined WIN32_ || WIN64_
 	exportHeader->setForeground(Qt::black);
+	usernameHeader->setForeground(Qt::black);
+	passwordHeader->setForeground(Qt::black);
+	serviceHeader->setForeground(Qt::black);
+	#else
+	#error "Not a valid OS"
+	#endif
 	ui.CredentialTable->setHorizontalHeaderItem(0, serviceHeader);
 	ui.CredentialTable->setHorizontalHeaderItem(1, usernameHeader);
 	ui.CredentialTable->setHorizontalHeaderItem(2, passwordHeader);
