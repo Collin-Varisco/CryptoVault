@@ -27,7 +27,7 @@ class CredentialMenu : public QMainWindow
 		QList<QString> exportServices;
 		QList<QString> exportUsernames;
 		QList<QString> exportPasswords;
-		QPoint cursorPosition;
+	
 	        bool inactivityTimerSet;
 	private:
 		Ui::Form ui;
