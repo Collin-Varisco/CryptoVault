@@ -55,9 +55,19 @@ if(WIN32)
 		src/Settings/ui_Settings.h
 		src/Settings/Settings.ui
 		src/Settings/Settings.h
+		
+		src/ExportCredentialsLoginChange/ExportLoginChange.cpp
+		src/ExportCredentialsLoginChange/ExportLoginChange.h
+		src/ExportCredentialsLoginChange/ui_ExportCredentialsLoginChange.h
+		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
+
+		src/PassGenerator/PasswordGenerator.cpp
+		src/PassGenerator/PasswordGenerator.h
+		src/PassGenerator/ui_PassGen.h
+		src/PassGenerator/PassGen.ui
 	)
 endif()
-if(UNIX AND NOT APPLE)
+if(UNIX)
 	add_executable(CryptoVault
 		src/main.cpp
 
@@ -101,6 +111,16 @@ if(UNIX AND NOT APPLE)
 		src/Settings/ui_Settings.h
 		src/Settings/Settings.ui
 		src/Settings/Settings.h
+		
+		src/ExportCredentialsLoginChange/ExportLoginChange.cpp
+		src/ExportCredentialsLoginChange/ExportLoginChange.h
+		src/ExportCredentialsLoginChange/ui_ExportCredentialsLoginChange.h
+		src/ExportCredentialsLoginChange/ExportCredentialsLoginChange.ui
+
+		src/PassGenerator/PasswordGenerator.cpp
+		src/PassGenerator/PasswordGenerator.h
+		src/PassGenerator/ui_PassGen.h
+		src/PassGenerator/PassGen.ui
 	)
 endif()
 INCLUDE_DIRECTORIES(libs)

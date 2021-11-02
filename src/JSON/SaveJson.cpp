@@ -93,8 +93,53 @@ void SaveJson::addCredentials(QString service, QString username, QString passwor
     std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
     json newCredentials;
-    newCredentials = {{"service", crypt.encryptString(service)}, {"username", crypt.encryptString(username)}, {"password", crypt.encryptString(password)}};
+    newCredentials = {{"service", crypt.encryptString(service, false)}, {"username", crypt.encryptString(username, false)}, {"password", crypt.encryptString(password, false)}};
     j["Credentials"][0]["Entries"].push_back(newCredentials);
     std::ofstream o("credentials.json");
     o << std::setw(4) << j << std::endl;
+}
+
+void SaveJson::addExportedCredentials(QList<QString> service, QList<QString> username, QList<QString> password, std::string export_path){
+    using namespace nlohmann;
+    CrossPlatform x;
+    Crypto crypt;
+    std::ifstream jFile(export_path + "/credentials.json");
+    json j = json::parse(jFile);
+    for(int i = 0; i < service.size(); i++){
+        json newCredentials;
+        newCredentials = {{"service", crypt.encryptString(service.at(i), true)}, {"username", crypt.encryptString(username.at(i), true)}, {"password", crypt.encryptString(password.at(i), true)}};
+        j["Credentials"][0]["Entries"].push_back(newCredentials);
+        std::ofstream o(export_path + "/credentials.json");
+        o << std::setw(4) << j << std::endl;
+    }
+}
+
+
+/* removeCredential(QString service, QString username, QString pass)
+ * Searches the JSON to find a credential JSON object that exactly matches the three parameters and
+ * removes that JSON object.
+*/
+void SaveJson::removeCredential(QString service, QString username, QString pass){
+	using namespace nlohmann;
+	std::ifstream jFile("credentials.json");
+	json j = json::parse(jFile);
+	Crypto crypt;
+	// Encrypt again to compare to JSON values
+	std::string crypt_service = crypt.encryptString(service, false);
+	std::string crypt_username = crypt.encryptString(username, false);
+	std::string crypt_password = crypt.encryptString(pass, false);
+
+	int total_Entries = j["Credentials"][0]["Entries"].size();
+	int entryNumber;
+	for(int i = 0; i < total_Entries; i++){
+
+		if(crypt_service == j["Credentials"][0]["Entries"][i]["service"] && crypt_username == j["Credentials"][0]["Entries"][i]["username"]  && crypt_password == j["Credentials"][0]["Entries"][i]["password"])
+		{
+			entryNumber = i;
+			break;
+		}
+	}
+	j["Credentials"][0]["Entries"].erase(entryNumber);
+	std::ofstream o("credentials.json");
+	o << std::setw(4) << j << std::endl;
 }

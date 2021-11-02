@@ -1,6 +1,11 @@
 #include "CredentialMenu.h"
 #include <nlohmann/json.hpp>
+#include <QFileDialog>
+#include <QDir>
+#include "../ExportCredentialsLoginChange/ExportLoginChange.h"
 #include "../JSON/SaveJson.h"
+#include "../Global/ChangeGlobals.h"
+#include "../Global/Global.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
 #include "../Settings/Settings.h"
@@ -20,7 +25,9 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-	ui.SearchBar->installEventFilter(this);
+    ui.SearchBar->installEventFilter(this);
+    ui.CredentialTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui.CredentialTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui.ImportExportOptionsButton->installEventFilter(this);
     ui.ImportExportFrame->installEventFilter(this);
     ui.AddCredentialFrame->setVisible(false);
@@ -79,9 +86,11 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(closeAddCredentialPrompt()));
     connect(ui.AddCredentialButton, SIGNAL(clicked()), this, SLOT(addCredential()));
     connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(openSettings()));
+    connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
+    connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
+    connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
+    connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
     loadCredentials();
-
-
 }
 
 void CredentialMenu::openSettings() {
@@ -238,13 +247,30 @@ void CredentialMenu::loadCredentials(){
 	QString password("Password");
 	QString selection("Export");
 	QTableWidgetItem* serviceHeader = new QTableWidgetItem(service);
-	serviceHeader->setForeground(Qt::black);
+	
 	QTableWidgetItem* usernameHeader = new QTableWidgetItem(username);
 	usernameHeader->setForeground(Qt::black);
 	QTableWidgetItem* passwordHeader = new QTableWidgetItem(password);
 	passwordHeader->setForeground(Qt::black);
 	QTableWidgetItem* exportHeader = new QTableWidgetItem(selection);
+	#ifdef __linux__
+	exportHeader->setForeground(Qt::white);
+	usernameHeader->setForeground(Qt::white);
+	passwordHeader->setForeground(Qt::white);
+	serviceHeader->setForeground(Qt::white);
+	#elif defined TARGET_OS_MAC
+	exportHeader->setForeground(Qt::white);
+	usernameHeader->setForeground(Qt::white);
+	passwordHeader->setForeground(Qt::white);
+	serviceHeader->setForeground(Qt::white);
+	#elif defined WIN32_ || WIN64_
 	exportHeader->setForeground(Qt::black);
+	usernameHeader->setForeground(Qt::black);
+	passwordHeader->setForeground(Qt::black);
+	serviceHeader->setForeground(Qt::black);
+	#else
+	#error "Not a valid OS"
+	#endif
 	ui.CredentialTable->setHorizontalHeaderItem(0, serviceHeader);
 	ui.CredentialTable->setHorizontalHeaderItem(1, usernameHeader);
 	ui.CredentialTable->setHorizontalHeaderItem(2, passwordHeader);
@@ -297,6 +323,81 @@ void CredentialMenu::loadCredentials(){
 		ui.CredentialTable->setCellWidget(row, 3, checkItem);
     }
 }
+
+void CredentialMenu::exportAllCredentials(){	
+	QString export_all_dir = QFileDialog::getExistingDirectory(this, tr("Choose Directory For Exported Credentials File"), QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	CrossPlatform x;
+	QString workingPath = qApp->applicationDirPath() + "/credentials.json";
+	std::string copy;
+	std::string cmd;
+	#if defined __linux__  
+	copy = "cp ";
+	cmd = copy + x.xString(workingPath) + " " + x.xString(export_all_dir);
+	#elif defined TARGET_OS_MAC
+	copy = "cp ";
+	cmd = copy + x.xString(workingPath) + " " + x.xString(export_all_dir);	
+	#elif defined _WIN32 || defined _WIN64
+	copy = "copy ";
+	cmd = copy + x.xString(workingPath) + " " + x.xString(export_all_dir);
+	std::replace(cmd.begin(), cmd.end(), '/', '\\');
+	#else
+	#error "unknown platform"
+	#endif
+
+	const char* c;
+	c = cmd.c_str();
+	system(c);
+	
+	
+}
+
+void CredentialMenu::exportSelectedCredentials(){
+	exportServices.clear();
+	exportUsernames.clear();
+	exportPasswords.clear();
+	// QFolderDialog asking where to save the file to
+	export_selected_dir = QFileDialog::getExistingDirectory(this, tr("Choose Directory For Exported Credentials File"),
+                                             QDir::currentPath(),
+                                             QFileDialog::ShowDirsOnly
+                                             | QFileDialog::DontResolveSymlinks);
+	for(int row = 0; row < services.size(); row++){
+		QWidget *checkWidget = (QWidget *)ui.CredentialTable->cellWidget(row, 3);
+		QCheckBox *box = (QCheckBox *)checkWidget->children().at(1);
+		if(box->isChecked()){
+			exportServices.append(ui.CredentialTable->item(row, 0)->text());
+			exportUsernames.append(ui.CredentialTable->item(row, 1)->text());
+			exportPasswords.append(ui.CredentialTable->item(row, 2)->text());
+		}
+	}
+
+	// Spawn prompt asking for different login credentials to access the selected credentials file that will be exported.
+	QWidget *logChange = new ExportLoginChange();
+	QObject::connect(logChange, SIGNAL(sendFinishedSignal(QString)), this, SLOT(loginChangeData(QString)));
+	logChange->show();
+}
+
+void CredentialMenu::loginChangeData(QString hashedPass){
+    using namespace nlohmann;
+    json j;
+    j["Credentials"] = {};
+	CrossPlatform x;
+    std::ofstream o(x.xString(export_selected_dir) + "/credentials.json");
+    o << std::setw(4) << j << std::endl;
+
+	std::ifstream jFile(x.xString(export_selected_dir) + "/credentials.json");
+    json jPass = json::parse(jFile);
+
+    json masterPass;
+    masterPass["MasterPassword"] = {x.xString(hashedPass)};
+    jPass["Credentials"].push_back(masterPass);
+    std::ofstream oPass(x.xString(export_selected_dir) + "/credentials.json");
+    oPass << std::setw(4) << jPass << std::endl;
+	SaveJson sj;
+	sj.addExportedCredentials(exportServices, exportUsernames, exportPasswords, x.xString(export_selected_dir));
+}
+
+
+
 
 bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
 {
@@ -379,4 +480,26 @@ void CredentialMenu::search(std::string searchTerm) {
 		QTableWidgetItem* passItem = new QTableWidgetItem(QString::fromStdString(passwords.at(resultIndexes.at(i))));
 		ui.CredentialTable->setItem(i, 2, passItem);
 	}
+}
+
+void CredentialMenu::copySelectedCell(){
+	QTableWidgetItem *selected = ui.CredentialTable->selectedItems().first();
+	int row = ui.CredentialTable->row(selected);
+	int column = ui.CredentialTable->column(selected);
+	QString itemText = ui.CredentialTable->item(row, column)->text();
+	QClipboard *clipboard = QGuiApplication::clipboard();
+	clipboard->setText(itemText);
+}
+
+void CredentialMenu::removeSelectedCredential(){
+	QTableWidgetItem *selected = ui.CredentialTable->selectedItems().first();
+	int row = ui.CredentialTable->row(selected);
+	CrossPlatform x;
+
+	QString service =   ui.CredentialTable->item(row, 0)->text();
+	QString username =  ui.CredentialTable->item(row, 1)->text();
+	QString pass =      ui.CredentialTable->item(row, 2)->text();
+	SaveJson sj;
+	sj.removeCredential(service, username, pass);
+	loadCredentials();
 }

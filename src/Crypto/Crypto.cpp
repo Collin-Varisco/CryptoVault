@@ -8,12 +8,19 @@
  * const QString &information - plain text that will be encrypted
  *
 */
-std::string Crypto::encryptString(QString information)
+std::string Crypto::encryptString(QString information, bool loginChanged)
 {
     // AES Encryption Key
     QAESEncryption encryption(QAESEncryption::AES_256, QAESEncryption::CBC);
-    QString key(QString::fromStdString(global.global_key));
-    QString iv(QString::fromStdString(global.global_iv));
+    QString key;
+    QString iv;
+    if(!loginChanged){
+        key = QString::fromStdString(global.global_key);
+        iv = QString::fromStdString(global.global_iv);
+    } else {
+        key = QString::fromStdString(global.changed_global_key);
+        iv = QString::fromStdString(global.changed_global_iv);
+    }
     QByteArray hashKey = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Sha256);
     QByteArray hashIV = QCryptographicHash::hash(iv.toUtf8(), QCryptographicHash::Md5);
 

@@ -38,9 +38,12 @@ void startScreen::recoverAccount(){
 	QString filePath = QFileDialog::getOpenFileName(this, "Open Account JSON", workingDirectory, "JSON File (*.json)");
 	std::string copy;
 	std::string cmd;
-	#ifdef __linux__ || defined TARGET_OS_MAC
+	#if defined __linux__  
 	copy = "cp ";
 	cmd = copy + x.xString(filePath) + " " + x.xString(workingDirectory);
+	#elif defined TARGET_OS_MAC
+	copy = "cp ";
+	cmd = copy + x.xString(filePath) + " " + x.xString(workingDirectory);	
 	#elif defined _WIN32 || defined _WIN64
 	copy = "copy ";
 	cmd = copy + x.xString(filePath) + " " + x.xString(workingDirectory);
