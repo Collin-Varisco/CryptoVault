@@ -21,10 +21,14 @@ class CredentialMenu : public QMainWindow
 		void search(std::string searchTerm);
 		std::string toLowerCase(std::string words);
 		void continueExport();
+		// Timer variable
+		QPoint cursorPosition;
 		QString export_selected_dir;
 		QList<QString> exportServices;
 		QList<QString> exportUsernames;
 		QList<QString> exportPasswords;
+		QPoint cursorPosition;
+	        bool inactivityTimerSet;
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
@@ -42,6 +46,8 @@ class CredentialMenu : public QMainWindow
 		void exportSelectedCredentials();
 		void loginChangeData(QString hashedPass);
 		void exportAllCredentials();
+		void checkActivity();
+		void updateCursor();
 
 
 };
