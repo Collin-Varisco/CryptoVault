@@ -13,6 +13,7 @@ class CredentialMenu : public QMainWindow
 	public:
 		CredentialMenu(QFrame *parent = 0);
 		bool eventFilter(QObject *obj, QEvent *event);
+		bool credentialMenuActive = false;
 		bool inImportExportFrame = false;
 		void formatFrame(QFrame *obj);
 		void formatTable(QTableWidget *table);
@@ -21,13 +22,11 @@ class CredentialMenu : public QMainWindow
 		void search(std::string searchTerm);
 		std::string toLowerCase(std::string words);
 		void continueExport();
-		// Timer variable
-		QPoint cursorPosition;
 		QString export_selected_dir;
 		QList<QString> exportServices;
 		QList<QString> exportUsernames;
 		QList<QString> exportPasswords;
-	
+		QPoint cursorPosition;
 	        bool inactivityTimerSet;
 	private:
 		Ui::Form ui;

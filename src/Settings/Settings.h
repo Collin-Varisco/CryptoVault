@@ -13,6 +13,7 @@ class Settings : public QMainWindow
 	public:
 		Settings(QFrame *parent = 0);
 		bool eventFilter(QObject *obj, QEvent *event);
+		bool settingsMenuActive = false;
 		bool inImportExportFrame = false;
 		void formatFrame(QFrame *obj);
 		void formatButtonWithinFrame(QPushButton *button, int originalFrameWidth, int originalFrameLength, QFrame *frame);
@@ -30,6 +31,7 @@ class Settings : public QMainWindow
 		void openGenerator();
 		void checkActivity();
 		void updateCursor();
+		void updateTimer();
 
 
 };

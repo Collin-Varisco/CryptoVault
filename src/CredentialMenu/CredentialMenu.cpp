@@ -34,6 +34,8 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     ui.AddCredentialFrame->setVisible(false);
     ui.ImportExportFrame->setVisible(false);
 
+	credentialMenuActive = true;
+
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect geometry = screen->geometry();
     // Change to 70% of full screen size, then convert to 16:9 Aspect Ratio
@@ -92,6 +94,13 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
     connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
 
+	SaveJson sj;
+    inactivityTimerSet = sj.timerOn();
+    if(inactivityTimerSet){
+		ChangeGlobals cg;
+		cg.setTimer(sj.timerLimit());
+	}
+
     // Triggers the slot function every second this CredentialMenu window is open.
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(checkActivity()));
@@ -105,14 +114,11 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     // Stores initial position of cursor
     cursorPosition = QCursor::pos();
 
-    // [TODO]
-    // inactivityTimerSet = jsonClass.isTimerSet();
-    inactivityTimerSet = false;
-
     loadCredentials();
 }
 
 void CredentialMenu::openSettings() {
+	credentialMenuActive = false;
 	QWidget* settings;
 	settings = new Settings();
 	this->close();
@@ -134,18 +140,21 @@ void CredentialMenu::updateCursor(){
 }
 
 void CredentialMenu::checkActivity(){
-	if(inactivityTimerSet){
+	if(inactivityTimerSet && credentialMenuActive){
+		qDebug() << global.inactiveTime;
 		ChangeGlobals cg;
 		// Checks if mouse is on the window
 		if(rect().contains(mapFromGlobal(QCursor::pos()))){
 			// Checks if the mouse is idle in place
-			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y()){
+			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y() && credentialMenuActive){
 				cg.incrementTimer();
 			} else {
 				cg.resetTimer();
 			}
 		} else {
-			cg.incrementTimer();
+			if(credentialMenuActive){
+				cg.incrementTimer();
+			}
 		}
 
 		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header

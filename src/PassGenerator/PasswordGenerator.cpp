@@ -5,6 +5,7 @@
 #include <QString>
 #include "../Global/Global.h"
 #include "../Global/ChangeGlobals.h"
+#include "../JSON/SaveJson.h"
 #include "../CrossPlatform/CrossPlatform.h"
 #include <QTimer>
 #include "PasswordGenerator.h"
@@ -18,9 +19,9 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     ui.setupUi(this);
     ui.IncludeExcludeFrame->hide();
 
-    // [TODO]
-    // inactivityTimerSet = json.isTimerSet()
-    inactivityTimerSet = false;
+	generatorActive = true;
+	//[TODO] add functions to go to settings and vault menus and switch generatorActive to OFF
+
 
     connect(ui.IncludeButton, SIGNAL(clicked()), this, SLOT(openIncludePrompt()));
     connect(ui.ExcludeButton, SIGNAL(clicked()), this, SLOT(openExcludePrompt()));
@@ -28,6 +29,14 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copyPassword()));
     connect(ui.AddCharactersButton, SIGNAL(clicked()), this, SLOT(addCharacters()));
 
+	// Timer Initialization Variables
+    SaveJson sj;
+    inactivityTimerSet = sj.timerOn();
+    if(inactivityTimerSet){
+		ChangeGlobals cg;
+		cg.setTimer(sj.timerLimit());
+	}
+   
     // Activity Timer
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(checkActivity()));
@@ -36,8 +45,6 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     QTimer *updateCursorTimer = new QTimer(this);
     connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
     updateCursorTimer->start(500);
-
-	cursorPosition = QCursor::pos();
 }
 
 void PasswordGenerator::openIncludePrompt(){
@@ -104,7 +111,9 @@ void PasswordGenerator::updateCursor(){
 }
 
 void PasswordGenerator::checkActivity(){
-	if(inactivityTimerSet){
+	
+	if(inactivityTimerSet && generatorActive){
+		qDebug() << global.inactiveTime;
 		ChangeGlobals cg;
 		// Checks if mouse is on the window
 		if(rect().contains(mapFromGlobal(QCursor::pos()))){
@@ -115,7 +124,7 @@ void PasswordGenerator::checkActivity(){
 				cg.resetTimer();
 			}
 		} else {
-			cg.incrementTimer();
+				cg.incrementTimer();
 		}
 
 		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header

@@ -11,6 +11,7 @@ class PasswordGenerator : public QMainWindow
 	Q_OBJECT
 	public:
 		PasswordGenerator(QFrame *parent = 0);
+		bool generatorActive = false;
 		QStringList includeList;
 		QStringList excludeList;
 		bool inactivityTimerSet;
