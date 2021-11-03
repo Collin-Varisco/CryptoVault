@@ -4,6 +4,9 @@
 #include "../JSON/SaveJson.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Global/Global.h"
+#include "../Global/ChangeGlobals.h"
+#include <QTimer>
 #include <vector>
 #include <QHBoxLayout>
 #include <QCheckBox>
@@ -15,6 +18,7 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QScreen>
+#include "../Settings/Settings.h"
 Settings::Settings(QFrame *parent)
     : QMainWindow(parent)
 {
@@ -46,12 +50,23 @@ Settings::Settings(QFrame *parent)
     // Vault Label
     ui.label_8->setGeometry(0, 0, this->width(), this->height()*0.11639);
 
+    // [TODO]
+    // inactivityTimerSet = json.isTimerSet();
+    inactivityTimerSet = false;
 
-
-    // </endFormatting>
-
+    // </formatting>
     connect(ui.VaultButton, SIGNAL(clicked()), this, SLOT(vault()));
     connect(ui.GeneratorButton, SIGNAL(clicked()), this, SLOT(openGenerator()));
+    // Activity Timer
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkActivity()));
+    timer->start(1000);
+    // Update Cursor Position Timer
+    QTimer *updateCursorTimer = new QTimer(this);
+    connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
+    updateCursorTimer->start(500);
+
+	cursorPosition = QCurson::pos();
 
 }
 
@@ -61,6 +76,31 @@ void Settings::openGenerator(){
 	set->show();
 }
 
+void Settings::updateCursor(){
+	cursorPosition = QCursor::pos();
+}
+
+void Settings::checkActivity(){
+	if(inactivityTimerSet){
+		ChangeGlobals cg;
+		// Checks if mouse is on the window
+		if(rect().contains(mapFromGlobal(QCursor::pos()))){
+			// Checks if the mouse is idle in place
+			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y()){
+				cg.incrementTimer();
+			} else {
+				cg.resetTimer();
+			}
+		} else {
+			cg.incrementTimer();
+		}
+
+		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header
+		if( global.inactiveTime >= global.timerLimit ){
+			QCoreApplication::quit();
+		}
+	}
+}
 
 
 void Settings::formatButtonWithinFrame(QPushButton *button, int originalWidth, int originalLength, QFrame *frame){

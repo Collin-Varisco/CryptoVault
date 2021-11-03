@@ -17,6 +17,8 @@ class Settings : public QMainWindow
 		void formatFrame(QFrame *obj);
 		void formatButtonWithinFrame(QPushButton *button, int originalFrameWidth, int originalFrameLength, QFrame *frame);
 		void formatLineEditWithinFrame(QLineEdit *line, int originalFrameWidth, int originalFrameLength, QFrame *frame);
+		bool inactivityTimerSet;
+		QPoint cursorPosition;
 	private:
 		Ui::FormSettings ui;
 		std::vector<std::string> services;
@@ -26,5 +28,8 @@ class Settings : public QMainWindow
 	public slots:
 		void vault();
 		void openGenerator();
+		void checkActivity();
+		void updateCursor();
+
 
 };
