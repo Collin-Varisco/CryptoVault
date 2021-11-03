@@ -28,4 +28,16 @@ struct ChangeGlobals
             global.changed_global_iv = global.changed_global_key + user;
         }
     }
+
+    void setTimer(int seconds){
+	global.timerLimit = seconds;
+    }
+
+    void resetTimer(){
+	global.inactiveTime = 0;
+    }
+
+    void incrementTimer(){
+	global.inactiveTime = global.inactiveTime + 1;
+    }
 };

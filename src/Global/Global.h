@@ -3,14 +3,16 @@
 #include <string>
 #pragma once
 
-class Global 
+class Global
 {
         public:
             std::string global_key;
             std::string global_iv;
             std::string changed_global_key;
             std::string changed_global_iv;
-        public: 
+	    int inactiveTime = 0;
+	    int timerLimit;
+        public:
             Global() = default;
             Global(const Global&) = delete;
             Global(Global&&) = delete;
