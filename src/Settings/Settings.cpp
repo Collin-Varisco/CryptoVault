@@ -4,6 +4,9 @@
 #include "../JSON/SaveJson.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Global/Global.h"
+#include "../Global/ChangeGlobals.h"
+#include <QTimer>
 #include <vector>
 #include <QHBoxLayout>
 #include <QCheckBox>
@@ -22,7 +25,10 @@ Settings::Settings(QFrame *parent)
     ui.ImportExportOptionsButton->installEventFilter(this);
     ui.ImportExportFrame->installEventFilter(this);
     ui.ImportExportFrame->setVisible(false);
-
+	ui.lineEdit->setPlaceholderText("5");
+	
+	settingsMenuActive = true;
+	
     // Format Table
     formatFrame(ui.frame_2);
     formatFrame(ui.frame);
@@ -46,21 +52,99 @@ Settings::Settings(QFrame *parent)
     // Vault Label
     ui.label_8->setGeometry(0, 0, this->width(), this->height()*0.11639);
 
+    SaveJson sj;
+    inactivityTimerSet = sj.timerOn();
+    if(inactivityTimerSet){
+		ui.radioButton->setChecked(true);
+		ChangeGlobals cg;
+		cg.setTimer(sj.timerLimit());
+	}
 
-
-    // </endFormatting>
-
+    // </formatting>
     connect(ui.VaultButton, SIGNAL(clicked()), this, SLOT(vault()));
     connect(ui.GeneratorButton, SIGNAL(clicked()), this, SLOT(openGenerator()));
+    // Activity Timer
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkActivity()));
+    timer->start(1000);
+    // Update Cursor Position Timer
+    QTimer *updateCursorTimer = new QTimer(this);
+    connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
+    updateCursorTimer->start(500);
+    connect(ui.radioButton, SIGNAL(clicked()), this, SLOT(updateTimer()));
 
 }
 
+void Settings::updateTimer(){
+	QString selectedUnit = ui.comboBox->currentText();
+	CrossPlatform x;
+	SaveJson sj;
+	int num = 300; 
+	bool filledNum = false;
+	if(ui.lineEdit->text() == ""){
+		filledNum = false;
+	} else {
+		filledNum = true;
+	}
+	// Switching Inactivity Timer Off
+	if(!ui.radioButton->isChecked()){
+		sj.setTimer(false, num);
+	} 
+	else {
+		qDebug() << selectedUnit;
+		// For Minutes Dropdown Tab
+		if(selectedUnit == "Minutes"){
+			if(filledNum){
+				num = ui.lineEdit->text().toInt() * 60;
+			}
+		} 
+		// For Hours dropdown tab
+		else {
+			if(filledNum){
+				num = ui.lineEdit->text().toInt() * 3600;
+			}
+		}
+		sj.setTimer(true, num);
+		ChangeGlobals cg;
+		cg.setTimer(num);
+	}
+}
+
 void Settings::openGenerator(){
+	settingsMenuActive = false;
 	QWidget *set = new PasswordGenerator();
 	this->close();
 	set->show();
 }
 
+void Settings::updateCursor(){
+	cursorPosition = QCursor::pos();
+}
+
+void Settings::checkActivity(){
+	qDebug() << global.inactiveTime;
+	if(inactivityTimerSet){
+		ChangeGlobals cg;
+		// Checks if mouse is on the window
+		if(rect().contains(mapFromGlobal(QCursor::pos()))){
+			// Checks if the mouse is idle in place
+			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y() && settingsMenuActive){
+				cg.incrementTimer();
+			} else {
+				cg.resetTimer();
+			}
+		} else {
+			if(settingsMenuActive){
+				cg.incrementTimer();
+			}
+		}
+
+		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header
+		if( global.inactiveTime >= global.timerLimit ){
+			QCoreApplication::quit();
+		}
+	}
+}
 
 
 void Settings::formatButtonWithinFrame(QPushButton *button, int originalWidth, int originalLength, QFrame *frame){
@@ -135,6 +219,7 @@ void Settings::formatFrame(QFrame *obj){
 }
 
 void Settings::vault(){
+	settingsMenuActive = false;
 	QWidget *vault;
 	vault = new CredentialMenu();
 	this->close();

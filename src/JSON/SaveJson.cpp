@@ -12,6 +12,8 @@
 #include <vector>
 #include "../CrossPlatform/CrossPlatform.h"
 #include "../Crypto/Crypto.h"
+#include "../Global/Global.h"
+#include "../Global/ChangeGlobals.h"
 
 // Basic Constructor
 SaveJson::SaveJson(){
@@ -25,18 +27,58 @@ void SaveJson::setMasterPassword(std::string encrypted_master_pass){
     using namespace nlohmann;
     std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
-
     json masterPass;
     masterPass["MasterPassword"] = {encrypted_master_pass};
     j["Credentials"].push_back(masterPass);
     // [TODO]
     // There might be a bug where the built application from the installer saves
+    json settings;
+    settings["InactivityTimer"]={false};
+    settings["InactivityLimit"]={600};
+    j["Settings"].push_back(settings);
+
     // This File in a different location
     std::ofstream o("./credentials.json");
     o << std::setw(4) << j << std::endl;
 }
 
-// [TODO] 
+
+void SaveJson::setTimer(bool onOrOff, int seconds){
+    using namespace nlohmann;
+    std::ifstream jFile("credentials.json");
+    json j = json::parse(jFile);
+    ChangeGlobals cg;
+    cg.setTimer(seconds);
+    j["Settings"][0]["InactivityTimer"][0]={onOrOff};
+    j["Settings"][0]["InactivityLimit"][0]={seconds};
+    std::ofstream o("./credentials.json");
+    o << std::setw(4) << j << std::endl;
+}
+
+int SaveJson::timerLimit(){
+	using namespace nlohmann;
+	std::ifstream jFile("credentials.json");
+    json j = json::parse(jFile);
+    ChangeGlobals cg;
+    int num = (int)j["Settings"][0]["InactivityLimit"][0][0];
+    return num;
+}
+
+bool SaveJson::timerOn(){
+    using namespace nlohmann;
+    std::ifstream jFile("credentials.json");
+    json j = json::parse(jFile);
+    bool onOrOff;
+    if(j["Settings"][0]["InactivityTimer"][0] == false){
+		onOrOff = false;
+	} else {
+		onOrOff = true;
+	}
+    
+    return onOrOff;
+}
+
+// [TODO]
 // There needs to be a function "setAccountUsername(std::string hashedUsername)"
 // To save the hashed username to the JSON file for better authentication during login.
 
@@ -71,7 +113,7 @@ bool SaveJson::checkForFile(){
 }
 
 /* createJSON()
- * creates a JSON file in what is currently supposed to be the 
+ * creates a JSON file in what is currently supposed to be the
  * working directory.
 */
 void SaveJson::createJSON(){

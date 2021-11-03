@@ -13,6 +13,7 @@ class CredentialMenu : public QMainWindow
 	public:
 		CredentialMenu(QFrame *parent = 0);
 		bool eventFilter(QObject *obj, QEvent *event);
+		bool credentialMenuActive = false;
 		bool inImportExportFrame = false;
 		void formatFrame(QFrame *obj);
 		void formatTable(QTableWidget *table);
@@ -25,6 +26,8 @@ class CredentialMenu : public QMainWindow
 		QList<QString> exportServices;
 		QList<QString> exportUsernames;
 		QList<QString> exportPasswords;
+		QPoint cursorPosition;
+	        bool inactivityTimerSet;
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
@@ -42,6 +45,8 @@ class CredentialMenu : public QMainWindow
 		void exportSelectedCredentials();
 		void loginChangeData(QString hashedPass);
 		void exportAllCredentials();
+		void checkActivity();
+		void updateCursor();
 
 
 };

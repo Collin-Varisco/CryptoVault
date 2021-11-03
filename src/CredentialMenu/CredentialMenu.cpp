@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include <QFileDialog>
 #include <QDir>
+#include <QTimer>
 #include "../ExportCredentialsLoginChange/ExportLoginChange.h"
 #include "../JSON/SaveJson.h"
 #include "../Global/ChangeGlobals.h"
@@ -32,6 +33,8 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     ui.ImportExportFrame->installEventFilter(this);
     ui.AddCredentialFrame->setVisible(false);
     ui.ImportExportFrame->setVisible(false);
+
+	credentialMenuActive = true;
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect geometry = screen->geometry();
@@ -90,16 +93,77 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
     connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
     connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
+
+	SaveJson sj;
+    inactivityTimerSet = sj.timerOn();
+    if(inactivityTimerSet){
+		ChangeGlobals cg;
+		cg.setTimer(sj.timerLimit());
+	}
+
+    // Triggers the slot function every second this CredentialMenu window is open.
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkActivity()));
+    timer->start(1000);
+
+    // Updates where the cursor is every 0.5 seconds
+    QTimer *updateCursorTimer = new QTimer(this);
+    connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
+    updateCursorTimer->start(500);
+
+    // Stores initial position of cursor
+    cursorPosition = QCursor::pos();
+
     loadCredentials();
 }
 
 void CredentialMenu::openSettings() {
+	credentialMenuActive = false;
 	QWidget* settings;
 	settings = new Settings();
 	this->close();
 	settings->show();
 
 }
+
+
+/* Inactivity will be detected in two ways.
+ * 1. If the mouse is not on the window.
+ * 2. If the mouse is on the window, but not moving.
+ * If either of these conditions is met in the checkActivity function which is called once every second,
+ * then the global.inactiveTime variable will be incremented by 1 (1 second).
+ * If checkActivity() is called and it finds that the amount of inactive time is equal to the time limit,
+ * the application will close.
+*/
+void CredentialMenu::updateCursor(){
+	cursorPosition = QCursor::pos();
+}
+
+void CredentialMenu::checkActivity(){
+	if(inactivityTimerSet && credentialMenuActive){
+		qDebug() << global.inactiveTime;
+		ChangeGlobals cg;
+		// Checks if mouse is on the window
+		if(rect().contains(mapFromGlobal(QCursor::pos()))){
+			// Checks if the mouse is idle in place
+			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y() && credentialMenuActive){
+				cg.incrementTimer();
+			} else {
+				cg.resetTimer();
+			}
+		} else {
+			if(credentialMenuActive){
+				cg.incrementTimer();
+			}
+		}
+
+		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header
+		if( global.inactiveTime >= global.timerLimit ){
+			QCoreApplication::quit();
+		}
+	}
+}
+
 
 void CredentialMenu::formatButtonWithinFrame(QPushButton *button, int originalWidth, int originalLength, QFrame *frame){
 	int buttonWidth = button->width();

@@ -17,4 +17,7 @@ class SaveJson
         void setMasterPassword(std::string encrypted_master_pass);
         std::string loadMasterPassword();
         void removeCredential(QString service, QString username, QString pass);
+	void setTimer(bool boolOnOrOff, int seconds);
+	bool timerOn();
+	int timerLimit();
 };

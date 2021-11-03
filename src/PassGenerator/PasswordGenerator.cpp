@@ -3,7 +3,11 @@
 #include <ctype.h>
 #include <QDebug>
 #include <QString>
+#include "../Global/Global.h"
+#include "../Global/ChangeGlobals.h"
+#include "../JSON/SaveJson.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include <QTimer>
 #include "PasswordGenerator.h"
 #include <QGuiApplication>
 #include <QScreen>
@@ -15,11 +19,32 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     ui.setupUi(this);
     ui.IncludeExcludeFrame->hide();
 
+	generatorActive = true;
+	//[TODO] add functions to go to settings and vault menus and switch generatorActive to OFF
+
+
     connect(ui.IncludeButton, SIGNAL(clicked()), this, SLOT(openIncludePrompt()));
     connect(ui.ExcludeButton, SIGNAL(clicked()), this, SLOT(openExcludePrompt()));
     connect(ui.GenerateButton, SIGNAL(clicked()), this, SLOT(generatePassword()));
     connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copyPassword()));
     connect(ui.AddCharactersButton, SIGNAL(clicked()), this, SLOT(addCharacters()));
+
+	// Timer Initialization Variables
+    SaveJson sj;
+    inactivityTimerSet = sj.timerOn();
+    if(inactivityTimerSet){
+		ChangeGlobals cg;
+		cg.setTimer(sj.timerLimit());
+	}
+   
+    // Activity Timer
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkActivity()));
+    timer->start(1000);
+    // Update Cursor Position Timer
+    QTimer *updateCursorTimer = new QTimer(this);
+    connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
+    updateCursorTimer->start(500);
 }
 
 void PasswordGenerator::openIncludePrompt(){
@@ -29,7 +54,7 @@ void PasswordGenerator::openIncludePrompt(){
 
 void PasswordGenerator::openExcludePrompt(){
 	ui.AddCharactersButton->setText("Exclude Characters");
-	ui.IncludeExcludeFrame->show();	
+	ui.IncludeExcludeFrame->show();
 }
 
 
@@ -68,7 +93,7 @@ void PasswordGenerator::generatePassword(){
 			// use a try catch for this to catch the error if a number is not entered
 		        input_length = stoi(x.xString(ui.TotalCharactersLine->text()));
 			// ____________________
-	
+
 			default_length = input_length;
 		} else {
 			// Generator Code
@@ -77,5 +102,34 @@ void PasswordGenerator::generatePassword(){
 	}
 	if(specificLength && !onlyLettersAndNumbers){
 		qDebug() << "Just specific length chosen.";
+	}
+}
+
+
+void PasswordGenerator::updateCursor(){
+	cursorPosition = QCursor::pos();
+}
+
+void PasswordGenerator::checkActivity(){
+	
+	if(inactivityTimerSet && generatorActive){
+		qDebug() << global.inactiveTime;
+		ChangeGlobals cg;
+		// Checks if mouse is on the window
+		if(rect().contains(mapFromGlobal(QCursor::pos()))){
+			// Checks if the mouse is idle in place
+			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y()){
+				cg.incrementTimer();
+			} else {
+				cg.resetTimer();
+			}
+		} else {
+				cg.incrementTimer();
+		}
+
+		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header
+		if( global.inactiveTime >= global.timerLimit ){
+			QCoreApplication::quit();
+		}
 	}
 }
