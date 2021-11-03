@@ -13,6 +13,8 @@ class PasswordGenerator : public QMainWindow
 		PasswordGenerator(QFrame *parent = 0);
 		QStringList includeList;
 		QStringList excludeList;
+		bool inactivityTimerSet;
+		QPoint cursorPosition;
 	private:
 		Ui::GeneratorForm ui;
 	public slots:
@@ -21,4 +23,6 @@ class PasswordGenerator : public QMainWindow
 		void generatePassword();
 		void copyPassword();
 		void addCharacters();
+		void checkActivity();
+		void updateCursor();
 };
