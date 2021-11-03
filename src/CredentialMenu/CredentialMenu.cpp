@@ -22,8 +22,6 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QScreen>
-#include "../Global/ChangeGlobals.h"
-#include "../Global/Global.h"
 CredentialMenu::CredentialMenu(QFrame *parent)
     : QMainWindow(parent)
 {

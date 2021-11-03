@@ -18,7 +18,6 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QScreen>
-#include "../Settings/Settings.h"
 Settings::Settings(QFrame *parent)
     : QMainWindow(parent)
 {
@@ -66,7 +65,7 @@ Settings::Settings(QFrame *parent)
     connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
     updateCursorTimer->start(500);
 
-	cursorPosition = QCurson::pos();
+	cursorPosition = QCursor::pos();
 
 }
 

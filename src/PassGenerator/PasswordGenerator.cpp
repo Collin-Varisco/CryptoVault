@@ -10,7 +10,6 @@
 #include "PasswordGenerator.h"
 #include <QGuiApplication>
 #include <QScreen>
-#include "../PassGenerator/PasswordGenerator.h"
 
 PasswordGenerator::PasswordGenerator(QFrame *parent)
     : QMainWindow(parent)
