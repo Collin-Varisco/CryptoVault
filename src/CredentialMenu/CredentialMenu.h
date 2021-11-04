@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QFrame>
 #include <QString>
+#include <QTime>
 #include <vector>
 QT_BEGIN_NAMESPACE
 class CredentialMenu : public QMainWindow
@@ -12,6 +13,9 @@ class CredentialMenu : public QMainWindow
 	Q_OBJECT
 	public:
 		CredentialMenu(QFrame *parent = 0);
+                void runUnitTests();
+                void removeCredentialTest(QString service, QString username, QString password);
+                void delay();
 		bool eventFilter(QObject *obj, QEvent *event);
 		bool credentialMenuActive = false;
 		bool inImportExportFrame = false;
@@ -28,6 +32,7 @@ class CredentialMenu : public QMainWindow
 		QList<QString> exportPasswords;
 		QPoint cursorPosition;
 	        bool inactivityTimerSet;
+                bool firstTest = true;
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;

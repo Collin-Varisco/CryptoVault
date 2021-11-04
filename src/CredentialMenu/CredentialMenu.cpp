@@ -1,6 +1,7 @@
 #include "CredentialMenu.h"
 #include <nlohmann/json.hpp>
 #include <QFileDialog>
+#include <QThread>
 #include <QDir>
 #include <QTimer>
 #include "../ExportCredentialsLoginChange/ExportLoginChange.h"
@@ -115,6 +116,10 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     cursorPosition = QCursor::pos();
 
     loadCredentials();
+    if(firstTest){
+      runUnitTests();
+      firstTest = false;
+    }
 }
 
 void CredentialMenu::openSettings() {
@@ -566,4 +571,36 @@ void CredentialMenu::removeSelectedCredential(){
 	SaveJson sj;
 	sj.removeCredential(service, username, pass);
 	loadCredentials();
+}
+
+void CredentialMenu::delay()
+{
+  QThread::sleep(1);
+}
+
+void CredentialMenu::runUnitTests(){
+  QString username1("Username1");
+  QString service1("Service1");
+  QString password1("Password1");
+  removeCredentialTest(service1, username1, password1);
+}
+
+void CredentialMenu::removeCredentialTest(QString TestService, QString TestUsername, QString TestPassword){
+    // Add a credential
+    CrossPlatform x;
+    Crypto cr;
+    SaveJson sj;
+    sj.addCredentials(TestService, TestUsername, TestPassword);
+    closeAddCredentialPrompt();
+    ui.CredentialTable->clear();
+    loadCredentials();
+    
+    int row = 0;
+    QString service =   ui.CredentialTable->item(row, 0)->text();
+    QString username =  ui.CredentialTable->item(row, 1)->text();
+    QString pass =      ui.CredentialTable->item(row, 2)->text();
+    qDebug() << "Removing row 0: " + service + "  |  " + username + "  |  " + pass;
+    sj.removeCredential(service, username, pass);
+    delay();
+    loadCredentials();
 }
