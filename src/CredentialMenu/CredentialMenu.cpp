@@ -92,6 +92,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.CopyButton, SIGNAL(clicked()), this, SLOT(copySelectedCell()));
     connect(ui.RemoveButton, SIGNAL(clicked()), this, SLOT(removeSelectedCredential()));
     connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
+    connect(ui.EditButton, SIGNAL(clicked()), this, SLOT(openEditCredentialPrompt()));
     connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
 
 	SaveJson sj;
@@ -125,6 +126,24 @@ void CredentialMenu::openSettings() {
 	settings->show();
 
 }
+
+void CredentialMenu::openEditCredentialPrompt(){
+	editing = true;
+	QList<QTableWidgetItem*> items = ui.CredentialTable->selectedItems();
+	if(items.size() > 0){
+		ui.AddLabel->setTextFormat(Qt::RichText);
+		ui.AddLabel->setText(QCoreApplication::translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; font-style:italic;\">Edit Credential</span></p></body></html>", nullptr));
+
+		QTableWidgetItem *selected = ui.CredentialTable->selectedItems().first();
+		int row = ui.CredentialTable->row(selected);
+		ui.AddService->setText(ui.CredentialTable->item(row, 0)->text());
+		ui.AddUsername->setText(ui.CredentialTable->item(row, 1)->text());
+		ui.AddPassword->setText(ui.CredentialTable->item(row, 2)->text());
+		ui.AddCredentialButton->setText("Change");
+		ui.AddCredentialFrame->setVisible(true);
+	}
+}
+
 
 
 /* Inactivity will be detected in two ways.
@@ -293,9 +312,25 @@ void CredentialMenu::addCredential(){
 	    loadCredentials();
     }
     else {
-		// editCredential();
+		editCredential();
     }
 }
+
+void CredentialMenu::editCredential()
+{
+	    CrossPlatform x;
+	    Crypto cr;
+	    SaveJson sj;
+	    QString service = ui.AddService->text();
+	    QString username = ui.AddUsername->text();
+	    QString password = ui.AddPassword->text();
+	    removeSelectedCredential();
+	    sj.addCredentials(service, username, password);
+    	closeAddCredentialPrompt();
+	    editing = false;
+	    loadCredentials();
+}
+
 
 
 void CredentialMenu::loadCredentials(){
