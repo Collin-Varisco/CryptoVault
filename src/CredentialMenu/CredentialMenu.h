@@ -28,6 +28,7 @@ class CredentialMenu : public QMainWindow
 		QList<QString> exportPasswords;
 		QPoint cursorPosition;
 	        bool inactivityTimerSet;
+                void editCredential();
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;
@@ -36,6 +37,8 @@ class CredentialMenu : public QMainWindow
 		bool editing = false;
 		void loadCredentials();
 	public slots:
+              
+                void openEditCredentialPrompt();
 		void openAddCredentialPrompt();
 		void closeAddCredentialPrompt();
 		void addCredential();
