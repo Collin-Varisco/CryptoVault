@@ -94,6 +94,14 @@ std::string SaveJson::loadMasterPassword(){
     return master;
 }
 
+std::string SaveJson::loadImportFilePassword(std::string path){
+    using namespace nlohmann;
+    std::ifstream jFile(path);
+    json j = json::parse(jFile);
+    std::string master = j["Credentials"][0]["MasterPassword"][0];
+    return master;
+}
+
 /* checkForFile()
  * Boolean function that checks the working directory for a credentials file.
 */
