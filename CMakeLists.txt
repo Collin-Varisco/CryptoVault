@@ -65,6 +65,11 @@ if(WIN32)
 		src/PassGenerator/PasswordGenerator.h
 		src/PassGenerator/ui_PassGen.h
 		src/PassGenerator/PassGen.ui
+
+		src/authorization/authorization.cpp
+		src/authorization/authorization.h
+		src/authorization/ui_authorization.h
+		src/authorization/authorization.ui
 	)
 endif()
 if(UNIX)
@@ -121,6 +126,11 @@ if(UNIX)
 		src/PassGenerator/PasswordGenerator.h
 		src/PassGenerator/ui_PassGen.h
 		src/PassGenerator/PassGen.ui
+
+		src/authorization/authorization.cpp
+		src/authorization/authorization.h
+		src/authorization/ui_authorization.h
+		src/authorization/authorization.ui
 	)
 endif()
 INCLUDE_DIRECTORIES(libs)

@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QTimer>
+#include "../authorization/authorization.h"
 #include "../ExportCredentialsLoginChange/ExportLoginChange.h"
 #include "../JSON/SaveJson.h"
 #include "../Global/ChangeGlobals.h"
@@ -94,6 +95,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
     connect(ui.EditButton, SIGNAL(clicked()), this, SLOT(openEditCredentialPrompt()));
     connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
+	connect(ui.ImportButton, SIGNAL(clicked()), this, SLOT(importCredentials()));
 
 	SaveJson sj;
     inactivityTimerSet = sj.timerOn();
@@ -600,5 +602,41 @@ void CredentialMenu::removeSelectedCredential(){
 	QString pass =      ui.CredentialTable->item(row, 2)->text();
 	SaveJson sj;
 	sj.removeCredential(service, username, pass);
+	loadCredentials();
+}
+
+// function to add credentials to existing collection
+void CredentialMenu::importCredentials(){
+	CrossPlatform x;
+	ChangeGlobals cg;
+	QString workingDirectory = qApp->applicationDirPath();
+	QString filePath = QFileDialog::getOpenFileName(this, "Open Credentials JSON", workingDirectory, "JSON File (*.json)");
+	cg.changeImportPath(x.xString(filePath));
+
+	QWidget *auth = new authorization();
+	QObject::connect(auth, SIGNAL(sendFinishedSignal(std::string)), this, SLOT(jsonImport(std::string)));
+	auth->show();
+}
+
+void CredentialMenu::jsonImport(std::string auth){
+	Crypto crypt;
+	SaveJson sj;
+	using namespace nlohmann;
+    std::ifstream jFile(global.global_import_path);
+    json j = json::parse(jFile);
+
+    int size = j["Credentials"][0]["Entries"].size();
+	temp_services.clear();
+	temp_passwords.clear();
+	temp_usernames.clear();
+    for(int i = 0; i < size; i++){
+        temp_services.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
+        temp_passwords.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
+        temp_usernames.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
+    }
+
+	for(int i = 0; i < size; i++){
+		sj.addCredentials(QString::fromStdString(temp_services.at(i)), QString::fromStdString(temp_usernames.at(i)), QString::fromStdString(temp_passwords.at(i)));
+	}
 	loadCredentials();
 }

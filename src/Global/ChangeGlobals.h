@@ -29,6 +29,20 @@ struct ChangeGlobals
         }
     }
 
+    void tempChangeKey(std::string pass){
+        std::string hexVal;
+        std::stringstream ss;
+        for(const auto &item : pass) {
+            ss << std::hex << int (item);
+        }
+        hexVal = ss.str();
+        global.temp_key = hexVal;
+    }
+
+    void tempChangeIV(std::string user){
+        global.temp_iv = global.temp_key + user;
+    }
+
     void setTimer(int seconds){
 	global.timerLimit = seconds;
     }
@@ -39,5 +53,9 @@ struct ChangeGlobals
 
     void incrementTimer(){
 	global.inactiveTime = global.inactiveTime + 1;
+    }
+
+    void changeImportPath(std::string path){
+        global.global_import_path = path;
     }
 };

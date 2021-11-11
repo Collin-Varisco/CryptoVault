@@ -34,11 +34,13 @@ class CredentialMenu : public QMainWindow
 		std::vector<std::string> services;
 		std::vector<std::string> passwords;
 		std::vector<std::string> usernames;
+		std::vector<std::string> temp_services;
+		std::vector<std::string> temp_passwords;
+		std::vector<std::string> temp_usernames;
 		bool editing = false;
 		void loadCredentials();
-	public slots:
-              
-                void openEditCredentialPrompt();
+	public slots:      
+        void openEditCredentialPrompt();
 		void openAddCredentialPrompt();
 		void closeAddCredentialPrompt();
 		void addCredential();
@@ -50,6 +52,8 @@ class CredentialMenu : public QMainWindow
 		void exportAllCredentials();
 		void checkActivity();
 		void updateCursor();
+		void importCredentials();
+		void jsonImport(std::string auth);
 
 
 };
