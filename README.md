@@ -56,3 +56,42 @@ $ make
 $ ./CryptoVault
 ```
 
+
+## **Build on Mac**
+1. Install Brew
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+2. Clone repository
+```
+$ git clone https://gitlab.com/collin-varisco-ul/ul-cryptovault.git
+```
+3. Install Qt5
+```
+$ brew install qt@5
+```
+4. Install cmake
+```
+$ brew install cmake
+```
+5. Add Paths
+```
+$ export Qt5_DIR=/usr/local/Cellar/qt@5/Qt-5.xx.x/lib/cmake/Qt5
+$ export QT_DIR=/usr/local/Qt-5.xx.x/lib/cmake/Qt5
+```
+The x's in Qt-5.xx.x will differ depending on the version installed on your machine. \
+6. Change to the repository directory and build.
+```
+$ cd ul-cryptovault
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+7. Run CryptoVault
+```
+$ ./CryptoVault
+```
+
+
+
