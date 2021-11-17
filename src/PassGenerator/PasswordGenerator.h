@@ -26,4 +26,6 @@ class PasswordGenerator : public QMainWindow
 		void addCharacters();
 		void checkActivity();
 		void updateCursor();
+                void launchVault();
+                void launchSettings();
 };
