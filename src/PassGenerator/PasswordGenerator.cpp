@@ -7,6 +7,8 @@
 #include "../Global/ChangeGlobals.h"
 #include "../JSON/SaveJson.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../Settings/Settings.h"
+#include "../CredentialMenu/CredentialMenu.h"
 #include <QTimer>
 #include "PasswordGenerator.h"
 #include <QGuiApplication>
@@ -19,10 +21,12 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     ui.setupUi(this);
     ui.IncludeExcludeFrame->hide();
 
-	generatorActive = true;
-	//[TODO] add functions to go to settings and vault menus and switch generatorActive to OFF
+    generatorActive = true;
+    //[TODO] add functions to go to settings and vault menus and switch generatorActive to OFF
 
-
+    connect(ui.SettingsButton, SIGNAL(clicked()), this, SLOT(launchSettings()));
+    connect(ui.VaultButton, SIGNAL(clicked()), this, SLOT(launchVault()));
+    
     connect(ui.IncludeButton, SIGNAL(clicked()), this, SLOT(openIncludePrompt()));
     connect(ui.ExcludeButton, SIGNAL(clicked()), this, SLOT(openExcludePrompt()));
     connect(ui.GenerateButton, SIGNAL(clicked()), this, SLOT(generatePassword()));
@@ -33,9 +37,9 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     SaveJson sj;
     inactivityTimerSet = sj.timerOn();
     if(inactivityTimerSet){
-		ChangeGlobals cg;
-		cg.setTimer(sj.timerLimit());
-	}
+      ChangeGlobals cg;
+      cg.setTimer(sj.timerLimit());
+    }
    
     // Activity Timer
     QTimer *timer = new QTimer(this);
@@ -45,6 +49,18 @@ PasswordGenerator::PasswordGenerator(QFrame *parent)
     QTimer *updateCursorTimer = new QTimer(this);
     connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
     updateCursorTimer->start(500);
+}
+
+void PasswordGenerator::launchSettings(){
+  QWidget *set = new Settings();
+  this->close();
+  set->show();
+}
+
+void PasswordGenerator::launchVault(){
+  QWidget *vault = new CredentialMenu();
+  this->close();
+  vault->show();
 }
 
 void PasswordGenerator::openIncludePrompt(){
