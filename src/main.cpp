@@ -12,8 +12,9 @@ int main(int argc, char *argv[]){
     SaveJson sj;
     login log;
     startScreen s_screen;
-    
-    bool unitTesting = true;
+   
+    // Initialize whether unit testing is done
+    bool unitTesting = false;
 
     if(unitTesting){
       ChangeGlobals cg;
