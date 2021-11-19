@@ -116,7 +116,9 @@ CredentialMenu::CredentialMenu(QFrame *parent)
 
     // Stores initial position of cursor
     cursorPosition = QCursor::pos();
-
+    if(global.unit_testing){
+      ui.ImportButton->animateClick();
+    }
     loadCredentials();
 }
 
@@ -607,10 +609,19 @@ void CredentialMenu::removeSelectedCredential(){
 
 // function to add credentials to existing collection
 void CredentialMenu::importCredentials(){
+        qDebug() << "(1) Starting Import Credentials To Existing Vault Test";
+        qDebug() << "======================================================";
+
 	CrossPlatform x;
 	ChangeGlobals cg;
 	QString workingDirectory = qApp->applicationDirPath();
-	QString filePath = QFileDialog::getOpenFileName(this, "Open Credentials JSON", workingDirectory, "JSON File (*.json)");
+	QString filePath;
+        if(global.unit_testing){
+          filePath = "../unit-testing/import/credentials.json";
+        }
+        else {
+          filePath = QFileDialog::getOpenFileName(this, "Open Credentials JSON", workingDirectory, "JSON File (*.json)");
+        }
 	cg.changeImportPath(x.xString(filePath));
 
 	QWidget *auth = new authorization();
@@ -630,13 +641,20 @@ void CredentialMenu::jsonImport(std::string auth){
 	temp_passwords.clear();
 	temp_usernames.clear();
     for(int i = 0; i < size; i++){
-        temp_services.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
-        temp_passwords.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
-        temp_usernames.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
+        temp_services.push_back(crypt.tempDecryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
+        temp_passwords.push_back(crypt.tempDecryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
+        temp_usernames.push_back(crypt.tempDecryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
     }
 
-	for(int i = 0; i < size; i++){
-		sj.addCredentials(QString::fromStdString(temp_services.at(i)), QString::fromStdString(temp_usernames.at(i)), QString::fromStdString(temp_passwords.at(i)));
-	}
-	loadCredentials();
+    for(int i = 0; i < size; i++){
+            sj.addCredentials(QString::fromStdString(temp_services.at(i)), QString::fromStdString(temp_usernames.at(i)), QString::fromStdString(temp_passwords.at(i)));
+    }
+    loadCredentials();
+    QString testService = "s2";
+    QString testUsername = "user2";
+    QString testPassword = "pass2";
+    if(ui.CredentialTable->item(1, 0)->text() == testService && ui.CredentialTable->item(1, 1)->text() == testUsername && ui.CredentialTable->item(1, 2)->text() == testPassword){
+      qDebug() << "(1) Test Passed!";
+      qDebug() << "======================================================";
+    }
 }

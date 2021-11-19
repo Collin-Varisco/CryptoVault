@@ -53,6 +53,24 @@ std::string Crypto::decryptValue(QString info)
     return x.xString(decodedString);
 }
 
+
+std::string Crypto::tempDecryptValue(QString info)
+{
+    // AES Encryption Key
+    QAESEncryption encryption(QAESEncryption::AES_256, QAESEncryption::CBC);
+    QString key(QString::fromStdString(global.changed_global_key));
+    QString iv(QString::fromStdString(global.changed_global_iv));
+    QByteArray temp = QByteArray::fromBase64(info.toUtf8());
+
+    QByteArray hashKey = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Sha256);
+    QByteArray hashIV = QCryptographicHash::hash(iv.toUtf8(), QCryptographicHash::Md5);
+
+    QByteArray decodeCred = encryption.decode(temp, hashKey, hashIV);
+    QString decodedString = encryption.removePadding(decodeCred);
+    CrossPlatform x;
+    return x.xString(decodedString);
+}
+
 /* hash256(QString value)
  * Hash Username and Password with SHA-256
  * Qtring value - either username or password
