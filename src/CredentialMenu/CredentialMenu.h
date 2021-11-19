@@ -28,6 +28,11 @@ class CredentialMenu : public QMainWindow
 		QList<QString> exportPasswords;
 		QPoint cursorPosition;
 	        bool inactivityTimerSet;
+
+                // Unit test vars
+                int exportTestNum = 0; 
+                void checkCredential(QString serv, QString user, QString pass, int index);
+                  
                 void editCredential();
                 void editCredentialTest(std::string service, std::string username, std::string password);
                 void checkLastCredential(QString serv, QString user, QString pass);

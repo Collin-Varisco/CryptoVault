@@ -504,8 +504,8 @@ void CredentialMenu::loginChangeData(QString hashedPass){
 
     if(global.unit_testing){
       qDebug() << "\nExported Credential File with Login Credentials: ";
-      qDebug() << "Username: exportUser1";
-      qDebug() << "Password: exportPass1";
+      qDebug() << "Username: " + global.exportSelectedUsername;
+      qDebug() << "Password: " + global.exportSelectedPassword;
       qDebug() << "Importing the exported file to test values.";
       ChangeGlobals cg;
       cg.setImportingExported(true);
@@ -622,7 +622,6 @@ void CredentialMenu::removeSelectedCredential(){
 // function to add credentials to existing collection
 void CredentialMenu::importCredentials(){
         qDebug() << "(1) Starting Import Credentials To Existing Vault Test";
-        qDebug() << "======================================================";
 
 	CrossPlatform x;
 	ChangeGlobals cg;
@@ -685,6 +684,10 @@ void CredentialMenu::jsonImport(std::string auth){
       qDebug() << "Service: " + ui.CredentialTable->item(0, 0)->text();
       qDebug() << "Username/Email: " + ui.CredentialTable->item(0, 1)->text();
       qDebug() << "Password: " + ui.CredentialTable->item(0, 2)->text();
+      ChangeGlobals cg;
+      QString usr = "export1";
+      QString ePass = "exPass1";
+      cg.changeExportSelectedCredentials(usr, ePass);
       QWidget *checkWidget = (QWidget *)ui.CredentialTable->cellWidget(0, 3);
       QCheckBox *box = (QCheckBox *)checkWidget->children().at(1);
       box->setChecked(true);
@@ -693,11 +696,46 @@ void CredentialMenu::jsonImport(std::string auth){
     if(global.unit_testing && global.importingExported){
       ChangeGlobals cg;
       cg.setImportingExported(false);
-      QString ser = ui.CredentialTable->item(0, 0)->text();
-      QString usr = ui.CredentialTable->item(0, 1)->text();
-      QString pas = ui.CredentialTable->item(0, 2)->text();
-      checkLastCredential(ser, usr, pas); 
+      if(exportTestNum == 2){
+        QString ser = ui.CredentialTable->item(0, 0)->text();
+        QString usr = ui.CredentialTable->item(0, 1)->text();
+        QString pas = ui.CredentialTable->item(0, 2)->text();
+        checkCredential(ser, usr, pas, 2);
+
+        QString ser2 = ui.CredentialTable->item(1, 0)->text();
+        QString usr2 = ui.CredentialTable->item(1, 1)->text();
+        QString pas2 = ui.CredentialTable->item(1, 2)->text();
+        checkCredential(ser2, usr2, pas2, 1); 
+        qDebug() << "======================================================";
+      }
+      if(exportTestNum == 0){
+        QString ser = ui.CredentialTable->item(0, 0)->text();
+        QString usr = ui.CredentialTable->item(0, 1)->text();
+        QString pas = ui.CredentialTable->item(0, 2)->text();
+        checkLastCredential(ser, usr, pas); 
+        qDebug() << "||||||||||||||||||||||||||||||||||||||||||||||||||||||";
+        qDebug() << "Exporting Credentials at Row (0) and Row(1)"; 
+        // 2nd test
+        exportTestNum = 2;
+        QWidget *checkWidget = (QWidget *)ui.CredentialTable->cellWidget(0, 3);
+        QCheckBox *box = (QCheckBox *)checkWidget->children().at(1);
+        box->setChecked(true);
+
+        QWidget *checkWidget2 = (QWidget *)ui.CredentialTable->cellWidget(1, 3);
+        QCheckBox *box2 = (QCheckBox *)checkWidget2->children().at(1);
+        box2->setChecked(true); 
+        ui.ExportSelectedButton->animateClick();
+      }
+      
     }
+}
+void CredentialMenu::checkCredential(QString serv, QString user, QString pass, int index){
+  if(
+      ui.CredentialTable->item(services.size()-index, 0)->text() == serv && ui.CredentialTable->item(services.size()-index, 1)->text() == user && ui.CredentialTable->item(services.size()-index, 2)->text() == pass) {
+      qDebug() << "[PASSED] - Case=[" + serv + ", " + user + ", " + pass + "]"; 
+  } else {
+      qDebug() << "[FAILED] - Case=[" + serv + ", " + user + ", " + pass + "]"; 
+  }
 }
 
 void CredentialMenu::checkLastCredential(QString serv, QString user, QString pass){

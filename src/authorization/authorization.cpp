@@ -27,9 +27,9 @@ authorization::authorization(QFrame *parent)
       ui.pushButton->animateClick();
     } else if(global.unit_testing && global.importingExported){
       qDebug() << "Authorizing Credential File Import";
-      qDebug() << "Username: exportUser1 ; Password: exportPass1";
-      ui.UsernameInput->setText("exportUser1");
-      ui.EncryptionKeyInput->setText("exportPass1");
+      qDebug() << "Username: " + global.exportSelectedUsername + "  ||  Password: " + global.exportSelectedPassword;
+      ui.UsernameInput->setText(global.exportSelectedUsername);
+      ui.EncryptionKeyInput->setText(global.exportSelectedPassword);
       ui.pushButton->animateClick(); 
     }
 }
@@ -50,10 +50,10 @@ void authorization::attemptLogin(){
     std::string filePass = sj.loadImportFilePassword(global.global_import_path);
 
     if(entered == filePass){
-            change.changeKey(x.xString(crypt.hash256(username)), true);
-            change.changeIV(x.xString(crypt.hash256(combo)), true);
-            sendFinished(global.temp_key);
-            this->close();
+      change.changeKey(x.xString(crypt.hash256(username)), true);
+      change.changeIV(x.xString(crypt.hash256(combo)), true);
+      sendFinished(global.temp_key);
+      this->close();
     }
 }
 

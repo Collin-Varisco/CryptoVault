@@ -66,4 +66,10 @@ struct ChangeGlobals
     void setImportingExported(bool importing){
       global.importingExported = importing;
     }
+    
+    // Unit Test
+    void changeExportSelectedCredentials(QString user, QString pass){
+      global.exportSelectedUsername = user;
+      global.exportSelectedPassword = pass;
+    }
 };

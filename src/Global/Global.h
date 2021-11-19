@@ -19,8 +19,12 @@ class Global
 	    int inactiveTime = 0;
 	    int timerLimit;
             
+            // Unit Testing variables 
             bool importingExported = false;
             bool unit_testing = false;
+            QString exportSelectedUsername;
+            QString exportSelectedPassword;
+            
         public:
             Global() = default;
             Global(const Global&) = delete;
