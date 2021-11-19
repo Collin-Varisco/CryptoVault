@@ -1,4 +1,5 @@
 #include <string>
+#include <QDebug>
 #include <iostream>
 #include <ctype.h>
 #include <QString>
@@ -20,6 +21,12 @@ login::login(QFrame *parent)
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(attemptLogin()));
 }
 
+void login::unitTestLogin(){
+      ui.UsernameInput->setText("u1");
+      ui.EncryptionKeyInput->setText("p1");
+      ui.pushButton->animateClick(); 
+}
+
 
 void login::attemptLogin(){
     QWidget *mainMenu;
@@ -37,7 +44,7 @@ void login::attemptLogin(){
 
 	if(entered == passHash){
 		change.changeKey(x.xString(crypt.hash256(username)), false);
-        change.changeIV(x.xString(crypt.hash256(combo)), false);
+                change.changeIV(x.xString(crypt.hash256(combo)), false);
 
 		mainMenu = new CredentialMenu();
 		QScreen *screen = QGuiApplication::primaryScreen();

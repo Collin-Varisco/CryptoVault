@@ -58,4 +58,8 @@ struct ChangeGlobals
     void changeImportPath(std::string path){
         global.global_import_path = path;
     }
+
+    void setUnitTesting(bool testing){
+      global.unit_testing = testing;
+    }
 };
