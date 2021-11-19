@@ -29,6 +29,9 @@ class CredentialMenu : public QMainWindow
 		QPoint cursorPosition;
 	        bool inactivityTimerSet;
                 void editCredential();
+                void editCredentialTest(std::string service, std::string username, std::string password);
+                void checkLastCredential(QString serv, QString user, QString pass);
+
 	private:
 		Ui::Form ui;
 		std::vector<std::string> services;

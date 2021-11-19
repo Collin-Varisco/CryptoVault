@@ -35,7 +35,7 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     ui.AddCredentialFrame->setVisible(false);
     ui.ImportExportFrame->setVisible(false);
 
-	credentialMenuActive = true;
+    credentialMenuActive = true;
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect geometry = screen->geometry();
@@ -95,14 +95,14 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     connect(ui.ExportSelectedButton, SIGNAL(clicked()), this, SLOT(exportSelectedCredentials()));
     connect(ui.EditButton, SIGNAL(clicked()), this, SLOT(openEditCredentialPrompt()));
     connect(ui.ExportAllButton, SIGNAL(clicked()), this, SLOT(exportAllCredentials()));
-	connect(ui.ImportButton, SIGNAL(clicked()), this, SLOT(importCredentials()));
+    connect(ui.ImportButton, SIGNAL(clicked()), this, SLOT(importCredentials()));
 
-	SaveJson sj;
+    SaveJson sj;
     inactivityTimerSet = sj.timerOn();
     if(inactivityTimerSet){
-		ChangeGlobals cg;
-		cg.setTimer(sj.timerLimit());
-	}
+      ChangeGlobals cg;
+      cg.setTimer(sj.timerLimit());
+    }
 
     // Triggers the slot function every second this CredentialMenu window is open.
     QTimer *timer = new QTimer(this);
@@ -330,7 +330,7 @@ void CredentialMenu::editCredential()
 	    QString password = ui.AddPassword->text();
 	    removeSelectedCredential();
 	    sj.addCredentials(service, username, password);
-    	closeAddCredentialPrompt();
+            closeAddCredentialPrompt();
 	    editing = false;
 	    loadCredentials();
 }
@@ -656,5 +656,31 @@ void CredentialMenu::jsonImport(std::string auth){
     if(ui.CredentialTable->item(1, 0)->text() == testService && ui.CredentialTable->item(1, 1)->text() == testUsername && ui.CredentialTable->item(1, 2)->text() == testPassword){
       qDebug() << "(1) Test Passed!";
       qDebug() << "======================================================";
+      QModelIndex index = ui.CredentialTable->model()->index(0, 0);
+      ui.CredentialTable->selectionModel()->select(index, QItemSelectionModel::Select);
+      editCredentialTest("edit1", "edit2", "edit3");
     }
+}
+
+void CredentialMenu::checkLastCredential(QString serv, QString user, QString pass){
+  if(
+      ui.CredentialTable->item(services.size()-1, 0)->text() == serv && ui.CredentialTable->item(services.size()-1, 1)->text() == user && ui.CredentialTable->item(services.size()-1, 2)->text() == pass) {
+    qDebug() << "[PASSED] : Case: " + serv + "     " + user + "     " + pass; 
+  } else {
+    qDebug() << "[FAILED] : Case: " + serv + "     " + user + "     " + pass;
+    
+  }
+
+
+}
+
+void CredentialMenu::editCredentialTest(std::string service, std::string username, std::string password) {
+  QString serv = QString::fromStdString(service);
+  QString user = QString::fromStdString(username);
+  QString pass = QString::fromStdString(password);
+  ui.AddService->setText(serv);
+  ui.AddUsername->setText(user);
+  ui.AddPassword->setText(pass);
+  editCredential();
+  checkLastCredential(serv, user, pass); 
 }
