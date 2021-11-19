@@ -17,6 +17,11 @@ ExportLoginChange::ExportLoginChange(QFrame *parent)
     // loads prompt
     ui.setupUi(this);
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(changeLogin()));
+    if(global.unit_testing){
+      ui.UsernameInput->setText("exportUser1");
+      ui.EncryptionKeyInput->setText("exportPass1");
+      ui.pushButton->animateClick();
+    }
 }
 
 

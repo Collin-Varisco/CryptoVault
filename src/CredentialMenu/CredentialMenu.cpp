@@ -459,10 +459,14 @@ void CredentialMenu::exportSelectedCredentials(){
 	exportUsernames.clear();
 	exportPasswords.clear();
 	// QFolderDialog asking where to save the file to
-	export_selected_dir = QFileDialog::getExistingDirectory(this, tr("Choose Directory For Exported Credentials File"),
+        if(!global.unit_testing){
+          export_selected_dir = QFileDialog::getExistingDirectory(this, tr("Choose Directory For Exported Credentials File"),
                                              QDir::currentPath(),
                                              QFileDialog::ShowDirsOnly
                                              | QFileDialog::DontResolveSymlinks);
+        } else {
+          export_selected_dir = "../unit-testing/export-selected";
+        }
 	for(int row = 0; row < services.size(); row++){
 		QWidget *checkWidget = (QWidget *)ui.CredentialTable->cellWidget(row, 3);
 		QCheckBox *box = (QCheckBox *)checkWidget->children().at(1);
@@ -483,11 +487,11 @@ void CredentialMenu::loginChangeData(QString hashedPass){
     using namespace nlohmann;
     json j;
     j["Credentials"] = {};
-	CrossPlatform x;
+    CrossPlatform x;
     std::ofstream o(x.xString(export_selected_dir) + "/credentials.json");
     o << std::setw(4) << j << std::endl;
 
-	std::ifstream jFile(x.xString(export_selected_dir) + "/credentials.json");
+    std::ifstream jFile(x.xString(export_selected_dir) + "/credentials.json");
     json jPass = json::parse(jFile);
 
     json masterPass;
@@ -495,12 +499,20 @@ void CredentialMenu::loginChangeData(QString hashedPass){
     jPass["Credentials"].push_back(masterPass);
     std::ofstream oPass(x.xString(export_selected_dir) + "/credentials.json");
     oPass << std::setw(4) << jPass << std::endl;
-	SaveJson sj;
-	sj.addExportedCredentials(exportServices, exportUsernames, exportPasswords, x.xString(export_selected_dir));
+    SaveJson sj;
+    sj.addExportedCredentials(exportServices, exportUsernames, exportPasswords, x.xString(export_selected_dir));
+
+    if(global.unit_testing){
+      qDebug() << "\nExported Credential File with Login Credentials: ";
+      qDebug() << "Username: exportUser1";
+      qDebug() << "Password: exportPass1";
+      qDebug() << "Importing the exported file to test values.";
+      ChangeGlobals cg;
+      cg.setImportingExported(true);
+      importCredentials();
+       
+    }
 }
-
-
-
 
 bool CredentialMenu::eventFilter(QObject *obj, QEvent *event)
 {
@@ -616,8 +628,11 @@ void CredentialMenu::importCredentials(){
 	ChangeGlobals cg;
 	QString workingDirectory = qApp->applicationDirPath();
 	QString filePath;
-        if(global.unit_testing){
+        if(global.unit_testing && !global.importingExported){
           filePath = "../unit-testing/import/credentials.json";
+        }
+        else if(global.unit_testing && global.importingExported){
+          filePath = "../unit-testing/export-selected/credentials.json";
         }
         else {
           filePath = QFileDialog::getOpenFileName(this, "Open Credentials JSON", workingDirectory, "JSON File (*.json)");
@@ -630,9 +645,9 @@ void CredentialMenu::importCredentials(){
 }
 
 void CredentialMenu::jsonImport(std::string auth){
-	Crypto crypt;
-	SaveJson sj;
-	using namespace nlohmann;
+    Crypto crypt;
+    SaveJson sj;
+    using namespace nlohmann;
     std::ifstream jFile(global.global_import_path);
     json j = json::parse(jFile);
 
@@ -653,25 +668,45 @@ void CredentialMenu::jsonImport(std::string auth){
     QString testService = "s2";
     QString testUsername = "user2";
     QString testPassword = "pass2";
-    if(ui.CredentialTable->item(1, 0)->text() == testService && ui.CredentialTable->item(1, 1)->text() == testUsername && ui.CredentialTable->item(1, 2)->text() == testPassword){
+    if(global.unit_testing && ui.CredentialTable->item(1, 0)->text() == testService && ui.CredentialTable->item(1, 1)->text() == testUsername && ui.CredentialTable->item(1, 2)->text() == testPassword){
       qDebug() << "(1) Test Passed!";
       qDebug() << "======================================================";
+      qDebug() << "Testing Edit Credential Feature\n";
       QModelIndex index = ui.CredentialTable->model()->index(0, 0);
       ui.CredentialTable->selectionModel()->select(index, QItemSelectionModel::Select);
       editCredentialTest("edit1", "edit2", "edit3");
+      ui.CredentialTable->selectionModel()->select(index, QItemSelectionModel::Select);
+      editCredentialTest("@!%#*", "@#$SDFWER!@123", "  _  ");
+      ui.CredentialTable->selectionModel()->select(index, QItemSelectionModel::Select);
+      editCredentialTest("", " ", "  )()() ");
+      qDebug() << "======================================================";
+      qDebug() << "Testing Export Selected Credentials\n";
+      qDebug() << "Exporting Credential at Row (0)";
+      qDebug() << "Service: " + ui.CredentialTable->item(0, 0)->text();
+      qDebug() << "Username/Email: " + ui.CredentialTable->item(0, 1)->text();
+      qDebug() << "Password: " + ui.CredentialTable->item(0, 2)->text();
+      QWidget *checkWidget = (QWidget *)ui.CredentialTable->cellWidget(0, 3);
+      QCheckBox *box = (QCheckBox *)checkWidget->children().at(1);
+      box->setChecked(true);
+      ui.ExportSelectedButton->animateClick();
+    }
+    if(global.unit_testing && global.importingExported){
+      ChangeGlobals cg;
+      cg.setImportingExported(false);
+      QString ser = ui.CredentialTable->item(0, 0)->text();
+      QString usr = ui.CredentialTable->item(0, 1)->text();
+      QString pas = ui.CredentialTable->item(0, 2)->text();
+      checkLastCredential(ser, usr, pas); 
     }
 }
 
 void CredentialMenu::checkLastCredential(QString serv, QString user, QString pass){
   if(
       ui.CredentialTable->item(services.size()-1, 0)->text() == serv && ui.CredentialTable->item(services.size()-1, 1)->text() == user && ui.CredentialTable->item(services.size()-1, 2)->text() == pass) {
-    qDebug() << "[PASSED] : Case: " + serv + "     " + user + "     " + pass; 
+    qDebug() << "[PASSED] - Case=[" + serv + ", " + user + ", " + pass + "]"; 
   } else {
-    qDebug() << "[FAILED] : Case: " + serv + "     " + user + "     " + pass;
-    
+    qDebug() << "[FAILED] - Case=[" + serv + ", " + user + ", " + pass + "]"; 
   }
-
-
 }
 
 void CredentialMenu::editCredentialTest(std::string service, std::string username, std::string password) {

@@ -18,7 +18,8 @@ class Global
             std::string global_import_path;
 	    int inactiveTime = 0;
 	    int timerLimit;
-
+            
+            bool importingExported = false;
             bool unit_testing = false;
         public:
             Global() = default;

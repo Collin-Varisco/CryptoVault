@@ -62,4 +62,8 @@ struct ChangeGlobals
     void setUnitTesting(bool testing){
       global.unit_testing = testing;
     }
+
+    void setImportingExported(bool importing){
+      global.importingExported = importing;
+    }
 };

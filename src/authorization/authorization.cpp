@@ -19,12 +19,18 @@ authorization::authorization(QFrame *parent)
     // loads authorization prompt
     ui.setupUi(this);
     connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(attemptLogin()));
-    if(global.unit_testing){
+    if(global.unit_testing && !global.importingExported){
       qDebug() << "Authorizing Credential File Import";
       qDebug() << "Username: u2 ; Password: p2";
       ui.UsernameInput->setText("u2");
       ui.EncryptionKeyInput->setText("p2");
       ui.pushButton->animateClick();
+    } else if(global.unit_testing && global.importingExported){
+      qDebug() << "Authorizing Credential File Import";
+      qDebug() << "Username: exportUser1 ; Password: exportPass1";
+      ui.UsernameInput->setText("exportUser1");
+      ui.EncryptionKeyInput->setText("exportPass1");
+      ui.pushButton->animateClick(); 
     }
 }
 
