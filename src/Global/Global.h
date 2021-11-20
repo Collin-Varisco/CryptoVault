@@ -18,6 +18,11 @@ class Global
             std::string global_import_path;
 	    int inactiveTime = 0;
 	    int timerLimit;
+
+            QList<QString> global_services;
+            QList<QString> global_usernames;
+            QList<QString> global_passwords;
+            
         public:
             Global() = default;
             Global(const Global&) = delete;

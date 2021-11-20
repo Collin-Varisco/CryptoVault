@@ -58,4 +58,10 @@ struct ChangeGlobals
     void changeImportPath(std::string path){
         global.global_import_path = path;
     }
+
+    void setGlobalCredentials(QList<QString> services, QList<QString> usernames, QList<QString> passwords){
+      global.global_services = services;
+      global.global_usernames = usernames;
+      global.global_passwords = passwords;
+    }
 };

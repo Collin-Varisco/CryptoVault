@@ -402,6 +402,20 @@ void CredentialMenu::loadCredentials(){
         passwords.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
         usernames.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
     }
+    
+    QList<QString> exServices;
+    QList<QString> exUsernames;
+    QList<QString> exPasswords;
+    if(size > 0){
+      for(int row = 0; row < services.size(); row++){
+        exServices.append(QString::fromStdString(services.at(row)));
+        exUsernames.append(QString::fromStdString(usernames.at(row)));
+        exPasswords.append(QString::fromStdString(passwords.at(row)));
+      }
+      ChangeGlobals cg;
+      cg.setGlobalCredentials(exServices, exUsernames, exPasswords);
+    }
+
 
     ui.CredentialTable->setRowCount(services.size());
     for(int row=0; row < services.size(); row++){
