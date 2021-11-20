@@ -1,5 +1,6 @@
 #include "SaveJson.h"
 #include <nlohmann/json.hpp>
+#include <QDebug>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -24,6 +25,7 @@ SaveJson::SaveJson(){
  * Saves hashed password to json
 */
 void SaveJson::setMasterPassword(std::string encrypted_master_pass){
+    qDebug() << "setMasterPassword()";
     using namespace nlohmann;
     std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
@@ -44,6 +46,7 @@ void SaveJson::setMasterPassword(std::string encrypted_master_pass){
 
 
 void SaveJson::setTimer(bool onOrOff, int seconds){
+    qDebug() << "setTimer()";
     using namespace nlohmann;
     std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
@@ -56,15 +59,22 @@ void SaveJson::setTimer(bool onOrOff, int seconds){
 }
 
 int SaveJson::timerLimit(){
-	using namespace nlohmann;
-	std::ifstream jFile("credentials.json");
+    qDebug() << "timerLimit()";
+    using namespace nlohmann;
+    std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
     ChangeGlobals cg;
-    int num = (int)j["Settings"][0]["InactivityLimit"][0][0];
-    return num;
+    int finalNum;
+    if(j["Settings"][0]["InactivityLimit"][0][0] == nlohmann::detail::value_t::null){
+      finalNum = 1000000;
+    } else {
+      finalNum = (int)j["Settings"][0]["InactivityLimit"][0][0];
+    }
+    return finalNum;
 }
 
 bool SaveJson::timerOn(){
+    qDebug() << "timerOn()";
     using namespace nlohmann;
     std::ifstream jFile("credentials.json");
     json j = json::parse(jFile);
@@ -87,6 +97,7 @@ bool SaveJson::timerOn(){
  * returns a std::string of the hashed password from JSON file.
 */
 std::string SaveJson::loadMasterPassword(){
+    qDebug() << "loadMasterPassword()";
     using namespace nlohmann;
     std::ifstream jFile("./credentials.json");
     json j = json::parse(jFile);
@@ -95,6 +106,7 @@ std::string SaveJson::loadMasterPassword(){
 }
 
 std::string SaveJson::loadImportFilePassword(std::string path){
+    qDebug() << "loadImportFilePassword()";
     using namespace nlohmann;
     std::ifstream jFile(path);
     json j = json::parse(jFile);
@@ -106,9 +118,10 @@ std::string SaveJson::loadImportFilePassword(std::string path){
  * Boolean function that checks the working directory for a credentials file.
 */
 bool SaveJson::checkForFile(){
+    qDebug() << "checkForFile()";
     // Mac and Linux
-	QString filePath = "./credentials.json";
-	QFileInfo check_file_exists(filePath);
+    QString filePath = "./credentials.json";
+    QFileInfo check_file_exists(filePath);
     bool found;
 	if(check_file_exists.exists()){
 		found = true;
@@ -125,6 +138,7 @@ bool SaveJson::checkForFile(){
  * working directory.
 */
 void SaveJson::createJSON(){
+    qDebug() << "createJSON()";
     using namespace nlohmann;
     json j;
     j["Credentials"] = {};
@@ -137,6 +151,7 @@ void SaveJson::createJSON(){
  * It appends the credentials as a json object to the existing account credentials.
 */
 void SaveJson::addCredentials(QString service, QString username, QString password){
+    qDebug() << "addCredentials()";
     using namespace nlohmann;
     CrossPlatform x;
     Crypto crypt;
@@ -150,6 +165,7 @@ void SaveJson::addCredentials(QString service, QString username, QString passwor
 }
 
 void SaveJson::addExportedCredentials(QList<QString> service, QList<QString> username, QList<QString> password, std::string export_path){
+    qDebug() << "addExportedCredentials()";
     using namespace nlohmann;
     CrossPlatform x;
     Crypto crypt;

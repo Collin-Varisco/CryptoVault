@@ -4,6 +4,7 @@
 #include "../JSON/SaveJson.h"
 #include "../Crypto/Crypto.h"
 #include "../CrossPlatform/CrossPlatform.h"
+#include "../ExportCredentialsLoginChange/ExportLoginChange.h"
 #include "../Global/Global.h"
 #include "../Global/ChangeGlobals.h"
 #include <QTimer>
@@ -72,6 +73,44 @@ Settings::Settings(QFrame *parent)
     connect(updateCursorTimer, SIGNAL(timeout()), this, SLOT(updateCursor()));
     updateCursorTimer->start(500);
     connect(ui.radioButton, SIGNAL(clicked()), this, SLOT(updateTimer()));
+    connect(ui.GeneratorButton_2, SIGNAL(clicked()), this, SLOT(resetPassword()));
+
+}
+
+void Settings::resetPassword(){
+
+  #ifdef TARGET_OS_MAC
+  system("rm ./credentials.json");
+  #elif defined __linux__
+  system("rm ./credentials.json");
+  #elif defined _WIN32 || defined _WIN64
+  system("del /f credentials.json");
+  #else
+  #error "unknown platform"
+  #endif
+  QWidget *changePassword = new ExportLoginChange();
+  QObject::connect(changePassword, SIGNAL(sendFinishedSignal(QString)), this, SLOT(loginChangeData(QString)));
+  changePassword->show();
+}
+
+void Settings::loginChangeData(QString hashedPass){
+    using namespace nlohmann;
+    json j;
+    j["Credentials"] = {};
+    CrossPlatform x;
+    std::ofstream o(x.xString(".") + "/credentials.json");
+    o << std::setw(4) << j << std::endl;
+
+    std::ifstream jFile(x.xString(".") + "/credentials.json");
+    json jPass = json::parse(jFile);
+
+    json masterPass;
+    masterPass["MasterPassword"] = {x.xString(hashedPass)};
+    jPass["Credentials"].push_back(masterPass);
+    std::ofstream oPass(x.xString(".") + "/credentials.json");
+    oPass << std::setw(4) << jPass << std::endl;
+    SaveJson sj;
+    sj.addExportedCredentials(global.global_services, global.global_usernames, global.global_passwords, x.xString("."));
 
 }
 

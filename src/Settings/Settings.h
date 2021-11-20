@@ -32,6 +32,8 @@ class Settings : public QMainWindow
 		void checkActivity();
 		void updateCursor();
 		void updateTimer();
+                void resetPassword();
+                void loginChangeData(QString hashedPass);
 
 
 };

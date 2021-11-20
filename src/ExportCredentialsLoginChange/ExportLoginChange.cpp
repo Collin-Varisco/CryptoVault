@@ -29,11 +29,19 @@ void ExportLoginChange::changeLogin(){
     QString username = ui.UsernameInput->text();
     QString pass = ui.EncryptionKeyInput->text();
     QString combo = crypt.hash256(username + pass);
-    change.changeKey(x.xString(crypt.hash256(username)), true);
+    
+    // This is for temporary swap when exporting selecting credentials with different credentials.
+    change.changeKey(x.xString(crypt.hash256(username)), true); 
+    // This is to allow decrypting of credentials on the same session that a user changes their password.
+    change.changeKey(x.xString(crypt.hash256(username)), false);
 
     QString saltedHashPass = crypt.hash256(crypt.hash256(username) + crypt.hash256(pass));
-
+    
+    // This is for temporary swap when exporting selecting credentials with different credentials.
     change.changeIV(x.xString(crypt.hash256(combo)), true);
+    // This is to allow decrypting of credentials on the same session that a user changes their password.
+    change.changeIV(x.xString(crypt.hash256(combo)), false);
+    
     sendFinished(saltedHashPass);
     this->close();
 }
