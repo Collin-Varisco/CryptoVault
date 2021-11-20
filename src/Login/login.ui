@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -22,6 +25,9 @@ QLineEdit {
 }</string>
   </property>
   <widget class="QFrame" name="frame_3">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>70</x>
@@ -38,7 +44,7 @@ border: 2px solid gray;</string>
     <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+    <enum>QFrame::Plain</enum>
    </property>
    <widget class="QLabel" name="AddLabel">
     <property name="geometry">
@@ -64,6 +70,9 @@ border: 2px solid gray;</string>
       <width>91</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::TabFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">background: #152028;
@@ -111,7 +120,7 @@ border-radius: 15px;
      </rect>
     </property>
     <property name="focusPolicy">
-     <enum>Qt::ClickFocus</enum>
+     <enum>Qt::TabFocus</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">background: #152028;
@@ -156,8 +165,18 @@ border: none;</string>
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#efefef;&quot;&gt;Login&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
+   <zorder>AddLabel</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>EncryptionKeyInput</zorder>
+   <zorder>LoginLabel</zorder>
+   <zorder>UsernameInput</zorder>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>UsernameInput</tabstop>
+  <tabstop>EncryptionKeyInput</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

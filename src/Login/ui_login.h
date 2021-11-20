@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'fastPass_loginUphTVC.ui'
+** Form generated from reading UI file 'loginccIRpv.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.15.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef FASTPASS_LOGINUPHTVC_H
-#define FASTPASS_LOGINUPHTVC_H
+#ifndef LOGINCCIRPV_H
+#define LOGINCCIRPV_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -33,6 +33,7 @@ public:
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QString::fromUtf8("Form"));
+        Form->setWindowModality(Qt::WindowModal);
         Form->resize(470, 640);
         Form->setStyleSheet(QString::fromUtf8("background: #152028;\n"
 "color: #efefef;\n"
@@ -42,11 +43,12 @@ public:
 "}"));
         frame_3 = new QFrame(Form);
         frame_3->setObjectName(QString::fromUtf8("frame_3"));
+        frame_3->setEnabled(true);
         frame_3->setGeometry(QRect(70, 125, 331, 391));
         frame_3->setStyleSheet(QString::fromUtf8("background: #1F2933;\n"
 "border: 2px solid gray;"));
         frame_3->setFrameShape(QFrame::StyledPanel);
-        frame_3->setFrameShadow(QFrame::Raised);
+        frame_3->setFrameShadow(QFrame::Plain);
         AddLabel = new QLabel(frame_3);
         AddLabel->setObjectName(QString::fromUtf8("AddLabel"));
         AddLabel->setGeometry(QRect(0, 0, 331, 51));
@@ -54,6 +56,7 @@ public:
         pushButton = new QPushButton(frame_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(120, 245, 91, 31));
+        pushButton->setFocusPolicy(Qt::TabFocus);
         pushButton->setStyleSheet(QString::fromUtf8("background: #152028;\n"
 "color: #efefef;\n"
 "border: #1F2933;\n"
@@ -71,7 +74,7 @@ public:
         EncryptionKeyInput = new QLineEdit(frame_3);
         EncryptionKeyInput->setObjectName(QString::fromUtf8("EncryptionKeyInput"));
         EncryptionKeyInput->setGeometry(QRect(70, 200, 191, 31));
-        EncryptionKeyInput->setFocusPolicy(Qt::ClickFocus);
+        EncryptionKeyInput->setFocusPolicy(Qt::TabFocus);
         EncryptionKeyInput->setStyleSheet(QString::fromUtf8("background: #152028;\n"
 "color: #efefef;\n"
 "border: 2px solid #1F2933;\n"
@@ -85,6 +88,7 @@ public:
         font.setFamily(QString::fromUtf8("Montserrat"));
         font.setPointSize(6);
         font.setBold(true);
+        font.setWeight(75);
         LoginLabel->setFont(font);
         LoginLabel->setStyleSheet(QString::fromUtf8("font-family: 'Montserrat', sans-serif;\n"
 "	height: 1000vh;\n"
@@ -92,6 +96,13 @@ public:
 "font-weight: bold;\n"
 "margin: 0;\n"
 "border: none;"));
+        AddLabel->raise();
+        pushButton->raise();
+        EncryptionKeyInput->raise();
+        LoginLabel->raise();
+        UsernameInput->raise();
+        QWidget::setTabOrder(UsernameInput, EncryptionKeyInput);
+        QWidget::setTabOrder(EncryptionKeyInput, pushButton);
 
         retranslateUi(Form);
 
@@ -116,4 +127,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // FASTPASS_LOGINUPHTVC_H
+#endif // LOGINCCIRPV_H
