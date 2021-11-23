@@ -36,8 +36,8 @@ void authorization::attemptLogin(){
 	std::string filePass = sj.loadImportFilePassword(global.global_import_path);
 
 	if(entered == filePass){
-		change.tempChangeKey(x.xString(crypt.hash256(pass)));
-		change.tempChangeIV(x.xString(crypt.hash256(username)));
+		change.changeKey(x.xString(crypt.hash256(username)), true);
+		change.changeIV(x.xString(crypt.hash256(combo)), true);
 		sendFinished(global.temp_key);
 		this->close();
 	}
