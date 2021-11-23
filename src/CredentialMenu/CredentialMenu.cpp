@@ -644,9 +644,9 @@ void CredentialMenu::jsonImport(std::string auth){
 	temp_passwords.clear();
 	temp_usernames.clear();
     for(int i = 0; i < size; i++){
-        temp_services.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
-        temp_passwords.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
-        temp_usernames.push_back(crypt.decryptValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
+        temp_services.push_back(crypt.decryptFileValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["service"])));
+        temp_passwords.push_back(crypt.decryptFileValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["password"])));
+        temp_usernames.push_back(crypt.decryptFileValue(QString::fromStdString(j["Credentials"][0]["Entries"][i]["username"])));
     }
 
 	for(int i = 0; i < size; i++){

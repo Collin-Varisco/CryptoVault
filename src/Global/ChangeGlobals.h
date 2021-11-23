@@ -64,4 +64,9 @@ struct ChangeGlobals
       global.global_usernames = usernames;
       global.global_passwords = passwords;
     }
+
+    void tempKeys(std::string key, std::string iv){
+        global.global_temp_key = key;
+        global.global_temp_iv = iv;
+    }
 };
