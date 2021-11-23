@@ -118,6 +118,13 @@ CredentialMenu::CredentialMenu(QFrame *parent)
     cursorPosition = QCursor::pos();
     if(global.unit_testing){
       ui.ImportButton->animateClick();
+	  /*
+	  displayEditCredentialTestPrompt();
+	  editCredentialUnitTest("one", "two", "three");
+	  editCredentialUnitTest("##$@#$!#$^%^", "'dkfjs~~~```wo", "___+++_><><></");
+	  editCredentialUnitTest(" .   ", "", " ");
+	  qDebug() << "\n========================================================================================================================";
+	  */
     }
     loadCredentials();
 }
@@ -335,7 +342,32 @@ void CredentialMenu::editCredential()
 	    loadCredentials();
 }
 
-
+void CredentialMenu::displayEditCredentialTestPrompt(){
+		qDebug() << "\n========================================================================================================================";
+		qDebug() << "                                               Edit Credential Unit Test";
+		qDebug() << " File(s) Involved: CredentialMenu.cpp\n";
+		qDebug() << " The way the editCredential() function works is that it takes the three input fields that may have been changed";
+		qDebug() << " and uses them to create an entirely new credential. Before doing this it removes the original credential so you are";
+		qDebug() << " only left with the edited version of the credential. For testing, the function calls that interact with the GUI are ";
+		qDebug() << " commented out. So it is essentially just adding encrypted credentials to the json and then reloading the credentials";
+		qDebug() << " to the table. The credentials passed to this function will always be appended at the bottom of the table so the function, ";
+		qDebug() << " checkLastCredential(), will be called to see if the edited credential matches what was passed to editCredentialUnitTest(vars)\n";
+}
+void CredentialMenu::editCredentialUnitTest(std::string serv, std::string user, std::string pass)
+{
+	    CrossPlatform x;
+	    Crypto cr;
+	    SaveJson sj;
+	    QString service = QString::fromStdString(serv);
+	    QString username = QString::fromStdString(user);
+	    QString password = QString::fromStdString(pass);
+	    //removeSelectedCredential();
+	    sj.addCredentials(service, username, password);
+    	//closeAddCredentialPrompt();
+	    editing = false;
+	    loadCredentials();
+		checkLastCredential(service, username, password);
+}
 
 void CredentialMenu::loadCredentials(){
     ui.CredentialTable->clear();
@@ -621,7 +653,8 @@ void CredentialMenu::removeSelectedCredential(){
 
 // function to add credentials to existing collection
 void CredentialMenu::importCredentials(){
-        qDebug() << "(1) Starting Import Credentials To Existing Vault Test";
+	    qDebug() << "===============================================================================";
+        qDebug() << "			Starting Import Credentials To Existing Vault Test\n";
 
 	CrossPlatform x;
 	ChangeGlobals cg;
@@ -668,8 +701,13 @@ void CredentialMenu::jsonImport(std::string auth){
     QString testUsername = "user2";
     QString testPassword = "pass2";
     if(global.unit_testing && ui.CredentialTable->item(1, 0)->text() == testService && ui.CredentialTable->item(1, 1)->text() == testUsername && ui.CredentialTable->item(1, 2)->text() == testPassword){
-      qDebug() << "(1) Test Passed!";
-      qDebug() << "======================================================";
+	  qDebug() << "\nWhat is being imported:";
+	  qDebug() << " (1) Credential";
+	  qDebug() << "  [PASSED] Service: " + testService;
+	  qDebug() << "  [PASSED] Username/Email: " + testUsername;
+	  qDebug() << "  [PASSED] Password: " + testPassword;
+      qDebug() << "\n		ALL PASSED!";
+	  qDebug() << "===============================================================================";
       qDebug() << "Testing Edit Credential Feature\n";
       QModelIndex index = ui.CredentialTable->model()->index(0, 0);
       ui.CredentialTable->selectionModel()->select(index, QItemSelectionModel::Select);

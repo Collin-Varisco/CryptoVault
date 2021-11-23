@@ -31,6 +31,8 @@ class CredentialMenu : public QMainWindow
 
                 // Unit test vars
                 int exportTestNum = 0; 
+				void displayEditCredentialTestPrompt();
+				void editCredentialUnitTest(std::string serv, std::string user, std::string pass);
                 void checkCredential(QString serv, QString user, QString pass, int index);
                   
                 void editCredential();
