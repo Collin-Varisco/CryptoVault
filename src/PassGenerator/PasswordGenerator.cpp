@@ -13,6 +13,9 @@
 #include "PasswordGenerator.h"
 #include <QGuiApplication>
 #include <QScreen>
+#include <stdlib.h>
+#include <time.h>
+#include <QClipboard>
 
 PasswordGenerator::PasswordGenerator(QFrame *parent)
     : QMainWindow(parent)
@@ -94,46 +97,130 @@ void PasswordGenerator::addCharacters(){
 }
 
 void PasswordGenerator::copyPassword() {
-
+	QString itemText = ui.GeneratedPasswordLabel->text();
+	QClipboard *clip = QGuiApplication::clipboard();
+	clip->setText(itemText);
 }
 
 
-void PasswordGenerator::generatePassword(){
+void PasswordGenerator::generatePassword()
+{
 	bool onlyLettersAndNumbers = ui.AlphaNumericBox->isChecked();
 	bool specificLength = ui.NumberCharactersCheck->isChecked();
+	std::vector<char> letters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+	std::vector<char> cap_letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	std::vector<char> numbers = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+	std::vector<char> symbols = {'!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', ']', '{', '}', '|', '?', '>', '<', ',', '.', '~'};
 	int default_length = 14;
-	if(onlyLettersAndNumbers){
-		CrossPlatform x;
-		int input_length;
-		if(specificLength){
+	int input_length;
+	CrossPlatform x;
+	if(specificLength && onlyLettersAndNumbers){
 			// use a try catch for this to catch the error if a number is not entered
+			try {
 		        input_length = stoi(x.xString(ui.TotalCharactersLine->text()));
-			// ____________________
+				default_length = input_length;
+			} catch(int ex){
+				default_length = 14;
+            }
+		
+				std::string pass = "";
+				for(int i = 0; i < default_length; i++){
+						int characterSelection = rand() % 3;
+						if(characterSelection == 0){
+							int randomIndex = rand() % 26;
+							pass += letters.at(randomIndex);
+						} else if(characterSelection == 1){
+							int randomIndex = rand() % 26;
+							pass += cap_letters.at(randomIndex);
+						} else if(characterSelection == 2){
+							int randomIndex = rand() % 10;
+							pass += numbers.at(randomIndex);
+                        }
+				}
+				ui.GeneratedPasswordLabel->setText(QString::fromStdString(pass));
+				std::cout << pass << std::endl;
+		
+	}
 
-			default_length = input_length;
-		} else {
-			// Generator Code
-			// use variables: includeList and excludeList
-		}
+	else if(specificLength && !onlyLettersAndNumbers){
+			try {
+		        input_length = stoi(x.xString(ui.TotalCharactersLine->text()));
+				default_length = input_length;
+			} catch(int ex){
+				default_length = 14;
+            }
+			std::string pass = "";
+			for(int i = 0; i < default_length; i++){
+				int characterSelection = rand() % 4;
+				if(characterSelection == 0){
+					int randomIndex = rand() % 26;
+					pass += letters.at(randomIndex);
+                } else if(characterSelection == 1){
+					int randomIndex = rand() % 26;
+					pass += cap_letters.at(randomIndex);
+                } else if(characterSelection == 2){
+					int randomIndex = rand() % 10;
+					pass += numbers.at(randomIndex);
+                } else if(characterSelection == 3){
+					int randomIndex = rand() % symbols.size();
+					pass += symbols.at(randomIndex);
+                }
+			}
+			ui.GeneratedPasswordLabel->setText(QString::fromStdString(pass));
 	}
-	if(specificLength && !onlyLettersAndNumbers){
-		qDebug() << "Just specific length chosen.";
+    else if( !specificLength && !onlyLettersAndNumbers){
+			std::string pass = "";
+			for(int i = 0; i < default_length; i++){
+				int characterSelection = rand() % 4;
+				if(characterSelection == 0){
+					int randomIndex = rand() % 26;
+					pass += letters.at(randomIndex);
+                } else if(characterSelection == 1){
+					int randomIndex = rand() % 26;
+					pass += cap_letters.at(randomIndex);
+                } else if(characterSelection == 2){
+					int randomIndex = rand() % 10;
+					pass += numbers.at(randomIndex);
+                } else if(characterSelection == 3){
+					int randomIndex = rand() % symbols.size();
+					pass += symbols.at(randomIndex);
+                }
+			}
+			ui.GeneratedPasswordLabel->setText(QString::fromStdString(pass));
 	}
+	else if( onlyLettersAndNumbers && !specificLength ) {
+			std::string pass = "";
+			for(int i = 0; i < default_length; i++){
+				int characterSelection = rand() % 3;
+				if(characterSelection == 0){
+					int randomIndex = rand() % 26;
+					pass += letters.at(randomIndex);
+                } else if(characterSelection == 1){
+					int randomIndex = rand() % 26;
+					pass += cap_letters.at(randomIndex);
+                } else if(characterSelection == 2){
+					int randomIndex = rand() % 10;
+					pass += numbers.at(randomIndex);
+                } 
+			}
+			ui.GeneratedPasswordLabel->setText(QString::fromStdString(pass));
+    }
 }
+
 
 
 void PasswordGenerator::updateCursor(){
 	cursorPosition = QCursor::pos();
 }
 
-void PasswordGenerator::checkActivity(){
-	
+void PasswordGenerator::checkActivity()
+{
 	if(inactivityTimerSet && generatorActive){
 		qDebug() << global.inactiveTime;
 		ChangeGlobals cg;
-		// Checks if mouse is on the window
+		
 		if(rect().contains(mapFromGlobal(QCursor::pos()))){
-			// Checks if the mouse is idle in place
+			
 			if(QCursor::pos().x() == cursorPosition.x() && QCursor::pos().y() == cursorPosition.y()){
 				cg.incrementTimer();
 			} else {
@@ -143,9 +230,10 @@ void PasswordGenerator::checkActivity(){
 				cg.incrementTimer();
 		}
 
-		// Quit the application once the amount of inactive time from the global header is equal to the timer limit in the global header
+		
 		if( global.inactiveTime >= global.timerLimit ){
 			QCoreApplication::quit();
 		}
 	}
 }
+
