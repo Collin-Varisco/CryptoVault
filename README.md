@@ -1,4 +1,27 @@
+# Releases For Each Operating System
+**[CryptoVault Releases Page](https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/releases)**
+
 # **Build Instructions**
+## **Build on Linux**
+1. Run this command in a terminal to install the build dependencies for your Linux distribution.
+```
+$ /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/linux-deps.sh)"
+```
+2. Clone The Repository
+```
+$ git clone https://gitlab.com/Collin-Varisco-UL/ul-cryptovault.git
+```
+3. Build
+```
+$ cd ul-cryptovault
+$ mkdir build && cd build 
+$ cmake ..
+$ make
+```
+4. Run CryptoVault Executable in ul-cryptovault/build directory
+```
+$ ./CryptoVault
+```
 ## **Windows**
 - You need CMake installed with Visual Studio
 - If you don't already have it type in the windows search bar: "visual studio installer" \
@@ -32,29 +55,6 @@
 - In the dropdown menu, select the CryptoVault.exe option as your startup item.
 - Build the executable by clicking that green arrow build button that should display "CryptoVault.exe."
 - It should compile and run and your development environment will be setup to make changes and build again.
-  
-
-
-## **Build on Linux**
-1. Run this command in a terminal to install the build dependencies for your Linux distribution.
-```
-$ /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/raw/main/development/build-scripts/linux-deps.sh)"
-```
-2. Clone The Repository
-```
-$ git clone https://gitlab.com/Collin-Varisco-UL/ul-cryptovault.git
-```
-3. Build
-```
-$ cd ul-cryptovault
-$ mkdir build && cd build 
-$ cmake ..
-$ make
-```
-4. Run CryptoVault Executable in ul-cryptovault/build directory
-```
-$ ./CryptoVault
-```
 
 
 ## **Build on Mac**
