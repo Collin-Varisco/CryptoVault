@@ -14,7 +14,7 @@ git clone https://github.com/collin-varisco/cryptovault.git
 ```
 3. Build
 ```
-cd ul-cryptovault
+cd cryptovault
 mkdir build && cd build 
 cmake ..
 make
