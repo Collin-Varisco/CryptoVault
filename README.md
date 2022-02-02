@@ -10,7 +10,7 @@ $ /bin/bash -c "$(curl -fsSL https://gitlab.com/Collin-Varisco-UL/ul-cryptovault
 ```
 2. Clone The Repository
 ```
-$ git clone https://gitlab.com/Collin-Varisco-UL/ul-cryptovault.git
+$ git clone https://github.com/collin-varisco/cryptovault.git
 ```
 3. Build
 ```
