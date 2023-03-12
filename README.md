@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/Collin-Varisco/CryptoVault/main/Docs/screenshots/cv2.png)
+
 ## **Build on Linux**
 1. Run this command in a terminal to install the build dependencies for your Linux distribution.
 ```
@@ -88,6 +90,3 @@ $ make
 ```
 $ ./CryptoVault
 ```
-
-
-
