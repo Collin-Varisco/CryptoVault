@@ -1,4 +1,3 @@
-# Project transferred from Gitlab repository: [https://gitlab.com/collin-varisco-ul/ul-cryptovault](https://gitlab.com/Collin-Varisco-UL/ul-cryptovault)
 # Releases For Each Operating System
 **[CryptoVault Releases Page](https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/releases)**
 
@@ -23,7 +22,7 @@ make
 ```
 ./CryptoVault
 ```
-## **Windows**
+## **Build on Windows**
 - You need CMake installed with Visual Studio
 - If you don't already have it type in the windows search bar: "visual studio installer" \
   and click on the result.
