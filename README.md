@@ -1,7 +1,3 @@
-# Releases For Each Operating System
-**[CryptoVault Releases Page](https://gitlab.com/Collin-Varisco-UL/ul-cryptovault/-/releases)**
-
-# **Build Instructions**
 ## **Build on Linux**
 1. Run this command in a terminal to install the build dependencies for your Linux distribution.
 ```
